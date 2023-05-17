@@ -2150,11 +2150,49 @@
 
       var ExportService = /*#__PURE__*/function () {
         function ExportService(placingService, savingService) {
+          var _this7 = this;
+
           _classCallCheck(this, ExportService);
 
           this.placingService = placingService;
           this.savingService = savingService;
           this.svgns = "http://www.w3.org/2000/svg";
+
+          this.getBase64FromUrl = function (url) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this7, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+              var data, blob;
+              return regeneratorRuntime.wrap(function _callee8$(_context10) {
+                while (1) {
+                  switch (_context10.prev = _context10.next) {
+                    case 0:
+                      _context10.next = 2;
+                      return fetch(url);
+
+                    case 2:
+                      data = _context10.sent;
+                      _context10.next = 5;
+                      return data.blob();
+
+                    case 5:
+                      blob = _context10.sent;
+                      return _context10.abrupt("return", new Promise(function (resolve) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blob);
+
+                        reader.onloadend = function () {
+                          var base64data = reader.result;
+                          resolve(base64data);
+                        };
+                      }));
+
+                    case 7:
+                    case "end":
+                      return _context10.stop();
+                  }
+                }
+              }, _callee8);
+            }));
+          };
         }
 
         _createClass(ExportService, [{
@@ -2172,14 +2210,14 @@
         }, {
           key: "getCanvas",
           value: function getCanvas(components, options) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-              var _this7 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
+              var _this8 = this;
 
               var canvas, offsetX, offsetY, _this$captureUsedArea, minX, minY, maxX, maxY, ctx, _iterator6, _step6, _loop3;
 
-              return regeneratorRuntime.wrap(function _callee8$(_context11) {
+              return regeneratorRuntime.wrap(function _callee9$(_context12) {
                 while (1) {
-                  switch (_context11.prev = _context11.next) {
+                  switch (_context12.prev = _context12.next) {
                     case 0:
                       canvas = document.createElement("canvas");
                       canvas.width = this.placingService.boardWidth;
@@ -2204,22 +2242,22 @@
                       }
 
                       _iterator6 = _createForOfIteratorHelper(components);
-                      _context11.prev = 9;
+                      _context12.prev = 9;
                       _loop3 = /*#__PURE__*/regeneratorRuntime.mark(function _loop3() {
-                        var component, _this7$getComponentSi, width, height, img;
+                        var component, _this8$getComponentSi, width, height, img;
 
-                        return regeneratorRuntime.wrap(function _loop3$(_context10) {
+                        return regeneratorRuntime.wrap(function _loop3$(_context11) {
                           while (1) {
-                            switch (_context10.prev = _context10.next) {
+                            switch (_context11.prev = _context11.next) {
                               case 0:
                                 component = _step6.value;
                                 // Render component
                                 ctx.beginPath();
                                 ctx.fillStyle = component.color;
-                                _this7$getComponentSi = _this7.getComponentSize(component), width = _this7$getComponentSi.width, height = _this7$getComponentSi.height; // Render image
+                                _this8$getComponentSi = _this8.getComponentSize(component), width = _this8$getComponentSi.width, height = _this8$getComponentSi.height; // Render image
 
                                 if (!(component instanceof src_models_TextField__WEBPACK_IMPORTED_MODULE_4__["TextField"])) {
-                                  _context10.next = 18;
+                                  _context11.next = 18;
                                   break;
                                 }
 
@@ -2234,24 +2272,24 @@
                                 ctx.textAlign = 'left';
                                 ctx.textBaseline = 'alphabetic';
 
-                                _this7.wrapCanvasText(ctx, component.options.title, component.options.X - offsetX + 3, component.options.Y - offsetY + component.options.fontSize + 3, component.options.width - 6, component.options.height - 6, component.options.fontSize + 3);
+                                _this8.wrapCanvasText(ctx, component.options.title, component.options.X - offsetX + 3, component.options.Y - offsetY + component.options.fontSize + 3, component.options.width - 6, component.options.height - 6, component.options.fontSize + 3);
 
-                                _context10.next = 24;
+                                _context11.next = 24;
                                 break;
 
                               case 18:
-                                _this7.roundRect(ctx, component.options.X - offsetX, component.options.Y - offsetY, width, height, 5);
+                                _this8.roundRect(ctx, component.options.X - offsetX, component.options.Y - offsetY, width, height, 5);
 
                                 img = new Image();
-                                _context10.next = 22;
+                                _context11.next = 22;
                                 return new Promise(function (r) {
                                   img.onload = r;
-                                  img.src = "./assets/".concat(_this7.savingService.getComponentType(component).toLowerCase(), ".svg");
+                                  img.src = "./assets/".concat(_this8.savingService.getComponentType(component).toLowerCase(), ".svg");
                                 });
 
                               case 22:
                                 ctx.drawImage(img, component.options.X - offsetX + width / 2 - 20 + 7, component.options.Y - offsetY + height / 2 - 20 + 7, 26, 26);
-                                if (options.showTitles) _this7.renderComponentTitleToCanvas(ctx, component, options.transparentBackground ? options.lightTitles : !options.lightMode, offsetX, offsetY);
+                                if (options.showTitles) _this8.renderComponentTitleToCanvas(ctx, component, options.transparentBackground ? options.lightTitles : !options.lightMode, offsetX, offsetY);
 
                               case 24:
                                 ctx.fillStyle = options.lightMode ? "#fff" : "#282A37";
@@ -2259,12 +2297,12 @@
 
                                 if (component["inputPort"]) {
                                   // Render connections
-                                  _this7.renderConnectionsToCanvas(ctx, options.transparentBackground ? options.lightTitles : !options.lightMode, component, offsetX, offsetY);
+                                  _this8.renderConnectionsToCanvas(ctx, options.transparentBackground ? options.lightTitles : !options.lightMode, component, offsetX, offsetY);
                                 }
 
                               case 27:
                               case "end":
-                                return _context10.stop();
+                                return _context11.stop();
                             }
                           }
                         }, _loop3);
@@ -2274,44 +2312,44 @@
 
                     case 12:
                       if ((_step6 = _iterator6.n()).done) {
-                        _context11.next = 16;
+                        _context12.next = 16;
                         break;
                       }
 
-                      return _context11.delegateYield(_loop3(), "t0", 14);
+                      return _context12.delegateYield(_loop3(), "t0", 14);
 
                     case 14:
-                      _context11.next = 12;
+                      _context12.next = 12;
                       break;
 
                     case 16:
-                      _context11.next = 21;
+                      _context12.next = 21;
                       break;
 
                     case 18:
-                      _context11.prev = 18;
-                      _context11.t1 = _context11["catch"](9);
+                      _context12.prev = 18;
+                      _context12.t1 = _context12["catch"](9);
 
-                      _iterator6.e(_context11.t1);
+                      _iterator6.e(_context12.t1);
 
                     case 21:
-                      _context11.prev = 21;
+                      _context12.prev = 21;
 
                       _iterator6.f();
 
-                      return _context11.finish(21);
+                      return _context12.finish(21);
 
                     case 24:
                       ctx.fillStyle = "#282A37";
                       this.renderPortsToCanvas(ctx, components, offsetX, offsetY, options.lightMode);
-                      return _context11.abrupt("return", canvas);
+                      return _context12.abrupt("return", canvas);
 
                     case 27:
                     case "end":
-                      return _context11.stop();
+                      return _context12.stop();
                   }
                 }
-              }, _callee8, this, [[9, 18, 21, 24]]);
+              }, _callee9, this, [[9, 18, 21, 24]]);
             }));
           }
         }, {
@@ -2606,19 +2644,19 @@
         }, {
           key: "getSvg",
           value: function getSvg(components, options) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-              var svg, offsetX, offsetY, _this$captureUsedArea2, minX, minY, maxX, maxY, _iterator13, _step13, component, _this$getComponentSiz4, width, height, rect, _rect, img;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+              var svg, offsetX, offsetY, _this$captureUsedArea2, minX, minY, maxX, maxY, _iterator13, _step13, component, _this$getComponentSiz4, width, height, rect, _rect, img, encoded;
 
-              return regeneratorRuntime.wrap(function _callee9$(_context12) {
+              return regeneratorRuntime.wrap(function _callee10$(_context13) {
                 while (1) {
-                  switch (_context12.prev = _context12.next) {
+                  switch (_context13.prev = _context13.next) {
                     case 0:
                       if (!(components.length == 0)) {
-                        _context12.next = 2;
+                        _context13.next = 2;
                         break;
                       }
 
-                      return _context12.abrupt("return", null);
+                      return _context13.abrupt("return", null);
 
                     case 2:
                       svg = document.createElementNS(this.svgns, "svg");
@@ -2632,71 +2670,107 @@
                       svg.setAttribute("width", "".concat(Math.min(this.placingService.boardWidth, maxX + 40 - offsetX)));
                       svg.setAttribute("height", "".concat(Math.min(this.placingService.boardHeight, maxY + 40 - offsetY)));
                       _iterator13 = _createForOfIteratorHelper(components);
+                      _context13.prev = 12;
 
-                      try {
-                        for (_iterator13.s(); !(_step13 = _iterator13.n()).done;) {
-                          component = _step13.value;
-                          _this$getComponentSiz4 = this.getComponentSize(component), width = _this$getComponentSiz4.width, height = _this$getComponentSiz4.height; // Render image
+                      _iterator13.s();
 
-                          if (component instanceof src_models_TextField__WEBPACK_IMPORTED_MODULE_4__["TextField"]) {
-                            rect = document.createElementNS(this.svgns, 'rect');
-                            rect.setAttributeNS(null, 'x', (component.options.X - offsetX).toString());
-                            rect.setAttributeNS(null, 'y', (component.options.Y - offsetY).toString());
-                            rect.setAttributeNS(null, 'width', component.options.width.toString());
-                            rect.setAttributeNS(null, 'height', component.options.height.toString());
-                            rect.setAttributeNS(null, 'fill', component.options.backgroundColor);
-                            rect.setAttributeNS(null, 'stroke-width', '2');
-                            rect.setAttributeNS(null, 'stroke', "rgba(0, 0, 0, 0.1)");
-                            svg.appendChild(rect);
-                            this.wrapSvgText(svg, component.options.title, component.options.color, component.options.X - offsetX + 3, component.options.Y - offsetY + component.options.fontSize + 3, component.options.width - 6, component.options.height - 6, component.options.fontSize, component.options.fontSize, component.options.isBold, component.options.isItalic);
-                          } else {
-                            _rect = document.createElementNS(this.svgns, 'rect');
-
-                            _rect.setAttributeNS(null, 'x', (component.options.X - offsetX).toString());
-
-                            _rect.setAttributeNS(null, 'y', (component.options.Y - offsetY).toString());
-
-                            _rect.setAttributeNS(null, 'rx', "3");
-
-                            _rect.setAttributeNS(null, 'ry', "3");
-
-                            _rect.setAttributeNS(null, 'width', width.toString());
-
-                            _rect.setAttributeNS(null, 'height', height.toString());
-
-                            _rect.setAttributeNS(null, 'fill', component.color);
-
-                            svg.appendChild(_rect);
-                            img = document.createElementNS(this.svgns, 'image');
-                            img.setAttributeNS(null, 'height', '26');
-                            img.setAttributeNS(null, 'width', '26');
-                            img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', "http://localhost:4200/assets/".concat(this.savingService.getComponentType(component).toLowerCase(), ".svg"));
-                            img.setAttributeNS(null, 'x', (component.options.X - offsetX + width / 2 - 20 + 7).toString());
-                            img.setAttributeNS(null, 'y', (component.options.Y - offsetY + height / 2 - 20 + 7).toString());
-                            img.setAttributeNS(null, 'visibility', 'visible');
-                            svg.appendChild(img);
-                            if (options.showTitles) this.renderComponentTitleToSvg(svg, component, options.lightTitles, offsetX, offsetY);
-                          }
-
-                          if (component["inputPort"]) {
-                            this.renderConnectionsToSvg(svg, component, options.lightTitles, offsetX, offsetY);
-                          }
-                        }
-                      } catch (err) {
-                        _iterator13.e(err);
-                      } finally {
-                        _iterator13.f();
+                    case 14:
+                      if ((_step13 = _iterator13.n()).done) {
+                        _context13.next = 54;
+                        break;
                       }
 
-                      this.renderPortsToSvg(svg, components, options.lightTitles, offsetX, offsetY);
-                      return _context12.abrupt("return", svg);
+                      component = _step13.value;
+                      _this$getComponentSiz4 = this.getComponentSize(component), width = _this$getComponentSiz4.width, height = _this$getComponentSiz4.height; // Render image
 
-                    case 15:
+                      if (!(component instanceof src_models_TextField__WEBPACK_IMPORTED_MODULE_4__["TextField"])) {
+                        _context13.next = 30;
+                        break;
+                      }
+
+                      rect = document.createElementNS(this.svgns, 'rect');
+                      rect.setAttributeNS(null, 'x', (component.options.X - offsetX).toString());
+                      rect.setAttributeNS(null, 'y', (component.options.Y - offsetY).toString());
+                      rect.setAttributeNS(null, 'width', component.options.width.toString());
+                      rect.setAttributeNS(null, 'height', component.options.height.toString());
+                      rect.setAttributeNS(null, 'fill', component.options.backgroundColor);
+                      rect.setAttributeNS(null, 'stroke-width', '2');
+                      rect.setAttributeNS(null, 'stroke', "rgba(0, 0, 0, 0.1)");
+                      svg.appendChild(rect);
+                      this.wrapSvgText(svg, component.options.title, component.options.color, component.options.X - offsetX + 3, component.options.Y - offsetY + component.options.fontSize + 3, component.options.width - 6, component.options.height - 6, component.options.fontSize, component.options.fontSize, component.options.isBold, component.options.isItalic);
+                      _context13.next = 51;
+                      break;
+
+                    case 30:
+                      _rect = document.createElementNS(this.svgns, 'rect');
+
+                      _rect.setAttributeNS(null, 'x', (component.options.X - offsetX).toString());
+
+                      _rect.setAttributeNS(null, 'y', (component.options.Y - offsetY).toString());
+
+                      _rect.setAttributeNS(null, 'rx', "3");
+
+                      _rect.setAttributeNS(null, 'ry', "3");
+
+                      _rect.setAttributeNS(null, 'width', width.toString());
+
+                      _rect.setAttributeNS(null, 'height', height.toString());
+
+                      _rect.setAttributeNS(null, 'fill', component.color);
+
+                      svg.appendChild(_rect);
+                      img = document.createElementNS(this.svgns, 'image');
+                      img.setAttributeNS(null, 'height', '26');
+                      img.setAttributeNS(null, 'width', '26'); //img.setAttributeNS('http://www.w3.org/1999/xlink','href', `http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
+
+                      _context13.next = 44;
+                      return this.getBase64FromUrl("http://localhost:4200/assets/".concat(this.savingService.getComponentType(component).toLowerCase(), ".svg"));
+
+                    case 44:
+                      encoded = _context13.sent;
+                      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', encoded.toString());
+                      img.setAttributeNS(null, 'x', (component.options.X - offsetX + width / 2 - 20 + 7).toString());
+                      img.setAttributeNS(null, 'y', (component.options.Y - offsetY + height / 2 - 20 + 7).toString());
+                      img.setAttributeNS(null, 'visibility', 'visible');
+                      svg.appendChild(img);
+                      if (options.showTitles) this.renderComponentTitleToSvg(svg, component, options.lightTitles, offsetX, offsetY);
+
+                    case 51:
+                      if (component["inputPort"]) {
+                        this.renderConnectionsToSvg(svg, component, options.lightTitles, offsetX, offsetY);
+                      }
+
+                    case 52:
+                      _context13.next = 14;
+                      break;
+
+                    case 54:
+                      _context13.next = 59;
+                      break;
+
+                    case 56:
+                      _context13.prev = 56;
+                      _context13.t0 = _context13["catch"](12);
+
+                      _iterator13.e(_context13.t0);
+
+                    case 59:
+                      _context13.prev = 59;
+
+                      _iterator13.f();
+
+                      return _context13.finish(59);
+
+                    case 62:
+                      this.renderPortsToSvg(svg, components, options.lightTitles, offsetX, offsetY);
+                      return _context13.abrupt("return", svg);
+
+                    case 64:
                     case "end":
-                      return _context12.stop();
+                      return _context13.stop();
                   }
                 }
-              }, _callee9, this);
+              }, _callee10, this, [[12, 56, 59, 62]]);
             }));
           }
         }, {
@@ -2942,7 +3016,7 @@
         _createClass(DelayedHoverDirective, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this8 = this;
+            var _this9 = this;
 
             var hide$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(this.element.nativeElement, 'mouseleave').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (_) {
               return false;
@@ -2955,10 +3029,10 @@
                 return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(false);
               }
 
-              return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(true).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["delay"])(parseInt(_this8.delay)));
+              return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(true).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["delay"])(parseInt(_this9.delay)));
             })).subscribe(function (show) {
               if (show) {
-                _this8.hoverEvent.emit();
+                _this9.hoverEvent.emit();
               }
             });
           }
@@ -3049,13 +3123,13 @@
         var _super5 = _createSuper(EndpointOperator);
 
         function EndpointOperator() {
-          var _this9;
+          var _this10;
 
           _classCallCheck(this, EndpointOperator);
 
-          _this9 = _super5.call(this);
-          _this9.requestCount = 0;
-          return _this9;
+          _this10 = _super5.call(this);
+          _this10.requestCount = 0;
+          return _this10;
         }
 
         _createClass(EndpointOperator, [{
@@ -3153,13 +3227,13 @@
         var _super6 = _createSuper(EndpointOptions);
 
         function EndpointOptions() {
-          var _this10;
+          var _this11;
 
           _classCallCheck(this, EndpointOptions);
 
-          _this10 = _super6.apply(this, arguments);
-          _this10.endpoints = [];
-          return _this10;
+          _this11 = _super6.apply(this, arguments);
+          _this11.endpoints = [];
+          return _this11;
         }
 
         return EndpointOptions;
@@ -3587,13 +3661,13 @@
         _createClass(ResizableTextAreaDirective, [{
           key: "onMouseDown",
           value: function onMouseDown(el) {
-            var _this11 = this;
+            var _this12 = this;
 
             this.width = el.offsetWidth;
             this.height = el.offsetHeight;
             this.mouseMoveListener = this.renderer.listen('document', 'mousemove', function () {
-              if (_this11.width !== el.offsetWidth || _this11.height !== el.offsetHeight) {
-                _this11.resize.emit({
+              if (_this12.width !== el.offsetWidth || _this12.height !== el.offsetHeight) {
+                _this12.resize.emit({
                   width: el.offsetWidth,
                   height: el.offsetHeight
                 });
@@ -3690,13 +3764,13 @@
         var _super7 = _createSuper(CDNComponent);
 
         function CDNComponent() {
-          var _this12;
+          var _this13;
 
           _classCallCheck(this, CDNComponent);
 
-          _this12 = _super7.apply(this, arguments);
-          _this12.LogicCDN = new src_models_CDN__WEBPACK_IMPORTED_MODULE_0__["CDN"]();
-          return _this12;
+          _this13 = _super7.apply(this, arguments);
+          _this13.LogicCDN = new src_models_CDN__WEBPACK_IMPORTED_MODULE_0__["CDN"]();
+          return _this13;
         }
 
         _createClass(CDNComponent, [{
@@ -3826,13 +3900,13 @@
         var _super8 = _createSuper(ApiGatewayComponent);
 
         function ApiGatewayComponent() {
-          var _this13;
+          var _this14;
 
           _classCallCheck(this, ApiGatewayComponent);
 
-          _this13 = _super8.apply(this, arguments);
-          _this13.LogicApiGateway = new src_models_APIGateway__WEBPACK_IMPORTED_MODULE_0__["APIGateway"]();
-          return _this13;
+          _this14 = _super8.apply(this, arguments);
+          _this14.LogicApiGateway = new src_models_APIGateway__WEBPACK_IMPORTED_MODULE_0__["APIGateway"]();
+          return _this14;
         }
 
         _createClass(ApiGatewayComponent, [{
@@ -4163,15 +4237,15 @@
         var _super9 = _createSuper(DatabaseEndpoint);
 
         function DatabaseEndpoint(url) {
-          var _this14;
+          var _this15;
 
           _classCallCheck(this, DatabaseEndpoint);
 
-          _this14 = _super9.call(this, url, [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].DELETE]);
-          _this14.actions = null;
-          _this14.grpcMode = _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_0__["gRPCMode"].Unary;
-          _this14.protocol = _enums_Protocol__WEBPACK_IMPORTED_MODULE_2__["Protocol"].Database;
-          return _this14;
+          _this15 = _super9.call(this, url, [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_1__["HTTPMethod"].DELETE]);
+          _this15.actions = null;
+          _this15.grpcMode = _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_0__["gRPCMode"].Unary;
+          _this15.protocol = _enums_Protocol__WEBPACK_IMPORTED_MODULE_2__["Protocol"].Database;
+          return _this15;
         }
 
         return DatabaseEndpoint;
@@ -4523,67 +4597,67 @@
         var _super10 = _createSuper(Database);
 
         function Database() {
-          var _this15;
+          var _this16;
 
           _classCallCheck(this, Database);
 
-          _this15 = _super10.call(this);
-          _this15.connectionTable = {};
-          _this15.color = "#E94057";
-          _this15.removeShardDispatcher = new _Shared_EventDispatcher__WEBPACK_IMPORTED_MODULE_7__["EventDispatcher"]();
-          _this15.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_5__["Port"](_assertThisInitialized(_this15), false, true);
-          _this15.outputPort = null; //new Port(this,true,true);      
+          _this16 = _super10.call(this);
+          _this16.connectionTable = {};
+          _this16.color = "#E94057";
+          _this16.removeShardDispatcher = new _Shared_EventDispatcher__WEBPACK_IMPORTED_MODULE_7__["EventDispatcher"]();
+          _this16.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_5__["Port"](_assertThisInitialized(_this16), false, true);
+          _this16.outputPort = null; //new Port(this,true,true);      
 
-          _this15.options = new DatabaseOptions();
-          _this15.options.title = "Database";
-          _this15.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["DatabaseEndpoint"]("/database")];
-          return _this15;
+          _this16.options = new DatabaseOptions();
+          _this16.options.title = "Database";
+          _this16.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["DatabaseEndpoint"]("/database")];
+          return _this16;
         }
 
         _createClass(Database, [{
           key: "receiveData",
           value: function receiveData(request) {
             var fromOutput = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
               var targetEndpoint, length, shardRequest, conn, epRef;
-              return regeneratorRuntime.wrap(function _callee10$(_context13) {
+              return regeneratorRuntime.wrap(function _callee11$(_context14) {
                 while (1) {
-                  switch (_context13.prev = _context13.next) {
+                  switch (_context14.prev = _context14.next) {
                     case 0:
                       if (!fromOutput) {
-                        _context13.next = 2;
+                        _context14.next = 2;
                         break;
                       }
 
-                      return _context13.abrupt("return");
+                      return _context14.abrupt("return");
 
                     case 2:
                       targetEndpoint = this.getTargetEndpoint(request);
 
                       if (!(targetEndpoint == null)) {
-                        _context13.next = 5;
+                        _context14.next = 5;
                         break;
                       }
 
-                      return _context13.abrupt("return");
+                      return _context14.abrupt("return");
 
                     case 5:
                       this.fireReceiveData(request);
 
                       if (!this.options.isMasterShard) {
-                        _context13.next = 24;
+                        _context14.next = 24;
                         break;
                       }
 
                       length = this.outputPort.connections.length;
 
                       if (!(length == 0)) {
-                        _context13.next = 12;
+                        _context14.next = 12;
                         break;
                       }
 
                       this.options.isMasterShard = false;
-                      _context13.next = 24;
+                      _context14.next = 24;
                       break;
 
                     case 12:
@@ -4598,26 +4672,26 @@
                       shardRequest.originID = this.originID;
                       shardRequest.requestId = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["UUID"])();
                       this.connectionTable[shardRequest.requestId] = shardRequest.origin;
-                      _context13.next = 24;
+                      _context14.next = 24;
                       return this.outputPort.sendData(shardRequest, conn);
 
                     case 24:
                       this.connectionTable[request.requestId] = request.origin; // Send response back
 
                       if (!request.sendResponse) {
-                        _context13.next = 28;
+                        _context14.next = 28;
                         break;
                       }
 
-                      _context13.next = 28;
+                      _context14.next = 28;
                       return this.sendData(this.getResponse(request));
 
                     case 28:
                     case "end":
-                      return _context13.stop();
+                      return _context14.stop();
                   }
                 }
-              }, _callee10, this);
+              }, _callee11, this);
             }));
           }
         }, {
@@ -4634,16 +4708,16 @@
         }, {
           key: "sendData",
           value: function sendData(response) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
               var targetConnection;
-              return regeneratorRuntime.wrap(function _callee11$(_context14) {
+              return regeneratorRuntime.wrap(function _callee12$(_context15) {
                 while (1) {
-                  switch (_context14.prev = _context14.next) {
+                  switch (_context15.prev = _context15.next) {
                     case 0:
                       targetConnection = this.connectionTable[response.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context14.next = 3;
+                        _context15.next = 3;
                         break;
                       }
 
@@ -4652,15 +4726,15 @@
                     case 3:
                       this.connectionTable[response.responseId] = null; // reset request id
 
-                      _context14.next = 6;
+                      _context15.next = 6;
                       return this.inputPort.sendData(response, targetConnection);
 
                     case 6:
                     case "end":
-                      return _context14.stop();
+                      return _context15.stop();
                   }
                 }
-              }, _callee11, this);
+              }, _callee12, this);
             }));
           }
         }, {
@@ -4877,18 +4951,18 @@
         var _super12 = _createSuper(Client);
 
         function Client() {
-          var _this16;
+          var _this17;
 
           _classCallCheck(this, Client);
 
-          _this16 = _super12.call(this);
-          _this16.isConnectedToEndpoint = false; // For streaming/websockets
+          _this17 = _super12.call(this);
+          _this17.isConnectedToEndpoint = false; // For streaming/websockets
 
-          _this16.color = "#0EC35B";
-          _this16.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_7__["Port"](_assertThisInitialized(_this16), true, false);
-          _this16.options = new ClientOptions();
-          _this16.options.title = "Client";
-          return _this16;
+          _this17.color = "#0EC35B";
+          _this17.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_7__["Port"](_assertThisInitialized(_this17), true, false);
+          _this17.options = new ClientOptions();
+          _this17.options.title = "Client";
+          return _this17;
         }
 
         _createClass(Client, [{
@@ -4909,24 +4983,24 @@
         }, {
           key: "sendData",
           value: function sendData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
-              return regeneratorRuntime.wrap(function _callee12$(_context15) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
+              return regeneratorRuntime.wrap(function _callee13$(_context16) {
                 while (1) {
-                  switch (_context15.prev = _context15.next) {
+                  switch (_context16.prev = _context16.next) {
                     case 0:
                       this.updateEndpoint();
-                      _context15.next = 3;
+                      _context16.next = 3;
                       return this.outputPort.sendData(data);
 
                     case 3:
-                      return _context15.abrupt("return", _context15.sent);
+                      return _context16.abrupt("return", _context16.sent);
 
                     case 4:
                     case "end":
-                      return _context15.stop();
+                      return _context16.stop();
                   }
                 }
-              }, _callee12, this);
+              }, _callee13, this);
             }));
           }
         }, {
@@ -5005,16 +5079,16 @@
         var _super13 = _createSuper(ClientOptions);
 
         function ClientOptions() {
-          var _this17;
+          var _this18;
 
           _classCallCheck(this, ClientOptions);
 
-          _this17 = _super13.apply(this, arguments);
-          _this17.protocol = _enums_Protocol__WEBPACK_IMPORTED_MODULE_4__["Protocol"].HTTP; // Is decided by endpoint, cannot be changed from client
+          _this18 = _super13.apply(this, arguments);
+          _this18.protocol = _enums_Protocol__WEBPACK_IMPORTED_MODULE_4__["Protocol"].HTTP; // Is decided by endpoint, cannot be changed from client
 
-          _this17.endpointRef = new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["EndpointRef"]();
-          _this17.outputRate = 4;
-          return _this17;
+          _this18.endpointRef = new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["EndpointRef"]();
+          _this18.outputRate = 4;
+          return _this18;
         }
 
         return ClientOptions;
@@ -5081,7 +5155,7 @@
         _createClass(PortComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this18 = this;
+            var _this19 = this;
 
             this.LogicPort = this.LogicParent.getPort(this.IsOutput);
             this.board = document.getElementById("board");
@@ -5089,15 +5163,15 @@
             this.LogicPort.onDropRequest(function () {
               var dirX = -1 - Math.random();
               var dirY = Math.random();
-              var x = _this18.port.nativeElement.offsetLeft + _this18.port.nativeElement.clientWidth / 2;
-              var y = _this18.port.nativeElement.offsetTop + _this18.port.nativeElement.clientHeight / 2;
-              if (_this18.IsOutput) dirX *= -1;
+              var x = _this19.port.nativeElement.offsetLeft + _this19.port.nativeElement.clientWidth / 2;
+              var y = _this19.port.nativeElement.offsetTop + _this19.port.nativeElement.clientHeight / 2;
+              if (_this19.IsOutput) dirX *= -1;
               if (Math.random() > 0.5) dirY *= -1;
               var data = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
               data.classList.add("dropped-data");
               data.setAttribute("r", "5");
 
-              _this18.svgCanvas.appendChild(data);
+              _this19.svgCanvas.appendChild(data);
 
               data.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
               setTimeout(function () {
@@ -5167,7 +5241,7 @@
         }, {
           key: "handleClick",
           value: function handleClick(event) {
-            var _this19 = this;
+            var _this20 = this;
 
             if (event instanceof MouseEvent) {
               if (this.placingService.isConnecting) this.placingService.stopConnecting();else {
@@ -5190,18 +5264,18 @@
                 this.line.style.fill = "none";
 
                 this.board.onmousemove = function (event) {
-                  if (_this19.placingService.canMoveConnection) {
-                    if (!_this19.placingService.isConnecting) _this19.placingService.startConnecting(_this19);
-                    _this19.lineCurrX = _this19.lineCurrX - (_this19.linePrevX - event.clientX) / _this19.placingService.boardScale;
-                    _this19.lineCurrY = _this19.lineCurrY - (_this19.linePrevY - event.clientY) / _this19.placingService.boardScale;
+                  if (_this20.placingService.canMoveConnection) {
+                    if (!_this20.placingService.isConnecting) _this20.placingService.startConnecting(_this20);
+                    _this20.lineCurrX = _this20.lineCurrX - (_this20.linePrevX - event.clientX) / _this20.placingService.boardScale;
+                    _this20.lineCurrY = _this20.lineCurrY - (_this20.linePrevY - event.clientY) / _this20.placingService.boardScale;
 
-                    _this19.line.setAttribute('d', "M".concat(_this19.lineStartX, " ").concat(_this19.lineStartY, " L").concat(_this19.lineCurrX, " ").concat(_this19.lineCurrY));
+                    _this20.line.setAttribute('d', "M".concat(_this20.lineStartX, " ").concat(_this20.lineStartY, " L").concat(_this20.lineCurrX, " ").concat(_this20.lineCurrY));
 
-                    _this19.linePrevX = event.clientX;
-                    _this19.linePrevY = event.clientY;
+                    _this20.linePrevX = event.clientX;
+                    _this20.linePrevY = event.clientY;
                   }
 
-                  _this19.cdRef.detectChanges();
+                  _this20.cdRef.detectChanges();
                 };
               }
             } else if (event instanceof TouchEvent) {
@@ -5225,28 +5299,28 @@
                 this.line.style.fill = "none";
 
                 this.board.ontouchmove = function (event) {
-                  if (_this19.placingService.canMoveConnection) {
-                    if (!_this19.placingService.isConnecting) _this19.placingService.startConnecting(_this19);
-                    _this19.lineCurrX = _this19.lineCurrX - (_this19.linePrevX - event.touches[0].clientX) / _this19.placingService.boardScale;
-                    _this19.lineCurrY = _this19.lineCurrY - (_this19.linePrevY - event.touches[0].clientY) / _this19.placingService.boardScale;
+                  if (_this20.placingService.canMoveConnection) {
+                    if (!_this20.placingService.isConnecting) _this20.placingService.startConnecting(_this20);
+                    _this20.lineCurrX = _this20.lineCurrX - (_this20.linePrevX - event.touches[0].clientX) / _this20.placingService.boardScale;
+                    _this20.lineCurrY = _this20.lineCurrY - (_this20.linePrevY - event.touches[0].clientY) / _this20.placingService.boardScale;
 
-                    _this19.line.setAttribute('d', "M".concat(_this19.lineStartX, " ").concat(_this19.lineStartY, " L").concat(_this19.lineCurrX, " ").concat(_this19.lineCurrY));
+                    _this20.line.setAttribute('d', "M".concat(_this20.lineStartX, " ").concat(_this20.lineStartY, " L").concat(_this20.lineCurrX, " ").concat(_this20.lineCurrY));
 
-                    _this19.linePrevX = event.touches[0].clientX;
-                    _this19.linePrevY = event.touches[0].clientY;
+                    _this20.linePrevX = event.touches[0].clientX;
+                    _this20.linePrevY = event.touches[0].clientY;
                   }
 
-                  _this19.cdRef.detectChanges();
+                  _this20.cdRef.detectChanges();
                 };
 
                 this.board.ontouchend = function () {
-                  _this19.board.ontouchmove = null;
-                  _this19.board.ontouchend = null;
-                  _this19.svgCanvas.innerHTML = "";
+                  _this20.board.ontouchmove = null;
+                  _this20.board.ontouchend = null;
+                  _this20.svgCanvas.innerHTML = "";
 
-                  _this19.placingService.stopConnecting();
+                  _this20.placingService.stopConnecting();
 
-                  _this19.cdRef.detectChanges();
+                  _this20.cdRef.detectChanges();
                 };
               }
             }
@@ -5408,32 +5482,32 @@
         var _super14 = _createSuper(PubSub);
 
         function PubSub() {
-          var _this20;
+          var _this21;
 
           _classCallCheck(this, PubSub);
 
-          _this20 = _super14.call(this);
-          _this20.connectionTable = {};
-          _this20.color = "#FF7D35";
-          _this20.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this20), false, true);
-          _this20.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this20), true, true);
-          _this20.options = new PubSubOptions();
-          _this20.options.title = "Pub/Sub Model";
-          _this20.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["Endpoint"]("post.postCreated", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PATCH, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].DELETE])];
-          return _this20;
+          _this21 = _super14.call(this);
+          _this21.connectionTable = {};
+          _this21.color = "#FF7D35";
+          _this21.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this21), false, true);
+          _this21.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this21), true, true);
+          _this21.options = new PubSubOptions();
+          _this21.options.title = "Pub/Sub Model";
+          _this21.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["Endpoint"]("post.postCreated", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PATCH, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].DELETE])];
+          return _this21;
         }
 
         _createClass(PubSub, [{
           key: "receiveData",
           value: function receiveData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
               var response;
-              return regeneratorRuntime.wrap(function _callee13$(_context16) {
+              return regeneratorRuntime.wrap(function _callee14$(_context17) {
                 while (1) {
-                  switch (_context16.prev = _context16.next) {
+                  switch (_context17.prev = _context17.next) {
                     case 0:
                       if (!(data.requestId == "" || data.requestId == null)) {
-                        _context16.next = 2;
+                        _context17.next = 2;
                         break;
                       }
 
@@ -5453,32 +5527,14 @@
                       response.originID = this.originID; // Send response back
 
                       if (!data.sendResponse) {
-                        _context16.next = 14;
+                        _context17.next = 14;
                         break;
                       }
 
-                      _context16.next = 14;
+                      _context17.next = 14;
                       return this.inputPort.sendData(response, data.origin);
 
                     case 14:
-                    case "end":
-                      return _context16.stop();
-                  }
-                }
-              }, _callee13, this);
-            }));
-          }
-        }, {
-          key: "sendToConsumers",
-          value: function sendToConsumers(message) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-              return regeneratorRuntime.wrap(function _callee14$(_context17) {
-                while (1) {
-                  switch (_context17.prev = _context17.next) {
-                    case 0:
-                      this.sendData(message);
-
-                    case 1:
                     case "end":
                       return _context17.stop();
                   }
@@ -5487,22 +5543,40 @@
             }));
           }
         }, {
-          key: "sendData",
-          value: function sendData(data) {
+          key: "sendToConsumers",
+          value: function sendToConsumers(message) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
-              var _this21 = this;
-
-              var targetEndpoint, connections, _iterator21, _step21, connection;
-
               return regeneratorRuntime.wrap(function _callee15$(_context18) {
                 while (1) {
                   switch (_context18.prev = _context18.next) {
+                    case 0:
+                      this.sendData(message);
+
+                    case 1:
+                    case "end":
+                      return _context18.stop();
+                  }
+                }
+              }, _callee15, this);
+            }));
+          }
+        }, {
+          key: "sendData",
+          value: function sendData(data) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
+              var _this22 = this;
+
+              var targetEndpoint, connections, _iterator21, _step21, connection;
+
+              return regeneratorRuntime.wrap(function _callee16$(_context19) {
+                while (1) {
+                  switch (_context19.prev = _context19.next) {
                     case 0:
                       data.originID = this.originID;
                       data.sendResponse = false;
                       targetEndpoint = data.header.endpoint.endpoint.url;
                       connections = this.outputPort.connections.filter(function (connection) {
-                        return connection.getOtherPort(_this21.outputPort).parent.getAvailableEndpoints().find(function (ep) {
+                        return connection.getOtherPort(_this22.outputPort).parent.getAvailableEndpoints().find(function (ep) {
                           return ep.url == targetEndpoint;
                         }) != null;
                       });
@@ -5522,10 +5596,10 @@
 
                     case 6:
                     case "end":
-                      return _context18.stop();
+                      return _context19.stop();
                   }
                 }
-              }, _callee15, this);
+              }, _callee16, this);
             }));
           }
         }]);
@@ -6056,20 +6130,20 @@
         var _super16 = _createSuper(DatabaseComponent);
 
         function DatabaseComponent() {
-          var _this22;
+          var _this23;
 
           _classCallCheck(this, DatabaseComponent);
 
-          _this22 = _super16.apply(this, arguments);
-          _this22.LogicDatabase = new src_models_Database__WEBPACK_IMPORTED_MODULE_0__["Database"]();
-          _this22.SHARDS_PER_SHRARD = 3;
-          return _this22;
+          _this23 = _super16.apply(this, arguments);
+          _this23.LogicDatabase = new src_models_Database__WEBPACK_IMPORTED_MODULE_0__["Database"]();
+          _this23.SHARDS_PER_SHRARD = 3;
+          return _this23;
         }
 
         _createClass(DatabaseComponent, [{
           key: "ngAfterViewInit",
           value: function ngAfterViewInit() {
-            var _this23 = this;
+            var _this24 = this;
 
             if (this.LogicDatabase.options.isMasterShard) {
               this.LogicDatabase.outputPort = new src_models_Port__WEBPACK_IMPORTED_MODULE_2__["Port"](this.LogicDatabase, true, true);
@@ -6078,9 +6152,9 @@
             _get(_getPrototypeOf(DatabaseComponent.prototype), "Init", this).call(this);
 
             this.LogicDatabase.onRemoveShard(function () {
-              _this23.outputPortRef.destroySelf();
+              _this24.outputPortRef.destroySelf();
 
-              _this23.outputPortRef = null;
+              _this24.outputPortRef = null;
             });
           }
         }, {
@@ -6118,7 +6192,7 @@
         }, {
           key: "shard",
           value: function shard() {
-            var _this24 = this;
+            var _this25 = this;
 
             this.LogicDatabase.options.isMasterShard = true;
             this.createOutputPort();
@@ -6143,21 +6217,21 @@
             var ep = new src_models_Endpoint__WEBPACK_IMPORTED_MODULE_1__["DatabaseEndpoint"]("/shard");
 
             var _loop4 = function _loop4(i) {
-              var comp = _this24.placingService.createComponent(DatabaseComponent, initX + dirX * 80 * i, initY + dirY * 70 * i, {
-                type: _this24.LogicDatabase.options.type,
+              var comp = _this25.placingService.createComponent(DatabaseComponent, initX + dirX * 80 * i, initY + dirY * 70 * i, {
+                type: _this25.LogicDatabase.options.type,
                 isShard: true,
                 title: "Shard ".concat(i + 1),
                 endpoints: [ep]
               });
 
               comp.onViewInit.push(function () {
-                _this24.placingService.connectPorts(_this24.getPortComponent(true), comp.getPortComponent(false));
+                _this25.placingService.connectPorts(_this25.getPortComponent(true), comp.getPortComponent(false));
 
-                _this24.placingService.pushComponent.emit(comp);
+                _this25.placingService.pushComponent.emit(comp);
               });
 
               comp.onAfterDestroySelf = function () {
-                if (_this24.LogicDatabase.outputPort.connections.length == 0) _this24.LogicDatabase.options.isMasterShard = false;
+                if (_this25.LogicDatabase.outputPort.connections.length == 0) _this25.LogicDatabase.options.isMasterShard = false;
               };
             };
 
@@ -6166,9 +6240,9 @@
             }
 
             setTimeout(function () {
-              _this24.afterChange();
+              _this25.afterChange();
 
-              _this24.cdRef.detectChanges();
+              _this25.cdRef.detectChanges();
             }, 300);
           }
         }], [{
@@ -6711,31 +6785,31 @@
         _createClass(CreateComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this25 = this;
+            var _this26 = this;
 
             this.titleService.setTitle("Návrh systému");
             var seenIntroTutorial = localStorage.getItem("seenIntroTutorial");
             this.route.queryParams.subscribe(function (params) {
-              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this25, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this26, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
                 var save, _save;
 
-                return regeneratorRuntime.wrap(function _callee16$(_context19) {
+                return regeneratorRuntime.wrap(function _callee17$(_context20) {
                   while (1) {
-                    switch (_context19.prev = _context19.next) {
+                    switch (_context20.prev = _context20.next) {
                       case 0:
                         if (!params.viewer) {
-                          _context19.next = 14;
+                          _context20.next = 14;
                           break;
                         }
 
                         this.showBoard = false;
-                        _context19.prev = 2;
+                        _context20.prev = 2;
                         this.viewerEditLink = "http://localhost:4200/create?edit=".concat(params.viewer);
-                        _context19.next = 6;
+                        _context20.next = 6;
                         return this.getBoard(params.viewer);
 
                       case 6:
-                        save = _context19.sent;
+                        save = _context20.sent;
 
                         if (Array.isArray(save)) {
                           this.viewerSave = this.savingService.getSaveFromOptimizedSave(save);
@@ -6746,27 +6820,27 @@
                         }
 
                         this.showReadOnlyViewer = true;
-                        _context19.next = 14;
+                        _context20.next = 14;
                         break;
 
                       case 11:
-                        _context19.prev = 11;
-                        _context19.t0 = _context19["catch"](2);
+                        _context20.prev = 11;
+                        _context20.t0 = _context20["catch"](2);
                         this.showReadOnlyViewerError = true;
 
                       case 14:
                         if (!params.edit) {
-                          _context19.next = 27;
+                          _context20.next = 27;
                           break;
                         }
 
-                        _context19.prev = 15;
+                        _context20.prev = 15;
                         this.showEdit = true;
-                        _context19.next = 19;
+                        _context20.next = 19;
                         return this.getBoard(params.edit);
 
                       case 19:
-                        _save = _context19.sent;
+                        _save = _context20.sent;
 
                         if (Array.isArray(_save)) {
                           this.viewerSave = this.savingService.getSaveFromOptimizedSave(_save);
@@ -6777,12 +6851,12 @@
                         }
 
                         this.showReadOnlyViewer = false;
-                        _context19.next = 27;
+                        _context20.next = 27;
                         break;
 
                       case 24:
-                        _context19.prev = 24;
-                        _context19.t1 = _context19["catch"](15);
+                        _context20.prev = 24;
+                        _context20.t1 = _context20["catch"](15);
                         this.showReadOnlyViewerError = true;
 
                       case 27:
@@ -6790,10 +6864,10 @@
 
                       case 28:
                       case "end":
-                        return _context19.stop();
+                        return _context20.stop();
                     }
                   }
-                }, _callee16, this, [[2, 11], [15, 24]]);
+                }, _callee17, this, [[2, 11], [15, 24]]);
               }));
             });
 
@@ -6805,43 +6879,43 @@
         }, {
           key: "getBoard",
           value: function getBoard(uuid) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
               var response, body, encoded, result;
-              return regeneratorRuntime.wrap(function _callee17$(_context20) {
+              return regeneratorRuntime.wrap(function _callee18$(_context21) {
                 while (1) {
-                  switch (_context20.prev = _context20.next) {
+                  switch (_context21.prev = _context21.next) {
                     case 0:
-                      _context20.next = 2;
+                      _context21.next = 2;
                       return fetch("".concat(this.API_URL, "/api/board/").concat(uuid), {
                         method: "GET"
                       });
 
                     case 2:
-                      response = _context20.sent;
-                      _context20.next = 5;
+                      response = _context21.sent;
+                      _context21.next = 5;
                       return response.json();
 
                     case 5:
-                      body = _context20.sent;
+                      body = _context21.sent;
                       encoded = body.json_data;
                       result = JSON.parse(atob(encoded));
-                      return _context20.abrupt("return", result);
+                      return _context21.abrupt("return", result);
 
                     case 9:
                     case "end":
-                      return _context20.stop();
+                      return _context21.stop();
                   }
                 }
-              }, _callee17, this);
+              }, _callee18, this);
             }));
           }
         }, {
           key: "getComponents",
           value: function getComponents() {
-            var _this26 = this;
+            var _this27 = this;
 
             return function () {
-              return _this26.board.allLogicComponents;
+              return _this27.board.allLogicComponents;
             };
           }
         }, {
@@ -6880,53 +6954,19 @@
         }, {
           key: "exportPng",
           value: function exportPng(options) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
-              var canvas;
-              return regeneratorRuntime.wrap(function _callee18$(_context21) {
-                while (1) {
-                  switch (_context21.prev = _context21.next) {
-                    case 0:
-                      _context21.next = 2;
-                      return this.board.getCurrentBoardCanvas(options);
-
-                    case 2:
-                      canvas = _context21.sent;
-
-                      if (!(canvas == null)) {
-                        _context21.next = 6;
-                        break;
-                      }
-
-                      this.placingService.showSnack("You can't export an empty board.");
-                      return _context21.abrupt("return");
-
-                    case 6:
-                      Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["downloadPng"])(this.ui.name + ".png", canvas.toDataURL('image/png', 1));
-
-                    case 7:
-                    case "end":
-                      return _context21.stop();
-                  }
-                }
-              }, _callee18, this);
-            }));
-          }
-        }, {
-          key: "exportSvg",
-          value: function exportSvg(options) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
-              var svg;
+              var canvas;
               return regeneratorRuntime.wrap(function _callee19$(_context22) {
                 while (1) {
                   switch (_context22.prev = _context22.next) {
                     case 0:
                       _context22.next = 2;
-                      return this.board.getCurrentBoardSvg(options);
+                      return this.board.getCurrentBoardCanvas(options);
 
                     case 2:
-                      svg = _context22.sent;
+                      canvas = _context22.sent;
 
-                      if (!(svg == null)) {
+                      if (!(canvas == null)) {
                         _context22.next = 6;
                         break;
                       }
@@ -6935,7 +6975,7 @@
                       return _context22.abrupt("return");
 
                     case 6:
-                      Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["downloadSvg"])(this.ui.name + ".svg", svg);
+                      Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["downloadPng"])(this.ui.name + ".png", canvas.toDataURL('image/png', 1));
 
                     case 7:
                     case "end":
@@ -6943,6 +6983,40 @@
                   }
                 }
               }, _callee19, this);
+            }));
+          }
+        }, {
+          key: "exportSvg",
+          value: function exportSvg(options) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
+              var svg;
+              return regeneratorRuntime.wrap(function _callee20$(_context23) {
+                while (1) {
+                  switch (_context23.prev = _context23.next) {
+                    case 0:
+                      _context23.next = 2;
+                      return this.board.getCurrentBoardSvg(options);
+
+                    case 2:
+                      svg = _context23.sent;
+
+                      if (!(svg == null)) {
+                        _context23.next = 6;
+                        break;
+                      }
+
+                      this.placingService.showSnack("You can't export an empty board.");
+                      return _context23.abrupt("return");
+
+                    case 6:
+                      Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["downloadSvg"])(this.ui.name + ".svg", svg);
+
+                    case 7:
+                    case "end":
+                      return _context23.stop();
+                  }
+                }
+              }, _callee20, this);
             }));
           }
         }, {
@@ -7019,11 +7093,11 @@
         }, {
           key: "changeSystemName",
           value: function changeSystemName(name) {
-            var _this27 = this;
+            var _this28 = this;
 
             if (this.ui == null) {
               setTimeout(function () {
-                _this27.changeSystemName(name);
+                _this28.changeSystemName(name);
               }, 50);
             } else {
               this.ui.changeName(name);
@@ -8045,7 +8119,7 @@
 
       var BoardComponent = /*#__PURE__*/function () {
         function BoardComponent(placingService, selectionService, snackBar, savingService, changeRef, changesService, exportService, viewingService, renderer) {
-          var _this28 = this;
+          var _this29 = this;
 
           _classCallCheck(this, BoardComponent);
 
@@ -8104,56 +8178,56 @@
 
           this.handleMousemove = function (e) {
             if (e instanceof MouseEvent) {
-              _this28.boardMoved = true;
-              _this28.showContextMenu = false;
-              _this28.showComponentContextMenu = false;
-              _this28.posX += e.movementX;
-              _this28.posY += e.movementY;
+              _this29.boardMoved = true;
+              _this29.showContextMenu = false;
+              _this29.showComponentContextMenu = false;
+              _this29.posX += e.movementX;
+              _this29.posY += e.movementY;
             } else if (e instanceof TouchEvent) {
-              _this28.boardMoved = true;
-              _this28.showContextMenu = false;
-              _this28.showComponentContextMenu = false;
-              _this28.posX += e.touches[0].clientX - _this28.lastTouchMoveX;
-              _this28.posY += e.touches[0].clientY - _this28.lastTouchMoveY;
-              _this28.lastTouchMoveX = e.touches[0].clientX;
-              _this28.lastTouchMoveY = e.touches[0].clientY;
+              _this29.boardMoved = true;
+              _this29.showContextMenu = false;
+              _this29.showComponentContextMenu = false;
+              _this29.posX += e.touches[0].clientX - _this29.lastTouchMoveX;
+              _this29.posY += e.touches[0].clientY - _this29.lastTouchMoveY;
+              _this29.lastTouchMoveX = e.touches[0].clientX;
+              _this29.lastTouchMoveY = e.touches[0].clientY;
             }
 
-            _this28.updateBoardTransform();
+            _this29.updateBoardTransform();
           };
 
           this.handleMouseup = function (e) {
             if (e instanceof MouseEvent) {
-              if (e.button === 2 && !_this28.boardMoved && !_this28.isReadOnly) {
-                _this28.showContextMenu = true;
-                _this28.showComponentContextMenu = false;
-                _this28.contextMenuX = e.offsetX;
-                _this28.contextMenuY = e.offsetY;
+              if (e.button === 2 && !_this29.boardMoved && !_this29.isReadOnly) {
+                _this29.showContextMenu = true;
+                _this29.showComponentContextMenu = false;
+                _this29.contextMenuX = e.offsetX;
+                _this29.contextMenuY = e.offsetY;
               }
 
-              _this28.boardMoved = false;
+              _this29.boardMoved = false;
 
-              _this28.board.classList.remove("moving");
+              _this29.board.classList.remove("moving");
 
-              _this28.board.removeEventListener("mousemove", _this28.handleMousemove);
+              _this29.board.removeEventListener("mousemove", _this29.handleMousemove);
 
-              window.removeEventListener("mouseup", _this28.handleMouseup);
+              window.removeEventListener("mouseup", _this29.handleMouseup);
             } else if (e instanceof TouchEvent) {
-              _this28.boardMoved = false;
+              _this29.boardMoved = false;
 
-              _this28.board.classList.remove("moving");
+              _this29.board.classList.remove("moving");
 
-              _this28.board.removeEventListener("touchmove", _this28.handleMousemove);
+              _this29.board.removeEventListener("touchmove", _this29.handleMousemove);
 
-              window.removeEventListener("touchend", _this28.handleMouseup);
+              window.removeEventListener("touchend", _this29.handleMouseup);
             }
           };
 
           this.handleClick = function () {
-            if (_this28.placingService.isConnecting) {
-              _this28.placingService.stopConnecting();
+            if (_this29.placingService.isConnecting) {
+              _this29.placingService.stopConnecting();
 
-              _this28.board.onmousemove = null;
+              _this29.board.onmousemove = null;
               document.getElementsByClassName("svg-canvas")[0].innerHTML = "";
             }
           };
@@ -8168,14 +8242,14 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this29 = this;
+            var _this30 = this;
 
             this.board = document.getElementById("board");
             this.board.style.width = "".concat(this.placingService.boardWidth, "px");
             this.board.style.height = "".concat(this.placingService.boardHeight, "px");
 
             this.board.onwheel = function (e) {
-              _this29.scroll(e);
+              _this30.scroll(e);
             };
 
             this.updateBoardTransform();
@@ -8186,7 +8260,7 @@
             if (!this.isReadOnly) {
               // These events will not be used in readonly board
               this.selectionService.onStopSelecting.subscribe(function (e) {
-                var _iterator23 = _createForOfIteratorHelper(_this29.allComponents),
+                var _iterator23 = _createForOfIteratorHelper(_this30.allComponents),
                     _step23;
 
                 try {
@@ -8194,7 +8268,7 @@
                     var component = _step23.value;
                     var logicComponent = component.getLogicComponent();
 
-                    var size = _this29.exportService.getComponentSize(logicComponent);
+                    var size = _this30.exportService.getComponentSize(logicComponent);
 
                     var pos = {
                       top: logicComponent.options.Y,
@@ -8203,7 +8277,7 @@
 
                     if (pos.top >= e.top && pos.left >= e.left && pos.left + size.width < e.left + e.width && pos.top + size.height < e.top + e.height) {
                       setTimeout(function () {
-                        _this29.selectionService.addSelection(component, true);
+                        _this30.selectionService.addSelection(component, true);
                       }, 20);
                     }
                   };
@@ -8218,58 +8292,58 @@
                 }
               });
               this.board.addEventListener("mouseup", function (e) {
-                if (_this29.placingService.isCreating) {
-                  var component = _this29.placingService.createComponent(_this29.placingService.creatingItem, e.offsetX - 20, e.offsetY - 20, _this29.placingService.creatingItemOptions);
+                if (_this30.placingService.isCreating) {
+                  var component = _this30.placingService.createComponent(_this30.placingService.creatingItem, e.offsetX - 20, e.offsetY - 20, _this30.placingService.creatingItemOptions);
 
-                  _this29.pushComponent(component);
+                  _this30.pushComponent(component);
 
-                  _this29.placingService.stopCreating();
+                  _this30.placingService.stopCreating();
 
-                  _this29.componentChanged();
+                  _this30.componentChanged();
                 }
               });
               window.addEventListener("touchstart", function (e) {
-                _this29.lastTouch = e.touches[0];
+                _this30.lastTouch = e.touches[0];
               });
               window.addEventListener("touchmove", function (e) {
-                _this29.lastTouch = e.touches[0];
+                _this30.lastTouch = e.touches[0];
               });
               window.addEventListener("touchend", function (e) {
-                if (_this29.placingService.isCreating) {
-                  var posX = _this29.posX - _this29.placingService.boardWidth * (_this29.placingService.boardScale - 1) / 2;
-                  var posY = _this29.posY - _this29.placingService.boardHeight * (_this29.placingService.boardScale - 1) / 2;
-                  var x = Math.max(Math.min((_this29.lastTouch.pageX - posX) / _this29.placingService.boardScale - 20, _this29.placingService.boardWidth), 0);
-                  var y = Math.max(Math.min((_this29.lastTouch.pageY - posY) / _this29.placingService.boardScale - 80 / _this29.placingService.boardScale, _this29.placingService.boardWidth), 0);
+                if (_this30.placingService.isCreating) {
+                  var posX = _this30.posX - _this30.placingService.boardWidth * (_this30.placingService.boardScale - 1) / 2;
+                  var posY = _this30.posY - _this30.placingService.boardHeight * (_this30.placingService.boardScale - 1) / 2;
+                  var x = Math.max(Math.min((_this30.lastTouch.pageX - posX) / _this30.placingService.boardScale - 20, _this30.placingService.boardWidth), 0);
+                  var y = Math.max(Math.min((_this30.lastTouch.pageY - posY) / _this30.placingService.boardScale - 80 / _this30.placingService.boardScale, _this30.placingService.boardWidth), 0);
 
-                  var component = _this29.placingService.createComponent(_this29.placingService.creatingItem, x, y, _this29.placingService.creatingItemOptions);
+                  var component = _this30.placingService.createComponent(_this30.placingService.creatingItem, x, y, _this30.placingService.creatingItemOptions);
 
-                  _this29.pushComponent(component);
+                  _this30.pushComponent(component);
 
-                  _this29.placingService.stopCreating();
+                  _this30.placingService.stopCreating();
 
-                  _this29.componentChanged();
+                  _this30.componentChanged();
                 }
 
                 return true;
               });
               this.placingService.componentChanged.subscribe(function () {
                 // Some component just got changed, change will be added for undo
-                _this29.componentChanged();
+                _this30.componentChanged();
               });
               this.placingService.pushComponent.subscribe(function (component) {
                 // A component was created somewhere else and needs to be added to the state of the board
-                _this29.pushComponent(component);
+                _this30.pushComponent(component);
               });
               this.placingService.showComponentContextMenu.subscribe(function (e) {
                 // Display a context menu on component
-                _this29.showComponentContextMenu = true;
-                _this29.showContextMenu = false;
-                _this29.contextMenuX = e.x;
-                _this29.contextMenuY = e.y;
+                _this30.showComponentContextMenu = true;
+                _this30.showContextMenu = false;
+                _this30.contextMenuX = e.x;
+                _this30.contextMenuY = e.y;
               });
               setInterval(function () {
-                if (_this29.allLogicComponents.length != 0) {
-                  _this29.save();
+                if (_this30.allLogicComponents.length != 0) {
+                  _this30.save();
                 }
               }, this.AUTOSAVE_INTERVAL * 1000);
             }
@@ -8322,7 +8396,7 @@
         }, {
           key: "pasteItem",
           value: function pasteItem() {
-            var _this30 = this;
+            var _this31 = this;
 
             var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
             var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
@@ -8336,10 +8410,10 @@
               var _loop7 = function _loop7() {
                 var component = _step25.value;
 
-                _this30.pushComponent(component);
+                _this31.pushComponent(component);
 
                 component.onViewInit.push(function () {
-                  _this30.selectionService.addSelection(component, true);
+                  _this31.selectionService.addSelection(component, true);
                 });
               };
 
@@ -8385,14 +8459,14 @@
         }, {
           key: "ngAfterViewInit",
           value: function ngAfterViewInit() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
-              var _this31 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
+              var _this32 = this;
 
               var savedBoardsJson, savedBoards, _iterator27, _step27, board, convertedBoard, _iterator28, _step28, savedBoard;
 
-              return regeneratorRuntime.wrap(function _callee20$(_context23) {
+              return regeneratorRuntime.wrap(function _callee21$(_context24) {
                 while (1) {
-                  switch (_context23.prev = _context23.next) {
+                  switch (_context24.prev = _context24.next) {
                     case 0:
                       this.placingService.connectionRef = this.conn;
                       this.placingService.snackBar = this.snackBar;
@@ -8404,7 +8478,7 @@
                       }
 
                       if (this.isReadOnly) {
-                        _context23.next = 18;
+                        _context24.next = 18;
                         break;
                       }
 
@@ -8412,21 +8486,21 @@
                       savedBoardsJson = this.savingService.getSavedBoardsJson();
 
                       if (!(savedBoardsJson == null)) {
-                        _context23.next = 7;
+                        _context24.next = 7;
                         break;
                       }
 
-                      return _context23.abrupt("return");
+                      return _context24.abrupt("return");
 
                     case 7:
                       savedBoards = JSON.parse(savedBoardsJson);
 
                       if (!(savedBoards.length == 0)) {
-                        _context23.next = 10;
+                        _context24.next = 10;
                         break;
                       }
 
-                      return _context23.abrupt("return");
+                      return _context24.abrupt("return");
 
                     case 10:
                       _iterator27 = _createForOfIteratorHelper(savedBoards);
@@ -8459,9 +8533,9 @@
 
                       this.showSavedBoardsPopup = true;
                       setTimeout(function () {
-                        _this31.showSavedBoardsPopup = false;
+                        _this32.showSavedBoardsPopup = false;
                       }, 6500);
-                      _context23.next = 19;
+                      _context24.next = 19;
                       break;
 
                     case 18:
@@ -8469,22 +8543,22 @@
 
                     case 19:
                     case "end":
-                      return _context23.stop();
+                      return _context24.stop();
                   }
                 }
-              }, _callee20, this);
+              }, _callee21, this);
             }));
           }
         }, {
           key: "displaySavedBoard",
           value: function displaySavedBoard(savedBoard) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
-              var _this32 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee22() {
+              var _this33 = this;
 
               var divContainer, expOptions, canvas, title, existing;
-              return regeneratorRuntime.wrap(function _callee21$(_context24) {
+              return regeneratorRuntime.wrap(function _callee22$(_context25) {
                 while (1) {
-                  switch (_context24.prev = _context24.next) {
+                  switch (_context25.prev = _context25.next) {
                     case 0:
                       divContainer = this.renderer.createElement('div');
                       divContainer.className = "saved-board";
@@ -8492,28 +8566,28 @@
 
                       divContainer.onclick = function () {
                         // Display options
-                        if (_this32.selectedSavedBoard) {
-                          document.getElementById(_this32.selectedSavedBoard.save.id).classList.remove("selected");
+                        if (_this33.selectedSavedBoard) {
+                          document.getElementById(_this33.selectedSavedBoard.save.id).classList.remove("selected");
                         }
 
-                        _this32.selectedSavedBoard = savedBoard;
-                        document.getElementById(_this32.selectedSavedBoard.save.id).classList.add("selected");
+                        _this33.selectedSavedBoard = savedBoard;
+                        document.getElementById(_this33.selectedSavedBoard.save.id).classList.add("selected");
                       };
 
                       divContainer.ondblclick = function () {
                         // Load board
-                        _this32.closeSavedBoards();
+                        _this33.closeSavedBoards();
 
-                        _this32.loadFromSave(savedBoard.save);
+                        _this33.loadFromSave(savedBoard.save);
                       };
 
                       expOptions = new _export_service__WEBPACK_IMPORTED_MODULE_3__["ExportPngOptions"]();
                       expOptions.lightMode = !this.viewingService.isDarkMode();
-                      _context24.next = 9;
+                      _context25.next = 9;
                       return this.exportService.getCanvas(savedBoard.board, expOptions);
 
                     case 9:
-                      canvas = _context24.sent;
+                      canvas = _context25.sent;
                       canvas.style.width = "100%";
                       canvas.style.marginBottom = "-5px";
                       title = this.renderer.createElement("span");
@@ -8527,21 +8601,21 @@
 
                     case 20:
                     case "end":
-                      return _context24.stop();
+                      return _context25.stop();
                   }
                 }
-              }, _callee21, this);
+              }, _callee22, this);
             }));
           }
         }, {
           key: "openSavedBoards",
           value: function openSavedBoards() {
-            var _this33 = this;
+            var _this34 = this;
 
             this.showSavedBoards = true;
             this.showSavedBoardsPopup = false;
             var savedBoard = this.savedBoards.find(function (board) {
-              return board.save.id == _this33.currentBoardId;
+              return board.save.id == _this34.currentBoardId;
             });
             if (savedBoard) this.displaySavedBoard(savedBoard);
           }
@@ -8553,11 +8627,11 @@
         }, {
           key: "deleteSelectedSavedBoard",
           value: function deleteSelectedSavedBoard() {
-            var _this34 = this;
+            var _this35 = this;
 
             this.savedBoardsRef.nativeElement.removeChild(document.getElementById(this.selectedSavedBoard.save.id));
             this.savedBoards.splice(this.savedBoards.findIndex(function (board) {
-              return board === _this34.selectedSavedBoard;
+              return board === _this35.selectedSavedBoard;
             }), 1);
             this.selectedSavedBoard = null;
             this.savingService.saveBoards(this.savedBoards.map(function (board) {
@@ -8575,35 +8649,13 @@
         }, {
           key: "getCurrentBoardCanvas",
           value: function getCurrentBoardCanvas(options) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee22() {
-              return regeneratorRuntime.wrap(function _callee22$(_context25) {
-                while (1) {
-                  switch (_context25.prev = _context25.next) {
-                    case 0:
-                      _context25.next = 2;
-                      return this.exportService.getCanvas(this.allLogicComponents, options);
-
-                    case 2:
-                      return _context25.abrupt("return", _context25.sent);
-
-                    case 3:
-                    case "end":
-                      return _context25.stop();
-                  }
-                }
-              }, _callee22, this);
-            }));
-          }
-        }, {
-          key: "getCurrentBoardSvg",
-          value: function getCurrentBoardSvg(options) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee23() {
               return regeneratorRuntime.wrap(function _callee23$(_context26) {
                 while (1) {
                   switch (_context26.prev = _context26.next) {
                     case 0:
                       _context26.next = 2;
-                      return this.exportService.getSvg(this.allLogicComponents, options);
+                      return this.exportService.getCanvas(this.allLogicComponents, options);
 
                     case 2:
                       return _context26.abrupt("return", _context26.sent);
@@ -8617,9 +8669,31 @@
             }));
           }
         }, {
+          key: "getCurrentBoardSvg",
+          value: function getCurrentBoardSvg(options) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee24() {
+              return regeneratorRuntime.wrap(function _callee24$(_context27) {
+                while (1) {
+                  switch (_context27.prev = _context27.next) {
+                    case 0:
+                      _context27.next = 2;
+                      return this.exportService.getSvg(this.allLogicComponents, options);
+
+                    case 2:
+                      return _context27.abrupt("return", _context27.sent);
+
+                    case 3:
+                    case "end":
+                      return _context27.stop();
+                  }
+                }
+              }, _callee24, this);
+            }));
+          }
+        }, {
           key: "loadLatestBoard",
           value: function loadLatestBoard() {
-            var _this35 = this;
+            var _this36 = this;
 
             var latestBoardJson = this.savingService.getLatestBoardJson();
 
@@ -8633,7 +8707,7 @@
             }
 
             setTimeout(function () {
-              _this35.beforeState = _this35.getCurrentBoardJson();
+              _this36.beforeState = _this36.getCurrentBoardJson();
             }, 1000);
           }
         }, {
@@ -8755,40 +8829,40 @@
         }, {
           key: "startAllClients",
           value: function startAllClients() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee24() {
-              var _this36 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee25() {
+              var _this37 = this;
 
               var _iterator30, _step30, component;
 
-              return regeneratorRuntime.wrap(function _callee24$(_context27) {
+              return regeneratorRuntime.wrap(function _callee25$(_context28) {
                 while (1) {
-                  switch (_context27.prev = _context27.next) {
+                  switch (_context28.prev = _context28.next) {
                     case 0:
                       if (!(this.isAllClientsSendingData || !this.canToggleClientsSendingData)) {
-                        _context27.next = 2;
+                        _context28.next = 2;
                         break;
                       }
 
-                      return _context27.abrupt("return");
+                      return _context28.abrupt("return");
 
                     case 2:
                       this.canToggleClientsSendingData = false;
                       this.isAllClientsSendingData = true;
                       _iterator30 = _createForOfIteratorHelper(this.allComponents);
-                      _context27.prev = 5;
+                      _context28.prev = 5;
 
                       _iterator30.s();
 
                     case 7:
                       if ((_step30 = _iterator30.n()).done) {
-                        _context27.next = 22;
+                        _context28.next = 22;
                         break;
                       }
 
                       component = _step30.value;
 
                       if (!(component instanceof _components_client_client_component__WEBPACK_IMPORTED_MODULE_8__["ClientComponent"])) {
-                        _context27.next = 16;
+                        _context28.next = 16;
                         break;
                       }
 
@@ -8797,61 +8871,61 @@
                       }
 
                       component.toggleAutomaticSend();
-                      _context27.next = 14;
+                      _context28.next = 14;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_2__["sleep"])(300);
 
                     case 14:
-                      _context27.next = 20;
+                      _context28.next = 20;
                       break;
 
                     case 16:
                       if (!(component instanceof _components_clientcluster_clientcluster_component__WEBPACK_IMPORTED_MODULE_9__["ClientclusterComponent"])) {
-                        _context27.next = 20;
+                        _context28.next = 20;
                         break;
                       }
 
                       component.LogicClientCluster.startSendingData();
-                      _context27.next = 20;
+                      _context28.next = 20;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_2__["sleep"])(300);
 
                     case 20:
-                      _context27.next = 7;
+                      _context28.next = 7;
                       break;
 
                     case 22:
-                      _context27.next = 27;
+                      _context28.next = 27;
                       break;
 
                     case 24:
-                      _context27.prev = 24;
-                      _context27.t0 = _context27["catch"](5);
+                      _context28.prev = 24;
+                      _context28.t0 = _context28["catch"](5);
 
-                      _iterator30.e(_context27.t0);
+                      _iterator30.e(_context28.t0);
 
                     case 27:
-                      _context27.prev = 27;
+                      _context28.prev = 27;
 
                       _iterator30.f();
 
-                      return _context27.finish(27);
+                      return _context28.finish(27);
 
                     case 30:
                       setTimeout(function () {
-                        _this36.canToggleClientsSendingData = true;
+                        _this37.canToggleClientsSendingData = true;
                       }, 400);
 
                     case 31:
                     case "end":
-                      return _context27.stop();
+                      return _context28.stop();
                   }
                 }
-              }, _callee24, this, [[5, 24, 27, 30]]);
+              }, _callee25, this, [[5, 24, 27, 30]]);
             }));
           }
         }, {
           key: "stopAllClients",
           value: function stopAllClients() {
-            var _this37 = this;
+            var _this38 = this;
 
             if (!this.isAllClientsSendingData || !this.canToggleClientsSendingData) return;
             this.canToggleClientsSendingData = false;
@@ -8881,7 +8955,7 @@
             }
 
             setTimeout(function () {
-              _this37.canToggleClientsSendingData = true;
+              _this38.canToggleClientsSendingData = true;
             }, 400);
           }
         }, {
@@ -8898,29 +8972,29 @@
         }, {
           key: "undo",
           value: function undo() {
-            var _this38 = this;
+            var _this39 = this;
 
             var undoState = this.changesService.getUndo(this.getCurrentBoardJson());
             if (undoState) this.loadFromJson(undoState, false);
-            setTimeout(function () {
-              _this38.beforeState = _this38.getCurrentBoardJson();
-            }, 400);
-          }
-        }, {
-          key: "redo",
-          value: function redo() {
-            var _this39 = this;
-
-            var redoState = this.changesService.getRedo();
-            if (redoState) this.loadFromJson(redoState, false);
             setTimeout(function () {
               _this39.beforeState = _this39.getCurrentBoardJson();
             }, 400);
           }
         }, {
+          key: "redo",
+          value: function redo() {
+            var _this40 = this;
+
+            var redoState = this.changesService.getRedo();
+            if (redoState) this.loadFromJson(redoState, false);
+            setTimeout(function () {
+              _this40.beforeState = _this40.getCurrentBoardJson();
+            }, 400);
+          }
+        }, {
           key: "delete",
           value: function _delete() {
-            var _this40 = this;
+            var _this41 = this;
 
             var components = this.selectionService.currentSelections;
 
@@ -8932,11 +9006,11 @@
                 var component = _step32.value;
                 var logicComponent = component.getLogicComponent();
 
-                _this40.allComponents.splice(_this40.allComponents.findIndex(function (comp) {
+                _this41.allComponents.splice(_this41.allComponents.findIndex(function (comp) {
                   return comp === component;
                 }), 1);
 
-                _this40.allLogicComponents.splice(_this40.allLogicComponents.findIndex(function (comp) {
+                _this41.allLogicComponents.splice(_this41.allLogicComponents.findIndex(function (comp) {
                   return comp.originID == logicComponent.originID;
                 }), 1);
               };
@@ -8965,7 +9039,7 @@
         }, {
           key: "save",
           value: function save() {
-            var _this41 = this;
+            var _this42 = this;
 
             var showIcon = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
             if (this.isReadOnly) return;
@@ -8975,14 +9049,14 @@
             if (showIcon) {
               this.isAutosaving = true;
               setTimeout(function () {
-                _this41.isAutosaving = false;
+                _this42.isAutosaving = false;
               }, 1000);
             }
           }
         }, {
           key: "loadFromJson",
           value: function loadFromJson(json) {
-            var _this42 = this;
+            var _this43 = this;
 
             var showInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
@@ -8993,7 +9067,7 @@
               console.log(e);
               if (showInfo) this.placingService.showSnack("This file could not be loaded because it is corrupted or not supported.");
               setTimeout(function () {
-                _this42.isLoading = false;
+                _this43.isLoading = false;
               }, 100);
               return;
             }
@@ -9005,7 +9079,7 @@
         }, {
           key: "loadFromSave",
           value: function loadFromSave(save) {
-            var _this43 = this;
+            var _this44 = this;
 
             var showInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
             this.clearBoard();
@@ -9033,13 +9107,13 @@
               var _loop9 = function _loop9() {
                 var logicComponent = _step33.value;
 
-                var type = _this43.getComponentTypeFromName(logicComponent.type);
+                var type = _this44.getComponentTypeFromName(logicComponent.type);
 
                 if (type == null || logicComponent.options == null) {
                   wasError = true;
 
                   if (index == components.length - 1) {
-                    _this43.connectLoadedComponents(connectionTable, outputPortsTable);
+                    _this44.connectLoadedComponents(connectionTable, outputPortsTable);
                   }
 
                   index++;
@@ -9049,9 +9123,9 @@
                 var left = logicComponent.options.X;
                 var top = logicComponent.options.Y;
 
-                var component = _this43.placingService.createComponent(type, left, top, logicComponent.options, _this43.isReadOnly);
+                var component = _this44.placingService.createComponent(type, left, top, logicComponent.options, _this44.isReadOnly);
 
-                _this43.pushComponent(component);
+                _this44.pushComponent(component);
 
                 var currentComponentIndex = index;
                 component.onViewInit.push(function () {
@@ -9076,7 +9150,7 @@
 
                   if (currentComponentIndex == components.length - 1) {
                     setTimeout(function () {
-                      _this43.connectLoadedComponents(connectionTable, outputPortsTable);
+                      _this44.connectLoadedComponents(connectionTable, outputPortsTable);
                     }, 150);
                   }
                 });
@@ -9099,11 +9173,11 @@
         }, {
           key: "saveCurrentBoardToAllBoards",
           value: function saveCurrentBoardToAllBoards() {
-            var _this44 = this;
+            var _this45 = this;
 
             var boardSave = this.savingService.getBoardSave(this.allLogicComponents, this.savingService.systemName, this.currentBoardId);
             var currentBoardIndex = this.savedBoards.findIndex(function (board) {
-              return board.save.id == _this44.currentBoardId;
+              return board.save.id == _this45.currentBoardId;
             });
             var savedBoard = new SavedBoard(boardSave.name, this.allLogicComponents, boardSave);
             if (currentBoardIndex != -1) this.savedBoards.splice(currentBoardIndex, 1);else this.displaySavedBoard(savedBoard);
@@ -9115,7 +9189,7 @@
         }, {
           key: "connectLoadedComponents",
           value: function connectLoadedComponents(connectionTable, outputPortsTable) {
-            var _this45 = this;
+            var _this46 = this;
 
             var _iterator34 = _createForOfIteratorHelper(connectionTable),
                 _step34;
@@ -9126,7 +9200,7 @@
                 connection.to.filter(function (con) {
                   return con.isFromOutput == null || !con.isFromOutput;
                 }).forEach(function (con) {
-                  _this45.placingService.connectPorts(outputPortsTable[con.to], connection.port, _this45.isReadOnly, con.lineBreaks, con.title);
+                  _this46.placingService.connectPorts(outputPortsTable[con.to], connection.port, _this46.isReadOnly, con.lineBreaks, con.title);
                 });
               };
 
@@ -9140,11 +9214,11 @@
             }
 
             setTimeout(function () {
-              _this45.isLoading = false;
+              _this46.isLoading = false;
 
-              _this45.save();
+              _this46.save();
 
-              _this45.updateComponents();
+              _this46.updateComponents();
             }, 100);
           }
         }, {
@@ -9402,17 +9476,17 @@
         var _super17 = _createSuper(ClientCluster);
 
         function ClientCluster() {
-          var _this46;
+          var _this47;
 
           _classCallCheck(this, ClientCluster);
 
-          _this46 = _super17.call(this);
-          _this46.streamingConnections = [];
-          _this46.color = "#2ebf91";
-          _this46.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_7__["Port"](_assertThisInitialized(_this46), true, true);
-          _this46.options = new ClientClusterOptions();
-          _this46.options.title = "Client Cluster";
-          return _this46;
+          _this47 = _super17.call(this);
+          _this47.streamingConnections = [];
+          _this47.color = "#2ebf91";
+          _this47.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_7__["Port"](_assertThisInitialized(_this47), true, true);
+          _this47.options = new ClientClusterOptions();
+          _this47.options.title = "Client Cluster";
+          return _this47;
         }
 
         _createClass(ClientCluster, [{
@@ -9465,43 +9539,43 @@
         }, {
           key: "sendNewRequest",
           value: function sendNewRequest() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee25() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee26() {
               var connection, endpoints, targetEndpoint, request, epRef, streamConnection;
-              return regeneratorRuntime.wrap(function _callee25$(_context28) {
+              return regeneratorRuntime.wrap(function _callee26$(_context29) {
                 while (1) {
-                  switch (_context28.prev = _context28.next) {
+                  switch (_context29.prev = _context29.next) {
                     case 0:
-                      _context28.next = 2;
+                      _context29.next = 2;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["sleep"])(1 / Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["getRateFromOutputRate"])(this.options.outputRate) * 1000);
 
                     case 2:
                       if (this.isSendingData) {
-                        _context28.next = 4;
+                        _context29.next = 4;
                         break;
                       }
 
-                      return _context28.abrupt("return");
+                      return _context29.abrupt("return");
 
                     case 4:
                       this.sendNewRequest();
 
                       if (!(this.outputPort.connections.length == 0)) {
-                        _context28.next = 7;
+                        _context29.next = 7;
                         break;
                       }
 
-                      return _context28.abrupt("return");
+                      return _context29.abrupt("return");
 
                     case 7:
                       connection = this.outputPort.connections[Math.floor(Math.random() * this.outputPort.connections.length)];
                       endpoints = connection.getOtherPort(this.outputPort).parent.getAvailableEndpoints();
 
                       if (!(endpoints.length == 0)) {
-                        _context28.next = 11;
+                        _context29.next = 11;
                         break;
                       }
 
-                      return _context28.abrupt("return");
+                      return _context29.abrupt("return");
 
                     case 11:
                       targetEndpoint = endpoints[Math.floor(Math.random() * endpoints.length)];
@@ -9538,32 +9612,32 @@
 
                     case 21:
                     case "end":
-                      return _context28.stop();
+                      return _context29.stop();
                   }
                 }
-              }, _callee25, this);
+              }, _callee26, this);
             }));
           }
         }, {
           key: "sendData",
           value: function sendData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee26() {
-              return regeneratorRuntime.wrap(function _callee26$(_context29) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee27() {
+              return regeneratorRuntime.wrap(function _callee27$(_context30) {
                 while (1) {
-                  switch (_context29.prev = _context29.next) {
+                  switch (_context30.prev = _context30.next) {
                     case 0:
-                      _context29.next = 2;
+                      _context30.next = 2;
                       return this.outputPort.sendData(data, data.origin);
 
                     case 2:
-                      return _context29.abrupt("return", _context29.sent);
+                      return _context30.abrupt("return", _context30.sent);
 
                     case 3:
                     case "end":
-                      return _context29.stop();
+                      return _context30.stop();
                   }
                 }
-              }, _callee26, this);
+              }, _callee27, this);
             }));
           }
         }, {
@@ -9612,41 +9686,41 @@
         }, {
           key: "stream",
           value: function stream(data, connectionId) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee27() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee28() {
               var streamConnection;
-              return regeneratorRuntime.wrap(function _callee27$(_context30) {
+              return regeneratorRuntime.wrap(function _callee28$(_context31) {
                 while (1) {
-                  switch (_context30.prev = _context30.next) {
+                  switch (_context31.prev = _context31.next) {
                     case 0:
                       streamConnection = this.streamingConnections.find(function (con) {
                         return con.connectionId == connectionId;
                       });
 
                       if (!(!this.isSendingData || streamConnection == null || streamConnection.endpoint.grpcMode == _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_3__["gRPCMode"].Unary && streamConnection.endpoint.protocol != _enums_Protocol__WEBPACK_IMPORTED_MODULE_4__["Protocol"].WebSockets)) {
-                        _context30.next = 3;
+                        _context31.next = 3;
                         break;
                       }
 
-                      return _context30.abrupt("return");
+                      return _context31.abrupt("return");
 
                     case 3:
                       data.requestId = connectionId;
                       data.origin = streamConnection.connection;
                       data.header.stream = true;
                       this.sendData(data);
-                      _context30.next = 9;
+                      _context31.next = 9;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["sleep"])(700);
 
                     case 9:
-                      _context30.next = 11;
+                      _context31.next = 11;
                       return this.stream(data, connectionId);
 
                     case 11:
                     case "end":
-                      return _context30.stop();
+                      return _context31.stop();
                   }
                 }
-              }, _callee27, this);
+              }, _callee28, this);
             }));
           }
         }]);
@@ -9660,13 +9734,13 @@
         var _super18 = _createSuper(ClientClusterOptions);
 
         function ClientClusterOptions() {
-          var _this47;
+          var _this48;
 
           _classCallCheck(this, ClientClusterOptions);
 
-          _this47 = _super18.apply(this, arguments);
-          _this47.outputRate = 5;
-          return _this47;
+          _this48 = _super18.apply(this, arguments);
+          _this48.outputRate = 5;
+          return _this48;
         }
 
         return ClientClusterOptions;
@@ -9821,14 +9895,14 @@
         var _super19 = _createSuper(ApiComponent);
 
         function ApiComponent() {
-          var _this48;
+          var _this49;
 
           _classCallCheck(this, ApiComponent);
 
-          _this48 = _super19.apply(this, arguments);
-          _this48.LogicApi = new src_models_API__WEBPACK_IMPORTED_MODULE_0__["API"]();
-          _this48.connectableEndpoints = [];
-          return _this48;
+          _this49 = _super19.apply(this, arguments);
+          _this49.LogicApi = new src_models_API__WEBPACK_IMPORTED_MODULE_0__["API"]();
+          _this49.connectableEndpoints = [];
+          return _this49;
         }
 
         _createClass(ApiComponent, [{
@@ -10151,13 +10225,13 @@
         var _super20 = _createSuper(CacheComponent);
 
         function CacheComponent() {
-          var _this49;
+          var _this50;
 
           _classCallCheck(this, CacheComponent);
 
-          _this49 = _super20.apply(this, arguments);
-          _this49.LogicCache = new src_models_Cache__WEBPACK_IMPORTED_MODULE_0__["Cache"]();
-          return _this49;
+          _this50 = _super20.apply(this, arguments);
+          _this50.LogicCache = new src_models_Cache__WEBPACK_IMPORTED_MODULE_0__["Cache"]();
+          return _this50;
         }
 
         _createClass(CacheComponent, [{
@@ -10395,7 +10469,7 @@
 
       var TitleComponent = /*#__PURE__*/function () {
         function TitleComponent(viewingService, exportService, cdRef) {
-          var _this50 = this;
+          var _this51 = this;
 
           _classCallCheck(this, TitleComponent);
 
@@ -10403,7 +10477,7 @@
           this.exportService = exportService;
           this.cdRef = cdRef;
           viewingService.ViewUpdated.subscribe(function () {
-            _this50.cdRef.detectChanges();
+            _this51.cdRef.detectChanges();
           });
         }
 
@@ -10826,7 +10900,7 @@
 
       var ConnectionComponent = /*#__PURE__*/function () {
         function ConnectionComponent(cdRef, selectionService, viewingService) {
-          var _this51 = this;
+          var _this52 = this;
 
           _classCallCheck(this, ConnectionComponent);
 
@@ -10844,9 +10918,9 @@
           this.titlePopupY = 0;
 
           this.destroySelf = function () {
-            _this51.LogicConnection.destroy();
+            _this52.LogicConnection.destroy();
 
-            _this51.destroyComponent();
+            _this52.destroyComponent();
           };
 
           this.destroyComponent = function () {};
@@ -10857,34 +10931,34 @@
         _createClass(ConnectionComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this52 = this;
+            var _this53 = this;
 
             this.cdRef.detectChanges();
             this.portComponent1.LogicPort.onRemoveConnection(function (conn) {
-              if (conn === _this52.LogicConnection) {
-                _this52.destroyComponent();
+              if (conn === _this53.LogicConnection) {
+                _this53.destroyComponent();
 
-                _this52.portComponent1.removeConnection(_this52);
+                _this53.portComponent1.removeConnection(_this53);
               }
             });
             this.portComponent2.LogicPort.onRemoveConnection(function (conn) {
-              if (conn === _this52.LogicConnection) {
-                _this52.destroyComponent();
+              if (conn === _this53.LogicConnection) {
+                _this53.destroyComponent();
 
-                _this52.portComponent2.removeConnection(_this52);
+                _this53.portComponent2.removeConnection(_this53);
               }
             });
             this.LogicConnection.onSendData(function (port) {
               var dataSvg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
               dataSvg.style.display = "none";
 
-              _this52.svg.nativeElement.appendChild(dataSvg);
+              _this53.svg.nativeElement.appendChild(dataSvg);
 
               var anim = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
-              var delay = Math.max(_this52.mainPath.nativeElement.getTotalLength(), 230);
+              var delay = Math.max(_this53.mainPath.nativeElement.getTotalLength(), 230);
 
-              if (_this52.viewingService.isResponsesHidden() && port !== _this52.portComponent1.LogicPort) {
-                _this52.LogicConnection.getSendDataDelay = function () {
+              if (_this53.viewingService.isResponsesHidden() && port !== _this53.portComponent1.LogicPort) {
+                _this53.LogicConnection.getSendDataDelay = function () {
                   return delay;
                 };
 
@@ -10897,11 +10971,11 @@
               anim.setAttribute("rotate", "auto");
               anim.setAttribute("calcMode", "linear");
               anim.setAttribute("rotate", "auto");
-              anim.setAttribute("path", _this52.line);
+              anim.setAttribute("path", _this53.line);
               dataSvg.setAttribute("r", "5");
               dataSvg.setAttribute("fill", "#31B78D");
 
-              if (port !== _this52.portComponent1.LogicPort) {
+              if (port !== _this53.portComponent1.LogicPort) {
                 anim.setAttribute("keyPoints", "1;0");
                 anim.setAttribute("keyTimes", "0;1");
               }
@@ -10915,14 +10989,14 @@
                 dataSvg.remove();
               }, delay);
 
-              _this52.LogicConnection.getSendDataDelay = function () {
+              _this53.LogicConnection.getSendDataDelay = function () {
                 return delay;
               };
             });
             this.selectionService.onDeleteLineBreak.subscribe(function (e) {
-              _this52.cdRef.markForCheck();
+              _this53.cdRef.markForCheck();
 
-              _this52.cdRef.detectChanges();
+              _this53.cdRef.detectChanges();
 
               console.log("changes");
             });
@@ -10976,7 +11050,7 @@
         }, {
           key: "moveLine",
           value: function moveLine(line, event) {
-            var _this53 = this;
+            var _this54 = this;
 
             if (this.selectionService.currentConnectionSelections.length === 0) this.selectionService.setLineBreakSelection(line, this.LogicConnection.lineBreaks);
             var index = this.LogicConnection.lineBreaks.findIndex(function (br) {
@@ -10995,15 +11069,15 @@
               this.linePrevY = event.clientY;
 
               board.onmousemove = function (e) {
-                _this53.lineCurrX = _this53.lineCurrX - (_this53.linePrevX - e.clientX) / _this53.portComponent1.placingService.boardScale;
-                _this53.lineCurrY = _this53.lineCurrY - (_this53.linePrevY - e.clientY) / _this53.portComponent1.placingService.boardScale;
+                _this54.lineCurrX = _this54.lineCurrX - (_this54.linePrevX - e.clientX) / _this54.portComponent1.placingService.boardScale;
+                _this54.lineCurrY = _this54.lineCurrY - (_this54.linePrevY - e.clientY) / _this54.portComponent1.placingService.boardScale;
                 var moveX = true;
                 var moveY = true;
                 var SNAP_ANGLE = 10;
-                var diffNextX = Math.abs(_this53.lineCurrX - next.x);
-                var diffNextY = Math.abs(_this53.lineCurrY - next.y);
-                var diffPrevX = Math.abs(_this53.lineCurrX - prev.x);
-                var diffPrevY = Math.abs(_this53.lineCurrY - prev.y);
+                var diffNextX = Math.abs(_this54.lineCurrX - next.x);
+                var diffNextY = Math.abs(_this54.lineCurrY - next.y);
+                var diffPrevX = Math.abs(_this54.lineCurrX - prev.x);
+                var diffPrevY = Math.abs(_this54.lineCurrY - prev.y);
 
                 if (diffNextY < SNAP_ANGLE) {
                   line.y = next.y;
@@ -11021,10 +11095,10 @@
                   moveX = false;
                 }
 
-                if (moveX) line.x = _this53.lineCurrX;
-                if (moveY) line.y = _this53.lineCurrY;
-                _this53.linePrevX = e.clientX;
-                _this53.linePrevY = e.clientY;
+                if (moveX) line.x = _this54.lineCurrX;
+                if (moveY) line.y = _this54.lineCurrY;
+                _this54.linePrevX = e.clientX;
+                _this54.linePrevY = e.clientY;
               };
 
               window.onmouseup = function () {
@@ -11036,15 +11110,15 @@
               this.linePrevY = event.touches[0].clientY;
 
               board.ontouchmove = function (e) {
-                _this53.lineCurrX = _this53.lineCurrX - (_this53.linePrevX - e.touches[0].clientX) / _this53.portComponent1.placingService.boardScale;
-                _this53.lineCurrY = _this53.lineCurrY - (_this53.linePrevY - e.touches[0].clientY) / _this53.portComponent1.placingService.boardScale;
+                _this54.lineCurrX = _this54.lineCurrX - (_this54.linePrevX - e.touches[0].clientX) / _this54.portComponent1.placingService.boardScale;
+                _this54.lineCurrY = _this54.lineCurrY - (_this54.linePrevY - e.touches[0].clientY) / _this54.portComponent1.placingService.boardScale;
                 var moveX = true;
                 var moveY = true;
                 var SNAP_ANGLE = 10;
-                var diffNextX = Math.abs(_this53.lineCurrX - next.x);
-                var diffNextY = Math.abs(_this53.lineCurrY - next.y);
-                var diffPrevX = Math.abs(_this53.lineCurrX - prev.x);
-                var diffPrevY = Math.abs(_this53.lineCurrY - prev.y);
+                var diffNextX = Math.abs(_this54.lineCurrX - next.x);
+                var diffNextY = Math.abs(_this54.lineCurrY - next.y);
+                var diffPrevX = Math.abs(_this54.lineCurrX - prev.x);
+                var diffPrevY = Math.abs(_this54.lineCurrY - prev.y);
 
                 if (diffNextY < SNAP_ANGLE) {
                   line.y = next.y;
@@ -11062,10 +11136,10 @@
                   moveX = false;
                 }
 
-                if (moveX) line.x = _this53.lineCurrX;
-                if (moveY) line.y = _this53.lineCurrY;
-                _this53.linePrevX = e.touches[0].clientX;
-                _this53.linePrevY = e.touches[0].clientY;
+                if (moveX) line.x = _this54.lineCurrX;
+                if (moveY) line.y = _this54.lineCurrY;
+                _this54.linePrevX = e.touches[0].clientX;
+                _this54.linePrevY = e.touches[0].clientY;
               };
 
               window.ontouchend = function () {
@@ -11214,37 +11288,37 @@
         var _super21 = _createSuper(MessageQueue);
 
         function MessageQueue() {
-          var _this54;
+          var _this55;
 
           _classCallCheck(this, MessageQueue);
 
-          _this54 = _super21.call(this);
-          _this54.connectionTable = {};
-          _this54.roundRobinIndex = 0;
-          _this54.isSendingData = false;
-          _this54.fillColor = false;
-          _this54.color = "#F2994A";
-          _this54.messages = [];
-          _this54.sendDataDispatcher = new _Shared_EventDispatcher__WEBPACK_IMPORTED_MODULE_7__["EventDispatcher"]();
-          _this54.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this54), false, true);
-          _this54.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this54), true, true);
-          _this54.options = new MessageQueueOptions();
-          _this54.options.title = "Message Queue";
-          _this54.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["Endpoint"]("MessageQueue", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].DELETE, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PATCH])];
-          return _this54;
+          _this55 = _super21.call(this);
+          _this55.connectionTable = {};
+          _this55.roundRobinIndex = 0;
+          _this55.isSendingData = false;
+          _this55.fillColor = false;
+          _this55.color = "#F2994A";
+          _this55.messages = [];
+          _this55.sendDataDispatcher = new _Shared_EventDispatcher__WEBPACK_IMPORTED_MODULE_7__["EventDispatcher"]();
+          _this55.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this55), false, true);
+          _this55.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_2__["Port"](_assertThisInitialized(_this55), true, true);
+          _this55.options = new MessageQueueOptions();
+          _this55.options.title = "Message Queue";
+          _this55.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["Endpoint"]("MessageQueue", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].DELETE, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PATCH])];
+          return _this55;
         }
 
         _createClass(MessageQueue, [{
           key: "receiveData",
           value: function receiveData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee28() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee29() {
               var response;
-              return regeneratorRuntime.wrap(function _callee28$(_context31) {
+              return regeneratorRuntime.wrap(function _callee29$(_context32) {
                 while (1) {
-                  switch (_context31.prev = _context31.next) {
+                  switch (_context32.prev = _context32.next) {
                     case 0:
                       if (!(data.requestId == "" || data.requestId == null)) {
-                        _context31.next = 2;
+                        _context32.next = 2;
                         break;
                       }
 
@@ -11265,40 +11339,40 @@
                       response.originID = this.originID; // Send response back
 
                       if (!data.sendResponse) {
-                        _context31.next = 15;
+                        _context32.next = 15;
                         break;
                       }
 
-                      _context31.next = 15;
+                      _context32.next = 15;
                       return this.inputPort.sendData(response, data.origin);
 
                     case 15:
                     case "end":
-                      return _context31.stop();
+                      return _context32.stop();
                   }
                 }
-              }, _callee28, this);
+              }, _callee29, this);
             }));
           }
         }, {
           key: "sendToConsumer",
           value: function sendToConsumer() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee29() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee30() {
               var message, epRef;
-              return regeneratorRuntime.wrap(function _callee29$(_context32) {
+              return regeneratorRuntime.wrap(function _callee30$(_context33) {
                 while (1) {
-                  switch (_context32.prev = _context32.next) {
+                  switch (_context33.prev = _context33.next) {
                     case 0:
                       if (!(this.messages.length == 0 || this.outputPort.connections.length == 0)) {
-                        _context32.next = 2;
+                        _context33.next = 2;
                         break;
                       }
 
-                      return _context32.abrupt("return");
+                      return _context33.abrupt("return");
 
                     case 2:
                       this.isSendingData = true;
-                      _context32.next = 5;
+                      _context33.next = 5;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_4__["sleep"])(400);
 
                     case 5:
@@ -11314,26 +11388,6 @@
 
                     case 14:
                     case "end":
-                      return _context32.stop();
-                  }
-                }
-              }, _callee29, this);
-            }));
-          }
-        }, {
-          key: "sendData",
-          value: function sendData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee30() {
-              return regeneratorRuntime.wrap(function _callee30$(_context33) {
-                while (1) {
-                  switch (_context33.prev = _context33.next) {
-                    case 0:
-                      data.originID = this.originID;
-                      _context33.next = 3;
-                      return this.roundRobin(data);
-
-                    case 3:
-                    case "end":
                       return _context33.stop();
                   }
                 }
@@ -11341,45 +11395,65 @@
             }));
           }
         }, {
-          key: "roundRobin",
-          value: function roundRobin(data) {
+          key: "sendData",
+          value: function sendData(data) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee31() {
-              var _this55 = this;
-
-              var connections, nodesLength;
               return regeneratorRuntime.wrap(function _callee31$(_context34) {
                 while (1) {
                   switch (_context34.prev = _context34.next) {
                     case 0:
+                      data.originID = this.originID;
+                      _context34.next = 3;
+                      return this.roundRobin(data);
+
+                    case 3:
+                    case "end":
+                      return _context34.stop();
+                  }
+                }
+              }, _callee31, this);
+            }));
+          }
+        }, {
+          key: "roundRobin",
+          value: function roundRobin(data) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee32() {
+              var _this56 = this;
+
+              var connections, nodesLength;
+              return regeneratorRuntime.wrap(function _callee32$(_context35) {
+                while (1) {
+                  switch (_context35.prev = _context35.next) {
+                    case 0:
                       connections = this.outputPort.connections.filter(function (conn) {
-                        return conn.getOtherPort(_this55.outputPort).parent.getAvailableEndpoints().find(function (ep) {
-                          return ep.url === _this55.options.endpoints[0].url;
+                        return conn.getOtherPort(_this56.outputPort).parent.getAvailableEndpoints().find(function (ep) {
+                          return ep.url === _this56.options.endpoints[0].url;
                         }) != null;
                       });
                       nodesLength = connections.length;
 
                       if (!(nodesLength === 0)) {
-                        _context34.next = 5;
+                        _context35.next = 5;
                         break;
                       }
 
                       this.messages.push(data);
-                      return _context34.abrupt("return");
+                      return _context35.abrupt("return");
 
                     case 5:
                       this.fireSendData({});
                       this.roundRobinIndex++;
                       if (this.roundRobinIndex >= nodesLength) this.roundRobinIndex = 0;
                       data.origin = this.outputPort.connections[this.roundRobinIndex];
-                      _context34.next = 11;
+                      _context35.next = 11;
                       return this.outputPort.sendData(data, data.origin);
 
                     case 11:
                     case "end":
-                      return _context34.stop();
+                      return _context35.stop();
                   }
                 }
-              }, _callee31, this);
+              }, _callee32, this);
             }));
           }
         }, {
@@ -11835,7 +11909,7 @@
 
       var OptionsmenuComponent = /*#__PURE__*/function () {
         function OptionsmenuComponent(selectionService, renderer, placingService) {
-          var _this56 = this;
+          var _this57 = this;
 
           _classCallCheck(this, OptionsmenuComponent);
 
@@ -11848,31 +11922,31 @@
           this.hasActions = false;
           this.multipleSelectionsTitle = "Title";
           selectionService.onChangeSelection(function () {
-            _this56.optionsWrapper.nativeElement.innerHTML = "";
-            _this56.actionsWrapper.nativeElement.innerHTML = "";
-            _this56.multipleSelectionsX = Number.MAX_VALUE;
-            _this56.multipleSelectionsY = Number.MAX_VALUE;
+            _this57.optionsWrapper.nativeElement.innerHTML = "";
+            _this57.actionsWrapper.nativeElement.innerHTML = "";
+            _this57.multipleSelectionsX = Number.MAX_VALUE;
+            _this57.multipleSelectionsY = Number.MAX_VALUE;
 
-            if (_this56.selectionService.currentSelections.length == 0) {
-              _this56.isActive = false;
-            } else if (_this56.selectionService.currentSelections.length == 1) {
-              var selection = _this56.selectionService.currentSelections[0];
-              _this56.isActive = true;
+            if (_this57.selectionService.currentSelections.length == 0) {
+              _this57.isActive = false;
+            } else if (_this57.selectionService.currentSelections.length == 1) {
+              var selection = _this57.selectionService.currentSelections[0];
+              _this57.isActive = true;
               var optionsElement = selection.getOptionsElement();
-              if (optionsElement) _this56.renderer.appendChild(_this56.optionsWrapper.nativeElement, optionsElement.nativeElement);
+              if (optionsElement) _this57.renderer.appendChild(_this57.optionsWrapper.nativeElement, optionsElement.nativeElement);
               var actionsElement = selection.getActionsElement();
 
               if (actionsElement) {
-                _this56.hasActions = true;
+                _this57.hasActions = true;
 
-                _this56.renderer.appendChild(_this56.actionsWrapper.nativeElement, actionsElement.nativeElement);
-              } else _this56.hasActions = false;
+                _this57.renderer.appendChild(_this57.actionsWrapper.nativeElement, actionsElement.nativeElement);
+              } else _this57.hasActions = false;
             } else {
-              _this56.isActive = true;
-              _this56.multipleSelectionsTitle = _this56.selectionService.currentSelections[0].getLogicComponent().options.title;
+              _this57.isActive = true;
+              _this57.multipleSelectionsTitle = _this57.selectionService.currentSelections[0].getLogicComponent().options.title;
               var sameTitles = true;
 
-              var _iterator40 = _createForOfIteratorHelper(_this56.selectionService.currentSelections),
+              var _iterator40 = _createForOfIteratorHelper(_this57.selectionService.currentSelections),
                   _step40;
 
               try {
@@ -11881,10 +11955,10 @@
 
                   var options = _selection.getLogicComponent().options;
 
-                  if (options.X < _this56.multipleSelectionsX) _this56.multipleSelectionsX = options.X;
-                  if (options.Y < _this56.multipleSelectionsY) _this56.multipleSelectionsY = options.Y;
+                  if (options.X < _this57.multipleSelectionsX) _this57.multipleSelectionsX = options.X;
+                  if (options.Y < _this57.multipleSelectionsY) _this57.multipleSelectionsY = options.Y;
 
-                  if (options.title != _this56.multipleSelectionsTitle) {
+                  if (options.title != _this57.multipleSelectionsTitle) {
                     sameTitles = false;
                   }
                 }
@@ -11894,9 +11968,9 @@
                 _iterator40.f();
               }
 
-              _this56.multipleSelectionsOldX = _this56.multipleSelectionsX;
-              _this56.multipleSelectionsOldY = _this56.multipleSelectionsY;
-              if (!sameTitles) _this56.multipleSelectionsTitle = "Title";
+              _this57.multipleSelectionsOldX = _this57.multipleSelectionsX;
+              _this57.multipleSelectionsOldY = _this57.multipleSelectionsY;
+              if (!sameTitles) _this57.multipleSelectionsTitle = "Title";
             }
           });
         }
@@ -12270,7 +12344,7 @@
 
       var OperatorComponent = /*#__PURE__*/function () {
         function OperatorComponent(placingService, selectionService, resolver, cdRef, viewingService) {
-          var _this57 = this;
+          var _this58 = this;
 
           _classCallCheck(this, OperatorComponent);
 
@@ -12326,18 +12400,18 @@
           this.isReadOnly = false;
 
           this.handleMousemove = function (event) {
-            _this57.selectionService.moveComponents(event, _this57.placingService.boardScale);
+            _this58.selectionService.moveComponents(event, _this58.placingService.boardScale);
           };
 
           this.handleMouseup = function () {
-            _this57.placingService.stopPlacing();
+            _this58.placingService.stopPlacing();
 
-            _this57.board.removeEventListener("mousemove", _this57.handleMousemove);
+            _this58.board.removeEventListener("mousemove", _this58.handleMousemove);
 
-            window.removeEventListener("mouseup", _this57.handleMouseup);
+            window.removeEventListener("mouseup", _this58.handleMouseup);
 
-            if (_this57.beforeOptions.X !== _this57.LogicComponent.options.X || _this57.beforeOptions.Y !== _this57.LogicComponent.options.Y) {
-              _this57.afterChange();
+            if (_this58.beforeOptions.X !== _this58.LogicComponent.options.X || _this58.beforeOptions.Y !== _this58.LogicComponent.options.Y) {
+              _this58.afterChange();
             }
           };
 
@@ -12346,17 +12420,17 @@
           this.destroyComponent = function () {};
 
           this.destroySelf = function () {
-            _this57.LogicComponent.destroy();
+            _this58.LogicComponent.destroy();
 
-            _this57.destroyComponent();
+            _this58.destroyComponent();
 
-            _this57.cdRef.detectChanges();
+            _this58.cdRef.detectChanges();
           };
 
           this.afterChange = function () {
-            _this57.hasChanged.emit();
+            _this58.hasChanged.emit();
 
-            _this57.beforeOptions = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_11__["clone"])(_this57.LogicComponent.options);
+            _this58.beforeOptions = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_11__["clone"])(_this58.LogicComponent.options);
           };
 
           this.cdRef.detach();
@@ -12465,7 +12539,7 @@
         }, {
           key: "showStatusCode",
           value: function showStatusCode(code) {
-            var _this58 = this;
+            var _this59 = this;
 
             var span = document.createElement("span");
             span.classList.add("status-code-side");
@@ -12482,30 +12556,30 @@
 
             this.anchorRef.nativeElement.appendChild(span);
             setTimeout(function () {
-              _this58.anchorRef.nativeElement.removeChild(span);
+              _this59.anchorRef.nativeElement.removeChild(span);
 
-              _this58.cdRef.detectChanges();
+              _this59.cdRef.detectChanges();
             }, 1500);
             this.cdRef.detectChanges();
           }
         }, {
           key: "setReceiveDataAnimation",
           value: function setReceiveDataAnimation() {
-            var _this59 = this;
+            var _this60 = this;
 
             if (this.viewingService.isPerformanceMode()) return;
 
             if (!this.comp.classList.contains("anim")) {
               this.comp.classList.add("anim");
               setTimeout(function () {
-                _this59.comp.classList.remove("anim");
+                _this60.comp.classList.remove("anim");
               }, 500);
             }
           }
         }, {
           key: "Init",
           value: function Init() {
-            var _this60 = this;
+            var _this61 = this;
 
             var generateTitle = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
             this.LogicComponent = this.getLogicComponent();
@@ -12518,7 +12592,7 @@
             } else {
               this.comp.classList.add("bordered");
               Array.from(this.comp.getElementsByClassName("img")).forEach(function (el) {
-                el.style.backgroundColor = _this60.LogicComponent.color;
+                el.style.backgroundColor = _this61.LogicComponent.color;
               });
               this.comp.style.border = "2px solid " + this.LogicComponent.color;
             }
@@ -12528,13 +12602,13 @@
             this.maxX = this.placingService.boardWidth;
             this.maxY = this.placingService.boardHeight;
             this.LogicComponent.onShowStatusCode(function (code) {
-              _this60.showStatusCode(code);
+              _this61.showStatusCode(code);
             });
             this.LogicComponent.onReceiveData(function (data) {
-              _this60.setReceiveDataAnimation();
+              _this61.setReceiveDataAnimation();
             });
             this.LogicComponent.onFailedConnect(function (data) {
-              _this60.placingService.showSnack(data.message);
+              _this61.placingService.showSnack(data.message);
             });
             this.beforeOptions = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_11__["clone"])(this.LogicComponent.options);
             var inputPort = this.LogicComponent["inputPort"];
@@ -12827,13 +12901,13 @@
         var _super23 = _createSuper(PubsubComponent);
 
         function PubsubComponent() {
-          var _this61;
+          var _this62;
 
           _classCallCheck(this, PubsubComponent);
 
-          _this61 = _super23.apply(this, arguments);
-          _this61.LogicPubSub = new src_models_PubSub__WEBPACK_IMPORTED_MODULE_2__["PubSub"]();
-          return _this61;
+          _this62 = _super23.apply(this, arguments);
+          _this62.LogicPubSub = new src_models_PubSub__WEBPACK_IMPORTED_MODULE_2__["PubSub"]();
+          return _this62;
         }
 
         _createClass(PubsubComponent, [{
@@ -13369,10 +13443,10 @@
         }, {
           key: "getComponentType",
           value: function getComponentType(component) {
-            var _this62 = this;
+            var _this63 = this;
 
             return Object.keys(this.types).find(function (type) {
-              return component instanceof _this62.types[type];
+              return component instanceof _this63.types[type];
             }) || "Client";
           }
         }, {
@@ -13393,7 +13467,7 @@
         }, {
           key: "getOptimizedBoard",
           value: function getOptimizedBoard(allLogicComponents) {
-            var _this63 = this;
+            var _this64 = this;
 
             var save = this.getBoardSave(allLogicComponents, "", "");
             if (save.id) delete save.id; // Save ID is unnecessary
@@ -13407,8 +13481,8 @@
                 component.i = component.id.slice(0, 5); // Slicing ID's to only 5 characters
 
                 delete component.id;
-                component.t = Object.keys(_this63.optimizedComponentTypes).find(function (key) {
-                  return _this63.optimizedComponentTypes[key] == component.type;
+                component.t = Object.keys(_this64.optimizedComponentTypes).find(function (key) {
+                  return _this64.optimizedComponentTypes[key] == component.type;
                 }); // Optimize type
 
                 delete component.type;
@@ -13435,7 +13509,7 @@
                   component.c = optimizedConnections;
                   delete component.connections;
                 }
-                component.o = _this63.cloneOptionsOptimized(component.options);
+                component.o = _this64.cloneOptionsOptimized(component.options);
                 delete component.options;
               };
 
@@ -13549,13 +13623,13 @@
         }, {
           key: "cloneOptionsOptimized",
           value: function cloneOptionsOptimized(options) {
-            var _this64 = this;
+            var _this65 = this;
 
             var cloneObj = new options.constructor();
 
             for (var attribut in options) {
               var opt = Object.keys(this.optimizedBoardNames).find(function (key) {
-                return _this64.optimizedBoardNames[key] === attribut;
+                return _this65.optimizedBoardNames[key] === attribut;
               }); // Optimize type
 
               if (opt) {
@@ -13673,73 +13747,73 @@
           key: "sendData",
           value: function sendData(data) {
             var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee32() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee33() {
               var idx;
-              return regeneratorRuntime.wrap(function _callee32$(_context35) {
+              return regeneratorRuntime.wrap(function _callee33$(_context36) {
                 while (1) {
-                  switch (_context35.prev = _context35.next) {
+                  switch (_context36.prev = _context36.next) {
                     case 0:
                       if (!(this.connections.length == 0)) {
-                        _context35.next = 2;
+                        _context36.next = 2;
                         break;
                       }
 
-                      return _context35.abrupt("return", false);
+                      return _context36.abrupt("return", false);
 
                     case 2:
                       if (!this.hasMultipleConnections) {
-                        _context35.next = 15;
+                        _context36.next = 15;
                         break;
                       }
 
                       if (!(target == null)) {
-                        _context35.next = 8;
+                        _context36.next = 8;
                         break;
                       }
 
-                      _context35.next = 6;
+                      _context36.next = 6;
                       return this.connections[0].sendData(data, this);
 
                     case 6:
-                      _context35.next = 13;
+                      _context36.next = 13;
                       break;
 
                     case 8:
                       idx = this.connections.indexOf(target);
 
                       if (!(idx == -1)) {
-                        _context35.next = 11;
+                        _context36.next = 11;
                         break;
                       }
 
-                      return _context35.abrupt("return", false);
+                      return _context36.abrupt("return", false);
 
                     case 11:
-                      _context35.next = 13;
+                      _context36.next = 13;
                       return this.connections[idx].sendData(data, this);
 
                     case 13:
-                      _context35.next = 18;
+                      _context36.next = 18;
                       break;
 
                     case 15:
                       if (!(this.connections.length > 0)) {
-                        _context35.next = 18;
+                        _context36.next = 18;
                         break;
                       }
 
-                      _context35.next = 18;
+                      _context36.next = 18;
                       return this.connections[0].sendData(data, this);
 
                     case 18:
-                      return _context35.abrupt("return", true);
+                      return _context36.abrupt("return", true);
 
                     case 19:
                     case "end":
-                      return _context35.stop();
+                      return _context36.stop();
                   }
                 }
-              }, _callee32, this);
+              }, _callee33, this);
             }));
           }
           /**
@@ -13750,24 +13824,24 @@
           key: "receiveData",
           value: function receiveData(data) {
             var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 180;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee33() {
-              return regeneratorRuntime.wrap(function _callee33$(_context36) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee34() {
+              return regeneratorRuntime.wrap(function _callee34$(_context37) {
                 while (1) {
-                  switch (_context36.prev = _context36.next) {
+                  switch (_context37.prev = _context37.next) {
                     case 0:
-                      _context36.next = 2;
+                      _context37.next = 2;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["sleep"])(delay);
 
                     case 2:
-                      _context36.next = 4;
+                      _context37.next = 4;
                       return this.parent.receiveData(data, this.isOutput);
 
                     case 4:
                     case "end":
-                      return _context36.stop();
+                      return _context37.stop();
                   }
                 }
-              }, _callee33, this);
+              }, _callee34, this);
             }));
           }
           /**
@@ -14587,7 +14661,7 @@
 
       var BoardUIComponent = /*#__PURE__*/function () {
         function BoardUIComponent(placingService, savingService, viewingService, exportService) {
-          var _this65 = this;
+          var _this66 = this;
 
           _classCallCheck(this, BoardUIComponent);
 
@@ -14657,43 +14731,43 @@
 
           this.controlShortcuts = {
             "c": function c(e) {
-              _this65.copyComponent.emit();
+              _this66.copyComponent.emit();
             },
             "v": function v(e) {
-              _this65.pasteComponent.emit();
+              _this66.pasteComponent.emit();
             },
             "a": function a(e) {
               e.preventDefault();
 
-              _this65.selectAllComponents.emit();
+              _this66.selectAllComponents.emit();
             },
             "x": function x(e) {
-              _this65.cutComponent.emit();
+              _this66.cutComponent.emit();
             },
             "s": function s(e) {
               e.preventDefault();
 
-              _this65.save.emit(true);
+              _this66.save.emit(true);
             },
             "z": function z(e) {
               e.preventDefault();
 
-              _this65.undo.emit();
+              _this66.undo.emit();
             },
             "y": function y(e) {
               e.preventDefault();
 
-              _this65.redo.emit();
+              _this66.redo.emit();
             },
             "+": function _(e) {
               e.preventDefault();
 
-              _this65.zoomIn.emit();
+              _this66.zoomIn.emit();
             },
             "-": function _(e) {
               e.preventDefault();
 
-              _this65.zoomOut.emit();
+              _this66.zoomOut.emit();
             }
           };
           this.isHelpersDisabled = viewingService.isHelpersDisabled();
@@ -14705,7 +14779,7 @@
         _createClass(BoardUIComponent, [{
           key: "load",
           value: function load(file) {
-            var _this66 = this;
+            var _this67 = this;
 
             if (file.files.length == 0) return;
 
@@ -14720,7 +14794,7 @@
               return function (e) {
                 var data = e.target.result;
 
-                _this66.loadFile.emit(data);
+                _this67.loadFile.emit(data);
               };
             }(file);
 
@@ -14749,24 +14823,24 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this67 = this;
+            var _this68 = this;
 
             this.scaleControl.setValue(1);
             document.addEventListener("focusin", function () {
-              _this67.canUseShortcuts = false;
+              _this68.canUseShortcuts = false;
             });
             document.addEventListener("focusout", function () {
-              _this67.canUseShortcuts = true;
+              _this68.canUseShortcuts = true;
             });
 
             window.onkeydown = function (e) {
-              if (!_this67.canUseShortcuts) return;
+              if (!_this68.canUseShortcuts) return;
 
-              if (e.ctrlKey && _this67.controlShortcuts[e.key]) {
-                _this67.controlShortcuts[e.key](e);
+              if (e.ctrlKey && _this68.controlShortcuts[e.key]) {
+                _this68.controlShortcuts[e.key](e);
               }
 
-              if (e.key === 'Delete') _this67.delComponent.emit();
+              if (e.key === 'Delete') _this68.delComponent.emit();
             };
 
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -14799,22 +14873,22 @@
         }, {
           key: "openEmbedIFrame",
           value: function openEmbedIFrame() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee34() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee35() {
               var components, obj;
-              return regeneratorRuntime.wrap(function _callee34$(_context37) {
+              return regeneratorRuntime.wrap(function _callee35$(_context38) {
                 while (1) {
-                  switch (_context37.prev = _context37.next) {
+                  switch (_context38.prev = _context38.next) {
                     case 0:
                       this.isEmbedIFrameOpen = true;
                       components = this.getComponents();
 
                       if (!(components.length <= 1)) {
-                        _context37.next = 5;
+                        _context38.next = 5;
                         break;
                       }
 
                       this.showEmbedError = true;
-                      return _context37.abrupt("return");
+                      return _context38.abrupt("return");
 
                     case 5:
                       this.showEmbedError = false;
@@ -14835,39 +14909,6 @@
 
                     case 12:
                     case "end":
-                      return _context37.stop();
-                  }
-                }
-              }, _callee34, this);
-            }));
-          }
-        }, {
-          key: "sendBoardPost",
-          value: function sendBoardPost(boardSave) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee35() {
-              var response, uuid;
-              return regeneratorRuntime.wrap(function _callee35$(_context38) {
-                while (1) {
-                  switch (_context38.prev = _context38.next) {
-                    case 0:
-                      console.log(boardSave);
-                      _context38.next = 3;
-                      return fetch("".concat(this.API_URL, "/api/board"), {
-                        method: "POST",
-                        body: boardSave
-                      });
-
-                    case 3:
-                      response = _context38.sent;
-                      _context38.next = 6;
-                      return response.text();
-
-                    case 6:
-                      uuid = _context38.sent;
-                      return _context38.abrupt("return", uuid);
-
-                    case 8:
-                    case "end":
                       return _context38.stop();
                   }
                 }
@@ -14875,29 +14916,62 @@
             }));
           }
         }, {
-          key: "generateEmbedIFrameUuid",
-          value: function generateEmbedIFrameUuid() {
+          key: "sendBoardPost",
+          value: function sendBoardPost(boardSave) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee36() {
-              var url, template;
+              var response, uuid;
               return regeneratorRuntime.wrap(function _callee36$(_context39) {
                 while (1) {
                   switch (_context39.prev = _context39.next) {
                     case 0:
-                      _context39.next = 2;
+                      console.log(boardSave);
+                      _context39.next = 3;
+                      return fetch("".concat(this.API_URL, "/api/board"), {
+                        method: "POST",
+                        body: boardSave
+                      });
+
+                    case 3:
+                      response = _context39.sent;
+                      _context39.next = 6;
+                      return response.text();
+
+                    case 6:
+                      uuid = _context39.sent;
+                      return _context39.abrupt("return", uuid);
+
+                    case 8:
+                    case "end":
+                      return _context39.stop();
+                  }
+                }
+              }, _callee36, this);
+            }));
+          }
+        }, {
+          key: "generateEmbedIFrameUuid",
+          value: function generateEmbedIFrameUuid() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee37() {
+              var url, template;
+              return regeneratorRuntime.wrap(function _callee37$(_context40) {
+                while (1) {
+                  switch (_context40.prev = _context40.next) {
+                    case 0:
+                      _context40.next = 2;
                       return this.sendBoardPost(this.embedIFrameBase64Encoded);
 
                     case 2:
-                      this.embedIFrameUuid = _context39.sent;
+                      this.embedIFrameUuid = _context40.sent;
                       url = "http://localhost:4200/create";
                       template = "<iframe frameborder=\"0\" style=\"width:100%;height:600px;\" src=\"".concat(url, "?viewer=").concat(this.embedIFrameUuid, "\">\n</iframe>");
                       this.embedIFrameTemplate = template;
 
                     case 6:
                     case "end":
-                      return _context39.stop();
+                      return _context40.stop();
                   }
                 }
-              }, _callee36, this);
+              }, _callee37, this);
             }));
           }
         }, {
@@ -14944,55 +15018,55 @@
         }, {
           key: "exportAsPng",
           value: function exportAsPng() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee37() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee38() {
               var components, canvas;
-              return regeneratorRuntime.wrap(function _callee37$(_context40) {
+              return regeneratorRuntime.wrap(function _callee38$(_context41) {
                 while (1) {
-                  switch (_context40.prev = _context40.next) {
+                  switch (_context41.prev = _context41.next) {
                     case 0:
                       components = this.getComponents();
 
                       if (!(components == null || components.length == 0)) {
-                        _context40.next = 4;
+                        _context41.next = 4;
                         break;
                       }
 
                       this.placingService.showSnack("You can't export an empty board.");
-                      return _context40.abrupt("return");
+                      return _context41.abrupt("return");
 
                     case 4:
-                      _context40.next = 6;
+                      _context41.next = 6;
                       return this.exportService.getCanvas(components, this.exportPngOptions);
 
                     case 6:
-                      canvas = _context40.sent;
+                      canvas = _context41.sent;
                       Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_4__["downloadPng"])(this.name + ".png", canvas.toDataURL('image/png', 1));
                       this.closeExportPngDialog();
 
                     case 9:
                     case "end":
-                      return _context40.stop();
+                      return _context41.stop();
                   }
                 }
-              }, _callee37, this);
+              }, _callee38, this);
             }));
           }
         }, {
           key: "openExportPngDialog",
           value: function openExportPngDialog() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee38() {
-              return regeneratorRuntime.wrap(function _callee38$(_context41) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee39() {
+              return regeneratorRuntime.wrap(function _callee39$(_context42) {
                 while (1) {
-                  switch (_context41.prev = _context41.next) {
+                  switch (_context42.prev = _context42.next) {
                     case 0:
                       this.isExportPngDialogOpen = true;
 
                     case 1:
                     case "end":
-                      return _context41.stop();
+                      return _context42.stop();
                   }
                 }
-              }, _callee38, this);
+              }, _callee39, this);
             }));
           }
         }, {
@@ -15003,25 +15077,25 @@
         }, {
           key: "exportAsSvg",
           value: function exportAsSvg() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee39() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee40() {
               var svg;
-              return regeneratorRuntime.wrap(function _callee39$(_context42) {
+              return regeneratorRuntime.wrap(function _callee40$(_context43) {
                 while (1) {
-                  switch (_context42.prev = _context42.next) {
+                  switch (_context43.prev = _context43.next) {
                     case 0:
-                      _context42.next = 2;
+                      _context43.next = 2;
                       return this.exportService.getSvg(this.getComponents(), this.exportSvgOptions);
 
                     case 2:
-                      svg = _context42.sent;
+                      svg = _context43.sent;
 
                       if (!(svg == null)) {
-                        _context42.next = 6;
+                        _context43.next = 6;
                         break;
                       }
 
                       this.placingService.showSnack("You can't export an empty board.");
-                      return _context42.abrupt("return");
+                      return _context43.abrupt("return");
 
                     case 6:
                       Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_4__["downloadSvg"])(this.name + ".svg", svg);
@@ -15029,28 +15103,28 @@
 
                     case 8:
                     case "end":
-                      return _context42.stop();
+                      return _context43.stop();
                   }
                 }
-              }, _callee39, this);
+              }, _callee40, this);
             }));
           }
         }, {
           key: "openExportSvgDialog",
           value: function openExportSvgDialog() {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee40() {
-              return regeneratorRuntime.wrap(function _callee40$(_context43) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee41() {
+              return regeneratorRuntime.wrap(function _callee41$(_context44) {
                 while (1) {
-                  switch (_context43.prev = _context43.next) {
+                  switch (_context44.prev = _context44.next) {
                     case 0:
                       this.isExportSvgDialogOpen = true;
 
                     case 1:
                     case "end":
-                      return _context43.stop();
+                      return _context44.stop();
                   }
                 }
-              }, _callee40, this);
+              }, _callee41, this);
             }));
           }
         }, {
@@ -15094,52 +15168,52 @@
           key: "openPreview",
           value: function openPreview() {
             var png = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee41() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee42() {
               var components;
-              return regeneratorRuntime.wrap(function _callee41$(_context44) {
+              return regeneratorRuntime.wrap(function _callee42$(_context45) {
                 while (1) {
-                  switch (_context44.prev = _context44.next) {
+                  switch (_context45.prev = _context45.next) {
                     case 0:
                       if (!png) {
-                        _context44.next = 12;
+                        _context45.next = 12;
                         break;
                       }
 
-                      _context44.next = 3;
+                      _context45.next = 3;
                       return this.exportService.getCanvas(this.getComponents(), this.exportPngOptions);
 
                     case 3:
-                      this.exportPngPreview = _context44.sent;
+                      this.exportPngPreview = _context45.sent;
 
                       if (!(this.exportPngPreview == null)) {
-                        _context44.next = 6;
+                        _context45.next = 6;
                         break;
                       }
 
-                      return _context44.abrupt("return");
+                      return _context45.abrupt("return");
 
                     case 6:
                       this.exportPngPreview.style.width = "100%";
                       this.exportPngPreview.style.marginBottom = "-5px";
                       this.preview.nativeElement.innerHTML = "";
                       this.preview.nativeElement.appendChild(this.exportPngPreview);
-                      _context44.next = 21;
+                      _context45.next = 21;
                       break;
 
                     case 12:
                       components = this.getComponents();
-                      _context44.next = 15;
+                      _context45.next = 15;
                       return this.exportService.getSvg(components, this.exportSvgOptions);
 
                     case 15:
-                      this.exportSvgPreview = _context44.sent;
+                      this.exportSvgPreview = _context45.sent;
 
                       if (!(this.exportSvgPreview == null)) {
-                        _context44.next = 18;
+                        _context45.next = 18;
                         break;
                       }
 
-                      return _context44.abrupt("return");
+                      return _context45.abrupt("return");
 
                     case 18:
                       this.exportSvgPreview.style.marginBottom = "-5px";
@@ -15151,10 +15225,10 @@
 
                     case 22:
                     case "end":
-                      return _context44.stop();
+                      return _context45.stop();
                   }
                 }
-              }, _callee41, this);
+              }, _callee42, this);
             }));
           }
         }, {
@@ -16813,13 +16887,13 @@
         var _super24 = _createSuper(ProxyComponent);
 
         function ProxyComponent() {
-          var _this68;
+          var _this69;
 
           _classCallCheck(this, ProxyComponent);
 
-          _this68 = _super24.apply(this, arguments);
-          _this68.LogicProxy = new src_models_Proxy__WEBPACK_IMPORTED_MODULE_0__["Proxy"]();
-          return _this68;
+          _this69 = _super24.apply(this, arguments);
+          _this69.LogicProxy = new src_models_Proxy__WEBPACK_IMPORTED_MODULE_0__["Proxy"]();
+          return _this69;
         }
 
         _createClass(ProxyComponent, [{
@@ -18156,13 +18230,13 @@
         var _super25 = _createSuper(LoadbalancerComponent);
 
         function LoadbalancerComponent() {
-          var _this69;
+          var _this70;
 
           _classCallCheck(this, LoadbalancerComponent);
 
-          _this69 = _super25.apply(this, arguments);
-          _this69.LogicLoadBalancer = new src_models_LoadBalancer__WEBPACK_IMPORTED_MODULE_2__["LoadBalancer"]();
-          return _this69;
+          _this70 = _super25.apply(this, arguments);
+          _this70.LogicLoadBalancer = new src_models_LoadBalancer__WEBPACK_IMPORTED_MODULE_2__["LoadBalancer"]();
+          return _this70;
         }
 
         _createClass(LoadbalancerComponent, [{
@@ -18504,7 +18578,7 @@
 
       var PlacingService = /*#__PURE__*/function () {
         function PlacingService(resolver) {
-          var _this70 = this;
+          var _this71 = this;
 
           _classCallCheck(this, PlacingService);
 
@@ -18520,7 +18594,7 @@
           this.boardHeight = 1000;
 
           this.canDrag = function () {
-            return !_this70.isPlacing && !_this70.isConnecting;
+            return !_this71.isPlacing && !_this71.isConnecting;
           };
 
           this.boardScale = 1;
@@ -18586,7 +18660,7 @@
         }, {
           key: "pasteItem",
           value: function pasteItem() {
-            var _this71 = this;
+            var _this72 = this;
 
             var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
             var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
@@ -18632,7 +18706,7 @@
                 var pasteX = pasteOriginX - width + (options.X - minX);
                 var pasteY = pasteOriginY - height + (options.Y - minY);
 
-                var component = _this71.createComponent(item.component, pasteX, pasteY, options);
+                var component = _this72.createComponent(item.component, pasteX, pasteY, options);
 
                 connectionsList = connectionsList.map(function (conn) {
                   if (conn.from === item.logicComponent.originID) {
@@ -18685,7 +18759,7 @@
                     comp1Initiated = true;
 
                     if (comp2Initiated) {
-                      _this71.connectPorts(comp1.getPortComponent(true), comp2.getPortComponent(false), false, connection.lineBreaks.map(function (br) {
+                      _this72.connectPorts(comp1.getPortComponent(true), comp2.getPortComponent(false), false, connection.lineBreaks.map(function (br) {
                         return {
                           x: pasteOriginX - width + (br.x - minX),
                           y: pasteOriginY - height + (br.y - minY)
@@ -18697,7 +18771,7 @@
                     comp2Initiated = true;
 
                     if (comp1Initiated) {
-                      _this71.connectPorts(comp1.getPortComponent(true), comp2.getPortComponent(false), false, connection.lineBreaks.map(function (br) {
+                      _this72.connectPorts(comp1.getPortComponent(true), comp2.getPortComponent(false), false, connection.lineBreaks.map(function (br) {
                         return {
                           x: pasteOriginX - width + (br.x - minX),
                           y: pasteOriginY - height + (br.y - minY)
@@ -18750,7 +18824,7 @@
         }, {
           key: "createComponent",
           value: function createComponent(component) {
-            var _this72 = this;
+            var _this73 = this;
 
             var left = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
             var top = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
@@ -18774,10 +18848,10 @@
             }
 
             c.instance.hasChanged.subscribe(function () {
-              _this72.componentChanged.emit();
+              _this73.componentChanged.emit();
             });
             c.instance.showContextMenu.subscribe(function (e) {
-              _this72.showComponentContextMenu.emit({
+              _this73.showComponentContextMenu.emit({
                 x: c.instance.getLogicComponent().options.X + e.offsetX,
                 y: c.instance.getLogicComponent().options.Y + e.offsetY
               });
@@ -19251,41 +19325,41 @@
         var _super26 = _createSuper(Proxy);
 
         function Proxy() {
-          var _this73;
+          var _this74;
 
           _classCallCheck(this, Proxy);
 
-          _this73 = _super26.call(this);
-          _this73.connectionTable = {};
-          _this73.streamConnectionTable = {};
-          _this73.fillColor = false;
-          _this73.color = "#283c86";
-          _this73.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this73), false, true);
-          _this73.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this73), true, true);
-          _this73.options = new ProxyOptions();
-          _this73.options.title = "Proxy";
-          return _this73;
+          _this74 = _super26.call(this);
+          _this74.connectionTable = {};
+          _this74.streamConnectionTable = {};
+          _this74.fillColor = false;
+          _this74.color = "#283c86";
+          _this74.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this74), false, true);
+          _this74.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this74), true, true);
+          _this74.options = new ProxyOptions();
+          _this74.options.title = "Proxy";
+          return _this74;
         }
 
         _createClass(Proxy, [{
           key: "receiveData",
           value: function receiveData(data, fromOutput) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee42() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee43() {
               var targetConnection, result, res, targetEndpoint, _targetConnection, _iterator61, _step61, connection;
 
-              return regeneratorRuntime.wrap(function _callee42$(_context45) {
+              return regeneratorRuntime.wrap(function _callee43$(_context46) {
                 while (1) {
-                  switch (_context45.prev = _context45.next) {
+                  switch (_context46.prev = _context46.next) {
                     case 0:
                       if (!fromOutput) {
-                        _context45.next = 12;
+                        _context46.next = 12;
                         break;
                       }
 
                       targetConnection = this.connectionTable[data.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context45.next = 4;
+                        _context46.next = 4;
                         break;
                       }
 
@@ -19299,11 +19373,11 @@
                       }
 
                       this.fireReceiveData(data);
-                      _context45.next = 8;
+                      _context46.next = 8;
                       return this.inputPort.sendData(data, targetConnection);
 
                     case 8:
-                      result = _context45.sent;
+                      result = _context46.sent;
 
                       if (!result && data.header.stream) {
                         data.header.stream = false;
@@ -19317,12 +19391,12 @@
                         }
                       }
 
-                      _context45.next = 51;
+                      _context46.next = 51;
                       break;
 
                     case 12:
                       if (!(data.requestId == null)) {
-                        _context45.next = 14;
+                        _context46.next = 14;
                         break;
                       }
 
@@ -19332,17 +19406,17 @@
                       this.fireReceiveData(data);
 
                       if (!(this.streamConnectionTable[data.requestId] != null)) {
-                        _context45.next = 21;
+                        _context46.next = 21;
                         break;
                       }
 
                       data.origin = this.streamConnectionTable[data.requestId];
                       data.originID = this.originID;
-                      _context45.next = 20;
+                      _context46.next = 20;
                       return this.outputPort.sendData(data, this.streamConnectionTable[data.requestId]);
 
                     case 20:
-                      return _context45.abrupt("return");
+                      return _context46.abrupt("return");
 
                     case 21:
                       this.connectionTable[data.requestId] = data.origin; // Find connection that has given endpoint
@@ -19350,13 +19424,13 @@
                       targetEndpoint = null;
                       _targetConnection = null;
                       _iterator61 = _createForOfIteratorHelper(this.outputPort.connections);
-                      _context45.prev = 25;
+                      _context46.prev = 25;
 
                       _iterator61.s();
 
                     case 27:
                       if ((_step61 = _iterator61.n()).done) {
-                        _context45.next = 35;
+                        _context46.next = 35;
                         break;
                       }
 
@@ -19366,56 +19440,56 @@
                       });
 
                       if (!targetEndpoint) {
-                        _context45.next = 33;
+                        _context46.next = 33;
                         break;
                       }
 
                       _targetConnection = connection;
-                      return _context45.abrupt("break", 35);
+                      return _context46.abrupt("break", 35);
 
                     case 33:
-                      _context45.next = 27;
+                      _context46.next = 27;
                       break;
 
                     case 35:
-                      _context45.next = 40;
+                      _context46.next = 40;
                       break;
 
                     case 37:
-                      _context45.prev = 37;
-                      _context45.t0 = _context45["catch"](25);
+                      _context46.prev = 37;
+                      _context46.t0 = _context46["catch"](25);
 
-                      _iterator61.e(_context45.t0);
+                      _iterator61.e(_context46.t0);
 
                     case 40:
-                      _context45.prev = 40;
+                      _context46.prev = 40;
 
                       _iterator61.f();
 
-                      return _context45.finish(40);
+                      return _context46.finish(40);
 
                     case 43:
                       if (!(targetEndpoint == null)) {
-                        _context45.next = 46;
+                        _context46.next = 46;
                         break;
                       }
 
                       this.fireShowStatusCode(404);
-                      return _context45.abrupt("return");
+                      return _context46.abrupt("return");
 
                     case 46:
                       data.origin = _targetConnection;
                       data.originID = this.originID;
                       this.streamConnectionTable[data.requestId] = data.origin;
-                      _context45.next = 51;
+                      _context46.next = 51;
                       return this.outputPort.sendData(data, data.origin);
 
                     case 51:
                     case "end":
-                      return _context45.stop();
+                      return _context46.stop();
                   }
                 }
-              }, _callee42, this, [[25, 37, 40, 43]]);
+              }, _callee43, this, [[25, 37, 40, 43]]);
             }));
           }
           /**
@@ -19566,37 +19640,37 @@
         var _super28 = _createSuper(API);
 
         function API() {
-          var _this74;
+          var _this75;
 
           _classCallCheck(this, API);
 
-          _this74 = _super28.call(this);
-          _this74.connectionTable = {};
-          _this74.color = "#4CA1AF";
-          _this74.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_8__["Port"](_assertThisInitialized(_this74), false, true);
-          _this74.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_8__["Port"](_assertThisInitialized(_this74), true, true);
-          _this74.options = new APIOptions();
-          _this74.options.title = "API";
+          _this75 = _super28.call(this);
+          _this75.connectionTable = {};
+          _this75.color = "#4CA1AF";
+          _this75.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_8__["Port"](_assertThisInitialized(_this75), false, true);
+          _this75.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_8__["Port"](_assertThisInitialized(_this75), true, true);
+          _this75.options = new APIOptions();
+          _this75.options.title = "API";
           var initialEndpoint = new _Endpoint__WEBPACK_IMPORTED_MODULE_3__["Endpoint"]("api/posts", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"].DELETE]);
           initialEndpoint.protocol = _enums_Protocol__WEBPACK_IMPORTED_MODULE_7__["Protocol"].HTTP;
-          _this74.options.endpoints = [initialEndpoint];
-          return _this74;
+          _this75.options.endpoints = [initialEndpoint];
+          return _this75;
         }
 
         _createClass(API, [{
           key: "receiveData",
           value: function receiveData(data, fromOutput) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee43() {
-              var _this75 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee44() {
+              var _this76 = this;
 
               var targetConnection, targetEndpoint, _iterator63, _step63, _loop15, _ret4;
 
-              return regeneratorRuntime.wrap(function _callee43$(_context47) {
+              return regeneratorRuntime.wrap(function _callee44$(_context48) {
                 while (1) {
-                  switch (_context47.prev = _context47.next) {
+                  switch (_context48.prev = _context48.next) {
                     case 0:
                       if (!fromOutput) {
-                        _context47.next = 8;
+                        _context48.next = 8;
                         break;
                       }
 
@@ -19605,21 +19679,21 @@
                       this.fireReceiveData(data);
 
                       if (!(targetConnection == null)) {
-                        _context47.next = 5;
+                        _context48.next = 5;
                         break;
                       }
 
-                      return _context47.abrupt("return");
+                      return _context48.abrupt("return");
 
                     case 5:
                       this.connectionTable[data.responseId] = null; // reset request id
 
-                      _context47.next = 48;
+                      _context48.next = 48;
                       break;
 
                     case 8:
                       if (!(data.requestId == "" || data.requestId == null)) {
-                        _context47.next = 10;
+                        _context48.next = 10;
                         break;
                       }
 
@@ -19627,7 +19701,7 @@
 
                     case 10:
                       if (!(data.header.endpoint == null)) {
-                        _context47.next = 12;
+                        _context48.next = 12;
                         break;
                       }
 
@@ -19637,114 +19711,114 @@
                       targetEndpoint = this.getTargetEndpoint(data);
 
                       if (!(targetEndpoint == null)) {
-                        _context47.next = 15;
+                        _context48.next = 15;
                         break;
                       }
 
-                      return _context47.abrupt("return");
+                      return _context48.abrupt("return");
 
                     case 15:
                       this.fireReceiveData(data);
 
                       if (!(this.connectionTable[data.requestId] != null)) {
-                        _context47.next = 22;
+                        _context48.next = 22;
                         break;
                       }
 
                       if (!(data.header.stream == false && targetEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_5__["gRPCMode"].Unary || targetEndpoint.protocol == _enums_Protocol__WEBPACK_IMPORTED_MODULE_7__["Protocol"].WebSockets)) {
-                        _context47.next = 20;
+                        _context48.next = 20;
                         break;
                       }
 
                       // Client wants to end stream
                       this.connectionTable[data.requestId] = null;
-                      return _context47.abrupt("return");
+                      return _context48.abrupt("return");
 
                     case 20:
-                      _context47.next = 26;
+                      _context48.next = 26;
                       break;
 
                     case 22:
                       this.connectionTable[data.requestId] = data.origin; // Save connection to request package
 
                       if (!data.header.stream) {
-                        _context47.next = 26;
+                        _context48.next = 26;
                         break;
                       }
 
                       if (!(targetEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_5__["gRPCMode"].Unary || targetEndpoint.protocol == _enums_Protocol__WEBPACK_IMPORTED_MODULE_7__["Protocol"].WebSockets)) {
-                        _context47.next = 26;
+                        _context48.next = 26;
                         break;
                       }
 
-                      return _context47.abrupt("return");
+                      return _context48.abrupt("return");
 
                     case 26:
                       // Send data to every action
                       _iterator63 = _createForOfIteratorHelper(targetEndpoint.actions);
-                      _context47.prev = 27;
+                      _context48.prev = 27;
                       _loop15 = /*#__PURE__*/regeneratorRuntime.mark(function _loop15() {
                         var action, targetConnection, _iterator64, _step64, connection, endpoints, request, endpointRef;
 
-                        return regeneratorRuntime.wrap(function _loop15$(_context46) {
+                        return regeneratorRuntime.wrap(function _loop15$(_context47) {
                           while (1) {
-                            switch (_context46.prev = _context46.next) {
+                            switch (_context47.prev = _context47.next) {
                               case 0:
                                 action = _step63.value;
                                 // Get connection to given action endpoint
                                 targetConnection = void 0;
-                                _iterator64 = _createForOfIteratorHelper(_this75.outputPort.connections);
-                                _context46.prev = 3;
+                                _iterator64 = _createForOfIteratorHelper(_this76.outputPort.connections);
+                                _context47.prev = 3;
 
                                 _iterator64.s();
 
                               case 5:
                                 if ((_step64 = _iterator64.n()).done) {
-                                  _context46.next = 13;
+                                  _context47.next = 13;
                                   break;
                                 }
 
                                 connection = _step64.value;
-                                endpoints = connection.getOtherPort(_this75.outputPort).parent.getAvailableEndpoints();
+                                endpoints = connection.getOtherPort(_this76.outputPort).parent.getAvailableEndpoints();
 
                                 if (!(action.endpoint != null && endpoints.find(function (endpoint) {
                                   return endpoint.url == action.endpoint.url && Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["arrayEquals"])(endpoint.supportedMethods, action.endpoint.supportedMethods);
                                 }) != null)) {
-                                  _context46.next = 11;
+                                  _context47.next = 11;
                                   break;
                                 }
 
                                 targetConnection = connection;
-                                return _context46.abrupt("break", 13);
+                                return _context47.abrupt("break", 13);
 
                               case 11:
-                                _context46.next = 5;
+                                _context47.next = 5;
                                 break;
 
                               case 13:
-                                _context46.next = 18;
+                                _context47.next = 18;
                                 break;
 
                               case 15:
-                                _context46.prev = 15;
-                                _context46.t0 = _context46["catch"](3);
+                                _context47.prev = 15;
+                                _context47.t0 = _context47["catch"](3);
 
-                                _iterator64.e(_context46.t0);
+                                _iterator64.e(_context47.t0);
 
                               case 18:
-                                _context46.prev = 18;
+                                _context47.prev = 18;
 
                                 _iterator64.f();
 
-                                return _context46.finish(18);
+                                return _context47.finish(18);
 
                               case 21:
                                 if (!(targetConnection == null)) {
-                                  _context46.next = 23;
+                                  _context47.next = 23;
                                   break;
                                 }
 
-                                return _context46.abrupt("return", "continue");
+                                return _context47.abrupt("return", "continue");
 
                               case 23:
                                 // Create new data package
@@ -19754,29 +19828,29 @@
                                 endpointRef.method = _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["EndpointActionHTTPMethod"][action.method] == "Inherit" ? data.header.endpoint.method : _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["HTTPMethod"][_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_6__["EndpointActionHTTPMethod"][action.method]];
                                 request.header = new _RequestData__WEBPACK_IMPORTED_MODULE_9__["RequestDataHeader"](endpointRef, action.endpoint.protocol);
                                 request.origin = targetConnection;
-                                request.originID = _this75.originID;
+                                request.originID = _this76.originID;
                                 request.requestId = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["UUID"])();
 
                                 if (!action.asynchronous) {
-                                  _context46.next = 35;
+                                  _context47.next = 35;
                                   break;
                                 }
 
-                                _this75.outputPort.sendData(request, targetConnection);
+                                _this76.outputPort.sendData(request, targetConnection);
 
-                                _context46.next = 38;
+                                _context47.next = 38;
                                 break;
 
                               case 35:
-                                _context46.next = 37;
-                                return _this75.outputPort.sendData(request, targetConnection);
+                                _context47.next = 37;
+                                return _this76.outputPort.sendData(request, targetConnection);
 
                               case 37:
-                                _this75.connectionTable[request.requestId] = request.origin;
+                                _this76.connectionTable[request.requestId] = request.origin;
 
                               case 38:
                               case "end":
-                                return _context46.stop();
+                                return _context47.stop();
                             }
                           }
                         }, _loop15, null, [[3, 15, 18, 21]]);
@@ -19786,73 +19860,73 @@
 
                     case 30:
                       if ((_step63 = _iterator63.n()).done) {
-                        _context47.next = 37;
+                        _context48.next = 37;
                         break;
                       }
 
-                      return _context47.delegateYield(_loop15(), "t0", 32);
+                      return _context48.delegateYield(_loop15(), "t0", 32);
 
                     case 32:
-                      _ret4 = _context47.t0;
+                      _ret4 = _context48.t0;
 
                       if (!(_ret4 === "continue")) {
-                        _context47.next = 35;
+                        _context48.next = 35;
                         break;
                       }
 
-                      return _context47.abrupt("continue", 35);
+                      return _context48.abrupt("continue", 35);
 
                     case 35:
-                      _context47.next = 30;
+                      _context48.next = 30;
                       break;
 
                     case 37:
-                      _context47.next = 42;
+                      _context48.next = 42;
                       break;
 
                     case 39:
-                      _context47.prev = 39;
-                      _context47.t1 = _context47["catch"](27);
+                      _context48.prev = 39;
+                      _context48.t1 = _context48["catch"](27);
 
-                      _iterator63.e(_context47.t1);
+                      _iterator63.e(_context48.t1);
 
                     case 42:
-                      _context47.prev = 42;
+                      _context48.prev = 42;
 
                       _iterator63.f();
 
-                      return _context47.finish(42);
+                      return _context48.finish(42);
 
                     case 45:
                       if (!data.sendResponse) {
-                        _context47.next = 48;
+                        _context48.next = 48;
                         break;
                       }
 
-                      _context47.next = 48;
+                      _context48.next = 48;
                       return this.sendData(this.getResponse(data));
 
                     case 48:
                     case "end":
-                      return _context47.stop();
+                      return _context48.stop();
                   }
                 }
-              }, _callee43, this, [[27, 39, 42, 45]]);
+              }, _callee44, this, [[27, 39, 42, 45]]);
             }));
           }
         }, {
           key: "sendData",
           value: function sendData(response) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee44() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee45() {
               var targetConnection, res;
-              return regeneratorRuntime.wrap(function _callee44$(_context48) {
+              return regeneratorRuntime.wrap(function _callee45$(_context49) {
                 while (1) {
-                  switch (_context48.prev = _context48.next) {
+                  switch (_context49.prev = _context49.next) {
                     case 0:
                       targetConnection = this.connectionTable[response.responseId] || response.origin;
 
                       if (!(targetConnection == null)) {
-                        _context48.next = 3;
+                        _context49.next = 3;
                         break;
                       }
 
@@ -19861,48 +19935,13 @@
                     case 3:
                       if (response.header.stream != true) // reset request id
                         this.connectionTable[response.responseId] = null;
-                      _context48.next = 6;
+                      _context49.next = 6;
                       return this.inputPort.sendData(response, targetConnection);
 
                     case 6:
-                      res = _context48.sent;
+                      res = _context49.sent;
                       if (!res && response.header.stream) // End the stream if sending data didn't success
                         this.connectionTable[response.responseId] = null;
-
-                    case 8:
-                    case "end":
-                      return _context48.stop();
-                  }
-                }
-              }, _callee44, this);
-            }));
-          }
-        }, {
-          key: "stream",
-          value: function stream(data, streamingEndpoint) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee45() {
-              return regeneratorRuntime.wrap(function _callee45$(_context49) {
-                while (1) {
-                  switch (_context49.prev = _context49.next) {
-                    case 0:
-                      _context49.next = 2;
-                      return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["sleep"])(700);
-
-                    case 2:
-                      if (!(this.connectionTable[data.responseId] == null || streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_5__["gRPCMode"]["Server Streaming"] && streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_5__["gRPCMode"]["Bidirectional Streaming"] && streamingEndpoint.protocol != _enums_Protocol__WEBPACK_IMPORTED_MODULE_7__["Protocol"].WebSockets || this.options.endpoints.indexOf(streamingEndpoint) == -1)) {
-                        _context49.next = 4;
-                        break;
-                      }
-
-                      return _context49.abrupt("return");
-
-                    case 4:
-                      _context49.next = 6;
-                      return this.sendData(data);
-
-                    case 6:
-                      _context49.next = 8;
-                      return this.stream(data, streamingEndpoint);
 
                     case 8:
                     case "end":
@@ -19910,6 +19949,41 @@
                   }
                 }
               }, _callee45, this);
+            }));
+          }
+        }, {
+          key: "stream",
+          value: function stream(data, streamingEndpoint) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee46() {
+              return regeneratorRuntime.wrap(function _callee46$(_context50) {
+                while (1) {
+                  switch (_context50.prev = _context50.next) {
+                    case 0:
+                      _context50.next = 2;
+                      return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_1__["sleep"])(700);
+
+                    case 2:
+                      if (!(this.connectionTable[data.responseId] == null || streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_5__["gRPCMode"]["Server Streaming"] && streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_5__["gRPCMode"]["Bidirectional Streaming"] && streamingEndpoint.protocol != _enums_Protocol__WEBPACK_IMPORTED_MODULE_7__["Protocol"].WebSockets || this.options.endpoints.indexOf(streamingEndpoint) == -1)) {
+                        _context50.next = 4;
+                        break;
+                      }
+
+                      return _context50.abrupt("return");
+
+                    case 4:
+                      _context50.next = 6;
+                      return this.sendData(data);
+
+                    case 6:
+                      _context50.next = 8;
+                      return this.stream(data, streamingEndpoint);
+
+                    case 8:
+                    case "end":
+                      return _context50.stop();
+                  }
+                }
+              }, _callee46, this);
             }));
           }
         }]);
@@ -19923,13 +19997,13 @@
         var _super29 = _createSuper(APIOptions);
 
         function APIOptions() {
-          var _this76;
+          var _this77;
 
           _classCallCheck(this, APIOptions);
 
-          _this76 = _super29.apply(this, arguments);
-          _this76.type = _enums_APIType__WEBPACK_IMPORTED_MODULE_4__["APIType"].REST;
-          return _this76;
+          _this77 = _super29.apply(this, arguments);
+          _this77.type = _enums_APIType__WEBPACK_IMPORTED_MODULE_4__["APIType"].REST;
+          return _this77;
         }
 
         return APIOptions;
@@ -20036,67 +20110,67 @@
         var _super30 = _createSuper(Cache);
 
         function Cache() {
-          var _this77;
+          var _this78;
 
           _classCallCheck(this, Cache);
 
-          _this77 = _super30.call(this);
-          _this77.connectionTable = {};
-          _this77.color = "#b21f1f";
-          _this77.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this77), false, true);
-          _this77.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this77), true, false);
-          _this77.options = new CacheOptions();
-          _this77.options.title = "Cache";
-          return _this77;
+          _this78 = _super30.call(this);
+          _this78.connectionTable = {};
+          _this78.color = "#b21f1f";
+          _this78.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this78), false, true);
+          _this78.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_3__["Port"](_assertThisInitialized(_this78), true, false);
+          _this78.options = new CacheOptions();
+          _this78.options.title = "Cache";
+          return _this78;
         }
 
         _createClass(Cache, [{
           key: "receiveData",
           value: function receiveData(request) {
             var fromOutput = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee46() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee47() {
               var targetConnection, cacheHit, response;
-              return regeneratorRuntime.wrap(function _callee46$(_context50) {
+              return regeneratorRuntime.wrap(function _callee47$(_context51) {
                 while (1) {
-                  switch (_context50.prev = _context50.next) {
+                  switch (_context51.prev = _context51.next) {
                     case 0:
                       if (!fromOutput) {
-                        _context50.next = 8;
+                        _context51.next = 8;
                         break;
                       }
 
                       targetConnection = this.connectionTable[request.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context50.next = 4;
+                        _context51.next = 4;
                         break;
                       }
 
-                      return _context50.abrupt("return");
+                      return _context51.abrupt("return");
 
                     case 4:
-                      _context50.next = 6;
+                      _context51.next = 6;
                       return this.sendData(request);
 
                     case 6:
-                      _context50.next = 40;
+                      _context51.next = 40;
                       break;
 
                     case 8:
                       this.fireReceiveData(request);
 
                       if (!(request.header.endpoint == null)) {
-                        _context50.next = 11;
+                        _context51.next = 11;
                         break;
                       }
 
-                      return _context50.abrupt("return");
+                      return _context51.abrupt("return");
 
                     case 11:
                       this.connectionTable[request.requestId] = request.origin;
 
                       if (!(request.header.endpoint.method == _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_5__["HTTPMethod"].GET && request.sendResponse)) {
-                        _context50.next = 26;
+                        _context51.next = 26;
                         break;
                       }
 
@@ -20104,7 +20178,7 @@
                       cacheHit = Math.random() > 0.43 ? true : false; // Random chance of cache hit
 
                       if (!cacheHit) {
-                        _context50.next = 25;
+                        _context51.next = 25;
                         break;
                       }
 
@@ -20115,74 +20189,50 @@
                       response.originID = this.originID;
                       response.header = new _RequestData__WEBPACK_IMPORTED_MODULE_1__["RequestDataHeader"](request.header.endpoint, request.header.protocol);
                       this.fireShowStatusCode(_enums_HTTPStatus__WEBPACK_IMPORTED_MODULE_6__["HTTPStatus"]["Cache Hit"]);
-                      _context50.next = 24;
+                      _context51.next = 24;
                       return this.sendData(response);
 
                     case 24:
-                      return _context50.abrupt("return");
+                      return _context51.abrupt("return");
 
                     case 25:
                       this.fireShowStatusCode(_enums_HTTPStatus__WEBPACK_IMPORTED_MODULE_6__["HTTPStatus"]["Cache Miss"]);
 
                     case 26:
                       if (!(this.outputPort.connections.length == 0)) {
-                        _context50.next = 28;
+                        _context51.next = 28;
                         break;
                       }
 
-                      return _context50.abrupt("return");
+                      return _context51.abrupt("return");
 
                     case 28:
-                      _context50.t0 = this.options.writePolicy;
-                      _context50.next = _context50.t0 === _enums_WritePolicy__WEBPACK_IMPORTED_MODULE_8__["WritePolicy"]["Write-Through"] ? 31 : _context50.t0 === _enums_WritePolicy__WEBPACK_IMPORTED_MODULE_8__["WritePolicy"]["Write-Back (Behind)"] ? 34 : 37;
+                      _context51.t0 = this.options.writePolicy;
+                      _context51.next = _context51.t0 === _enums_WritePolicy__WEBPACK_IMPORTED_MODULE_8__["WritePolicy"]["Write-Through"] ? 31 : _context51.t0 === _enums_WritePolicy__WEBPACK_IMPORTED_MODULE_8__["WritePolicy"]["Write-Back (Behind)"] ? 34 : 37;
                       break;
 
                     case 31:
-                      _context50.next = 33;
+                      _context51.next = 33;
                       return this.writeThrough(request);
 
                     case 33:
-                      return _context50.abrupt("break", 40);
+                      return _context51.abrupt("break", 40);
 
                     case 34:
-                      _context50.next = 36;
+                      _context51.next = 36;
                       return this.writeBack(request);
 
                     case 36:
-                      return _context50.abrupt("break", 40);
+                      return _context51.abrupt("break", 40);
 
                     case 37:
-                      _context50.next = 39;
+                      _context51.next = 39;
                       return this.writeThrough(request);
 
                     case 39:
-                      return _context50.abrupt("break", 40);
+                      return _context51.abrupt("break", 40);
 
                     case 40:
-                    case "end":
-                      return _context50.stop();
-                  }
-                }
-              }, _callee46, this);
-            }));
-          }
-        }, {
-          key: "writeThrough",
-          value: function writeThrough(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee47() {
-              return regeneratorRuntime.wrap(function _callee47$(_context51) {
-                while (1) {
-                  switch (_context51.prev = _context51.next) {
-                    case 0:
-                      // write to cache, then database, if both succeeded, return success
-                      data.origin = this.outputPort.connections[0];
-                      data.originID = this.originID; // Write to cache
-                      // Send to DB
-
-                      _context51.next = 4;
-                      return this.outputPort.sendData(data);
-
-                    case 4:
                     case "end":
                       return _context51.stop();
                   }
@@ -20191,44 +20241,22 @@
             }));
           }
         }, {
-          key: "writeBack",
-          value: function writeBack(data) {
+          key: "writeThrough",
+          value: function writeThrough(data) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee48() {
               return regeneratorRuntime.wrap(function _callee48$(_context52) {
                 while (1) {
                   switch (_context52.prev = _context52.next) {
                     case 0:
-                      // write to cache, send success, write asynchronously to database
+                      // write to cache, then database, if both succeeded, return success
                       data.origin = this.outputPort.connections[0];
                       data.originID = this.originID; // Write to cache
                       // Send to DB
 
-                      if (!(data.header.endpoint.method == _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_5__["HTTPMethod"].GET)) {
-                        _context52.next = 7;
-                        break;
-                      }
-
-                      _context52.next = 5;
+                      _context52.next = 4;
                       return this.outputPort.sendData(data);
 
-                    case 5:
-                      _context52.next = 13;
-                      break;
-
-                    case 7:
-                      this.outputPort.sendData(data);
-                      data.responseId = data.requestId;
-                      data.requestId = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_4__["UUID"])();
-
-                      if (!data.sendResponse) {
-                        _context52.next = 13;
-                        break;
-                      }
-
-                      _context52.next = 13;
-                      return this.sendData(data);
-
-                    case 13:
+                    case 4:
                     case "end":
                       return _context52.stop();
                   }
@@ -20237,18 +20265,64 @@
             }));
           }
         }, {
-          key: "sendData",
-          value: function sendData(response) {
+          key: "writeBack",
+          value: function writeBack(data) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee49() {
-              var targetConnection;
               return regeneratorRuntime.wrap(function _callee49$(_context53) {
                 while (1) {
                   switch (_context53.prev = _context53.next) {
                     case 0:
+                      // write to cache, send success, write asynchronously to database
+                      data.origin = this.outputPort.connections[0];
+                      data.originID = this.originID; // Write to cache
+                      // Send to DB
+
+                      if (!(data.header.endpoint.method == _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_5__["HTTPMethod"].GET)) {
+                        _context53.next = 7;
+                        break;
+                      }
+
+                      _context53.next = 5;
+                      return this.outputPort.sendData(data);
+
+                    case 5:
+                      _context53.next = 13;
+                      break;
+
+                    case 7:
+                      this.outputPort.sendData(data);
+                      data.responseId = data.requestId;
+                      data.requestId = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_4__["UUID"])();
+
+                      if (!data.sendResponse) {
+                        _context53.next = 13;
+                        break;
+                      }
+
+                      _context53.next = 13;
+                      return this.sendData(data);
+
+                    case 13:
+                    case "end":
+                      return _context53.stop();
+                  }
+                }
+              }, _callee49, this);
+            }));
+          }
+        }, {
+          key: "sendData",
+          value: function sendData(response) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee50() {
+              var targetConnection;
+              return regeneratorRuntime.wrap(function _callee50$(_context54) {
+                while (1) {
+                  switch (_context54.prev = _context54.next) {
+                    case 0:
                       targetConnection = this.connectionTable[response.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context53.next = 3;
+                        _context54.next = 3;
                         break;
                       }
 
@@ -20257,15 +20331,15 @@
                     case 3:
                       this.connectionTable[response.responseId] = null; // reset request id
 
-                      _context53.next = 6;
+                      _context54.next = 6;
                       return this.inputPort.sendData(response, targetConnection);
 
                     case 6:
                     case "end":
-                      return _context53.stop();
+                      return _context54.stop();
                   }
                 }
-              }, _callee49, this);
+              }, _callee50, this);
             }));
           }
         }, {
@@ -20297,14 +20371,14 @@
         var _super31 = _createSuper(CacheOptions);
 
         function CacheOptions() {
-          var _this78;
+          var _this79;
 
           _classCallCheck(this, CacheOptions);
 
-          _this78 = _super31.apply(this, arguments);
-          _this78.replacementPolicy = _enums_ReplacementPolicy__WEBPACK_IMPORTED_MODULE_7__["ReplacementPolicy"]["Least Frequently Used"];
-          _this78.writePolicy = _enums_WritePolicy__WEBPACK_IMPORTED_MODULE_8__["WritePolicy"]["Write-Through"];
-          return _this78;
+          _this79 = _super31.apply(this, arguments);
+          _this79.replacementPolicy = _enums_ReplacementPolicy__WEBPACK_IMPORTED_MODULE_7__["ReplacementPolicy"]["Least Frequently Used"];
+          _this79.writePolicy = _enums_WritePolicy__WEBPACK_IMPORTED_MODULE_8__["WritePolicy"]["Write-Through"];
+          return _this79;
         }
 
         return CacheOptions;
@@ -20630,13 +20704,13 @@
         var _super32 = _createSuper(ClientclusterComponent);
 
         function ClientclusterComponent() {
-          var _this79;
+          var _this80;
 
           _classCallCheck(this, ClientclusterComponent);
 
-          _this79 = _super32.apply(this, arguments);
-          _this79.LogicClientCluster = new src_models_ClientCluster__WEBPACK_IMPORTED_MODULE_0__["ClientCluster"]();
-          return _this79;
+          _this80 = _super32.apply(this, arguments);
+          _this80.LogicClientCluster = new src_models_ClientCluster__WEBPACK_IMPORTED_MODULE_0__["ClientCluster"]();
+          return _this80;
         }
 
         _createClass(ClientclusterComponent, [{
@@ -20831,40 +20905,40 @@
         var _super33 = _createSuper(LoadBalancer);
 
         function LoadBalancer() {
-          var _this80;
+          var _this81;
 
           _classCallCheck(this, LoadBalancer);
 
-          _this80 = _super33.call(this);
-          _this80.connectionTable = {};
-          _this80.streamConnectionTable = {};
-          _this80.color = "#021B79";
-          _this80.roundRobinIndex = -1;
-          _this80.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_6__["Port"](_assertThisInitialized(_this80), false, true);
-          _this80.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_6__["Port"](_assertThisInitialized(_this80), true, true);
-          _this80.options = new LoadBalancerOptions();
-          _this80.options.title = "Load Balancer";
-          return _this80;
+          _this81 = _super33.call(this);
+          _this81.connectionTable = {};
+          _this81.streamConnectionTable = {};
+          _this81.color = "#021B79";
+          _this81.roundRobinIndex = -1;
+          _this81.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_6__["Port"](_assertThisInitialized(_this81), false, true);
+          _this81.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_6__["Port"](_assertThisInitialized(_this81), true, true);
+          _this81.options = new LoadBalancerOptions();
+          _this81.options.title = "Load Balancer";
+          return _this81;
         }
 
         _createClass(LoadBalancer, [{
           key: "receiveData",
           value: function receiveData(data, fromOutput) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee50() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee51() {
               var targetConnection, result, res;
-              return regeneratorRuntime.wrap(function _callee50$(_context54) {
+              return regeneratorRuntime.wrap(function _callee51$(_context55) {
                 while (1) {
-                  switch (_context54.prev = _context54.next) {
+                  switch (_context55.prev = _context55.next) {
                     case 0:
                       if (!fromOutput) {
-                        _context54.next = 12;
+                        _context55.next = 12;
                         break;
                       }
 
                       targetConnection = this.connectionTable[data.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context54.next = 4;
+                        _context55.next = 4;
                         break;
                       }
 
@@ -20878,11 +20952,11 @@
                       }
 
                       this.fireReceiveData(data);
-                      _context54.next = 8;
+                      _context55.next = 8;
                       return this.inputPort.sendData(data, targetConnection);
 
                     case 8:
-                      result = _context54.sent;
+                      result = _context55.sent;
 
                       if (!result && data.header.stream) {
                         data.header.stream = false;
@@ -20896,12 +20970,12 @@
                         }
                       }
 
-                      _context54.next = 40;
+                      _context55.next = 40;
                       break;
 
                     case 12:
                       if (!(data.requestId == null)) {
-                        _context54.next = 14;
+                        _context55.next = 14;
                         break;
                       }
 
@@ -20911,75 +20985,75 @@
                       this.fireReceiveData(data);
 
                       if (!(this.streamConnectionTable[data.requestId] != null)) {
-                        _context54.next = 21;
+                        _context55.next = 21;
                         break;
                       }
 
                       data.origin = this.streamConnectionTable[data.requestId];
                       data.originID = this.originID;
-                      _context54.next = 20;
+                      _context55.next = 20;
                       return this.outputPort.sendData(data, this.streamConnectionTable[data.requestId]);
 
                     case 20:
-                      return _context54.abrupt("return");
+                      return _context55.abrupt("return");
 
                     case 21:
                       this.connectionTable[data.requestId] = data.origin;
-                      _context54.t0 = this.options.algorithm;
-                      _context54.next = _context54.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["Round Robin"] ? 25 : _context54.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["IP Hash"] ? 28 : _context54.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["Least Connections"] ? 31 : _context54.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["URL Hash"] ? 34 : 37;
+                      _context55.t0 = this.options.algorithm;
+                      _context55.next = _context55.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["Round Robin"] ? 25 : _context55.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["IP Hash"] ? 28 : _context55.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["Least Connections"] ? 31 : _context55.t0 === _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["URL Hash"] ? 34 : 37;
                       break;
 
                     case 25:
-                      _context54.next = 27;
+                      _context55.next = 27;
                       return this.roundRobin(data);
 
                     case 27:
-                      return _context54.abrupt("break", 40);
+                      return _context55.abrupt("break", 40);
 
                     case 28:
-                      _context54.next = 30;
+                      _context55.next = 30;
                       return this.ipHash(data);
 
                     case 30:
-                      return _context54.abrupt("break", 40);
+                      return _context55.abrupt("break", 40);
 
                     case 31:
-                      _context54.next = 33;
+                      _context55.next = 33;
                       return this.leastConnections(data);
 
                     case 33:
-                      return _context54.abrupt("break", 40);
+                      return _context55.abrupt("break", 40);
 
                     case 34:
-                      _context54.next = 36;
+                      _context55.next = 36;
                       return this.urlHash(data);
 
                     case 36:
-                      return _context54.abrupt("break", 40);
+                      return _context55.abrupt("break", 40);
 
                     case 37:
-                      _context54.next = 39;
+                      _context55.next = 39;
                       return this.roundRobin(data);
 
                     case 39:
-                      return _context54.abrupt("break", 40);
+                      return _context55.abrupt("break", 40);
 
                     case 40:
                     case "end":
-                      return _context54.stop();
+                      return _context55.stop();
                   }
                 }
-              }, _callee50, this);
+              }, _callee51, this);
             }));
           }
         }, {
           key: "roundRobin",
           value: function roundRobin(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee51() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee52() {
               var nodesLength;
-              return regeneratorRuntime.wrap(function _callee51$(_context55) {
+              return regeneratorRuntime.wrap(function _callee52$(_context56) {
                 while (1) {
-                  switch (_context55.prev = _context55.next) {
+                  switch (_context56.prev = _context56.next) {
                     case 0:
                       nodesLength = this.outputPort.connections.length;
                       this.roundRobinIndex++;
@@ -20991,25 +21065,25 @@
                       data.origin = this.outputPort.connections[this.roundRobinIndex];
                       data.originID = this.originID;
                       this.streamConnectionTable[data.requestId] = data.origin;
-                      _context55.next = 8;
+                      _context56.next = 8;
                       return this.outputPort.sendData(data, data.origin);
 
                     case 8:
                     case "end":
-                      return _context55.stop();
+                      return _context56.stop();
                   }
                 }
-              }, _callee51, this);
+              }, _callee52, this);
             }));
           }
         }, {
           key: "ipHash",
           value: function ipHash(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee52() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee53() {
               var hash, hashInt, length, connectionIndex;
-              return regeneratorRuntime.wrap(function _callee52$(_context56) {
+              return regeneratorRuntime.wrap(function _callee53$(_context57) {
                 while (1) {
-                  switch (_context56.prev = _context56.next) {
+                  switch (_context57.prev = _context57.next) {
                     case 0:
                       hash = object_hash__WEBPACK_IMPORTED_MODULE_1__({
                         id: data.originID
@@ -21020,26 +21094,26 @@
                       data.origin = this.outputPort.connections[connectionIndex];
                       data.originID = this.originID;
                       this.streamConnectionTable[data.requestId] = data.origin;
-                      _context56.next = 9;
+                      _context57.next = 9;
                       return this.outputPort.sendData(data, this.outputPort.connections[connectionIndex]);
 
                     case 9:
                     case "end":
-                      return _context56.stop();
+                      return _context57.stop();
                   }
                 }
-              }, _callee52, this);
+              }, _callee53, this);
             }));
           }
         }, {
           key: "leastConnections",
           value: function leastConnections(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee53() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee54() {
               var allConnections, keys, i, conn, least, leastNum, _iterator65, _step65, _loop16;
 
-              return regeneratorRuntime.wrap(function _callee53$(_context57) {
+              return regeneratorRuntime.wrap(function _callee54$(_context58) {
                 while (1) {
-                  switch (_context57.prev = _context57.next) {
+                  switch (_context58.prev = _context58.next) {
                     case 0:
                       allConnections = [];
                       keys = Object.keys(this.streamConnectionTable);
@@ -21047,25 +21121,25 @@
 
                     case 3:
                       if (!(i >= 0)) {
-                        _context57.next = 11;
+                        _context58.next = 11;
                         break;
                       }
 
                       conn = keys[i];
 
                       if (!(this.streamConnectionTable[conn] == null)) {
-                        _context57.next = 7;
+                        _context58.next = 7;
                         break;
                       }
 
-                      return _context57.abrupt("break", 11);
+                      return _context58.abrupt("break", 11);
 
                     case 7:
                       allConnections.push(this.streamConnectionTable[conn]);
 
                     case 8:
                       i--;
-                      _context57.next = 3;
+                      _context58.next = 3;
                       break;
 
                     case 11:
@@ -21098,25 +21172,25 @@
                       data.origin = least;
                       data.originID = this.originID;
                       this.streamConnectionTable[data.requestId] = data.origin;
-                      _context57.next = 20;
+                      _context58.next = 20;
                       return this.outputPort.sendData(data, least);
 
                     case 20:
                     case "end":
-                      return _context57.stop();
+                      return _context58.stop();
                   }
                 }
-              }, _callee53, this);
+              }, _callee54, this);
             }));
           }
         }, {
           key: "urlHash",
           value: function urlHash(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee54() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee55() {
               var url, hash, hashInt, length, connectionIndex;
-              return regeneratorRuntime.wrap(function _callee54$(_context58) {
+              return regeneratorRuntime.wrap(function _callee55$(_context59) {
                 while (1) {
-                  switch (_context58.prev = _context58.next) {
+                  switch (_context59.prev = _context59.next) {
                     case 0:
                       if (data.header.endpoint.endpoint == null) url = "/";else url = data.header.endpoint.endpoint.url;
                       hash = object_hash__WEBPACK_IMPORTED_MODULE_1__({
@@ -21128,15 +21202,15 @@
                       data.origin = this.outputPort.connections[connectionIndex];
                       data.originID = this.originID;
                       this.streamConnectionTable[data.requestId] = data.origin;
-                      _context58.next = 10;
+                      _context59.next = 10;
                       return this.outputPort.sendData(data, this.outputPort.connections[connectionIndex]);
 
                     case 10:
                     case "end":
-                      return _context58.stop();
+                      return _context59.stop();
                   }
                 }
-              }, _callee54, this);
+              }, _callee55, this);
             }));
           }
           /**
@@ -21184,14 +21258,14 @@
         var _super34 = _createSuper(LoadBalancerOptions);
 
         function LoadBalancerOptions() {
-          var _this81;
+          var _this82;
 
           _classCallCheck(this, LoadBalancerOptions);
 
-          _this81 = _super34.apply(this, arguments);
-          _this81.type = _enums_LoadBalancerType__WEBPACK_IMPORTED_MODULE_3__["LoadBalancerType"]["Layer 7"];
-          _this81.algorithm = _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["Round Robin"];
-          return _this81;
+          _this82 = _super34.apply(this, arguments);
+          _this82.type = _enums_LoadBalancerType__WEBPACK_IMPORTED_MODULE_3__["LoadBalancerType"]["Layer 7"];
+          _this82.algorithm = _enums_BalancingAlgorithm__WEBPACK_IMPORTED_MODULE_2__["BalancingAlgorithm"]["Round Robin"];
+          return _this82;
         }
 
         return LoadBalancerOptions;
@@ -21238,7 +21312,7 @@
 
       var SelectionService = /*#__PURE__*/function () {
         function SelectionService() {
-          var _this82 = this;
+          var _this83 = this;
 
           _classCallCheck(this, SelectionService);
 
@@ -21251,31 +21325,31 @@
           this.selectionScale = 1;
 
           this.stopSelecting = function () {
-            _this82.onStopSelecting.emit({
-              top: parseInt(_this82.selectionRect.style.top),
-              left: parseInt(_this82.selectionRect.style.left),
-              width: Math.abs(_this82.selectionWidth),
-              height: Math.abs(_this82.selectionHeight)
+            _this83.onStopSelecting.emit({
+              top: parseInt(_this83.selectionRect.style.top),
+              left: parseInt(_this83.selectionRect.style.left),
+              width: Math.abs(_this83.selectionWidth),
+              height: Math.abs(_this83.selectionHeight)
             });
 
-            window.removeEventListener("mousemove", _this82.moveSelectionRect);
-            window.removeEventListener("mouseup", _this82.stopSelecting);
-            document.getElementById("board").removeChild(_this82.selectionRect);
-            _this82.selectionRect = null;
+            window.removeEventListener("mousemove", _this83.moveSelectionRect);
+            window.removeEventListener("mouseup", _this83.stopSelecting);
+            document.getElementById("board").removeChild(_this83.selectionRect);
+            _this83.selectionRect = null;
           };
 
           this.moveSelectionRect = function (e) {
-            _this82.selectionRect.style.display = "block";
-            var diffX = (_this82.selectionPrevX - e.clientX) / _this82.selectionScale;
-            var diffY = (_this82.selectionPrevY - e.clientY) / _this82.selectionScale;
-            _this82.selectionWidth -= diffX;
-            _this82.selectionHeight -= diffY;
-            _this82.selectionRect.style.width = Math.abs(_this82.selectionWidth).toString() + "px";
-            _this82.selectionRect.style.left = e.clientX < _this82.selectionClientX ? (_this82.selectionStartX + _this82.selectionWidth).toString() + "px" : _this82.selectionStartX.toString() + "px";
-            _this82.selectionRect.style.height = Math.abs(_this82.selectionHeight).toString() + "px";
-            _this82.selectionRect.style.top = e.clientY < _this82.selectionClientY ? (_this82.selectionStartY + _this82.selectionHeight).toString() + "px" : _this82.selectionStartY.toString() + "px";
-            _this82.selectionPrevX = e.clientX;
-            _this82.selectionPrevY = e.clientY;
+            _this83.selectionRect.style.display = "block";
+            var diffX = (_this83.selectionPrevX - e.clientX) / _this83.selectionScale;
+            var diffY = (_this83.selectionPrevY - e.clientY) / _this83.selectionScale;
+            _this83.selectionWidth -= diffX;
+            _this83.selectionHeight -= diffY;
+            _this83.selectionRect.style.width = Math.abs(_this83.selectionWidth).toString() + "px";
+            _this83.selectionRect.style.left = e.clientX < _this83.selectionClientX ? (_this83.selectionStartX + _this83.selectionWidth).toString() + "px" : _this83.selectionStartX.toString() + "px";
+            _this83.selectionRect.style.height = Math.abs(_this83.selectionHeight).toString() + "px";
+            _this83.selectionRect.style.top = e.clientY < _this83.selectionClientY ? (_this83.selectionStartY + _this83.selectionHeight).toString() + "px" : _this83.selectionStartY.toString() + "px";
+            _this83.selectionPrevX = e.clientX;
+            _this83.selectionPrevY = e.clientY;
           };
 
           this.moveComponents = function (event, scale) {
@@ -21290,13 +21364,13 @@
               cY = event.touches[0].clientY;
             }
 
-            var _iterator67 = _createForOfIteratorHelper(_this82.currentSelections),
+            var _iterator67 = _createForOfIteratorHelper(_this83.currentSelections),
                 _step67;
 
             try {
               for (_iterator67.s(); !(_step67 = _iterator67.n()).done;) {
                 var selection = _step67.value;
-                selection.setPosition(selection.getLogicComponent().options.X - (_this82.prevX - cX) / scale, selection.getLogicComponent().options.Y - (_this82.prevY - cY) / scale);
+                selection.setPosition(selection.getLogicComponent().options.X - (_this83.prevX - cX) / scale, selection.getLogicComponent().options.Y - (_this83.prevY - cY) / scale);
               }
             } catch (err) {
               _iterator67.e(err);
@@ -21304,7 +21378,7 @@
               _iterator67.f();
             }
 
-            var _iterator68 = _createForOfIteratorHelper(_this82.currentConnectionSelections),
+            var _iterator68 = _createForOfIteratorHelper(_this83.currentConnectionSelections),
                 _step68;
 
             try {
@@ -21315,9 +21389,9 @@
                   connection.LogicConnection.lineBreaks.filter(function (c, i) {
                     return i !== 0 && i < connection.LogicConnection.lineBreaks.length - 1;
                   }).forEach(function (br) {
-                    var lineBreak = _this82.convertLineBreak({
-                      x: br.x - (_this82.prevX - cX) / scale,
-                      y: br.y - (_this82.prevY - cY) / scale
+                    var lineBreak = _this83.convertLineBreak({
+                      x: br.x - (_this83.prevX - cX) / scale,
+                      y: br.y - (_this83.prevY - cY) / scale
                     });
 
                     br.x = lineBreak.x;
@@ -21335,8 +21409,8 @@
               _iterator68.f();
             }
 
-            _this82.prevX = _this82.convertScaledPosition(cX, scale);
-            _this82.prevY = _this82.convertScaledPosition(cY, scale);
+            _this83.prevX = _this83.convertScaledPosition(cX, scale);
+            _this83.prevY = _this83.convertScaledPosition(cY, scale);
           };
 
           this.changeSelectionDispatcher = new src_models_Shared_EventDispatcher__WEBPACK_IMPORTED_MODULE_1__["EventDispatcher"]();
@@ -21345,7 +21419,7 @@
         _createClass(SelectionService, [{
           key: "addSelection",
           value: function addSelection(selection) {
-            var _this83 = this;
+            var _this84 = this;
 
             var multiple = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
@@ -21357,13 +21431,13 @@
                   selection.anchorRef.nativeElement.classList.add("is-current-selection");
                   selection.cdRef.reattach();
 
-                  _this83.currentSelections.push(selection); // Look if the component is connected to already selected component
+                  _this84.currentSelections.push(selection); // Look if the component is connected to already selected component
 
 
                   var selectionOutputPort = selection.getLogicComponent().getPort(true);
                   var selectionInputPort = selection.getLogicComponent().getPort(false);
 
-                  var _iterator69 = _createForOfIteratorHelper(_this83.currentSelections),
+                  var _iterator69 = _createForOfIteratorHelper(_this84.currentSelections),
                       _step69;
 
                   try {
@@ -21381,10 +21455,10 @@
 
                           if (logicConnection != null) {
                             var comp = selection.getPortComponent(false).getConnectionComponent(logicConnection);
-                            if (comp) _this83.currentConnectionSelections.push(comp);else {
+                            if (comp) _this84.currentConnectionSelections.push(comp);else {
                               setTimeout(function () {
                                 comp = selection.getPortComponent(false).getConnectionComponent(logicConnection);
-                                if (comp) _this83.currentConnectionSelections.push(comp);
+                                if (comp) _this84.currentConnectionSelections.push(comp);
                               }, 50);
                             }
                           }
@@ -21400,10 +21474,10 @@
                           if (_logicConnection != null) {
                             var _comp = selection.getPortComponent(true).getConnectionComponent(_logicConnection);
 
-                            if (_comp) _this83.currentConnectionSelections.push(_comp);else {
+                            if (_comp) _this84.currentConnectionSelections.push(_comp);else {
                               setTimeout(function () {
                                 _comp = selection.getPortComponent(true).getConnectionComponent(_logicConnection);
-                                if (_comp) _this83.currentConnectionSelections.push(_comp);
+                                if (_comp) _this84.currentConnectionSelections.push(_comp);
                               }, 50);
                             }
                           }
@@ -21528,7 +21602,7 @@
         }, {
           key: "deleteSelection",
           value: function deleteSelection() {
-            var _this84 = this;
+            var _this85 = this;
 
             if (this.currentConnectionSelection == null && this.currentSelections.length == 0 && this.currentLineBreakSelection == null) return false;
 
@@ -21537,7 +21611,7 @@
               return true;
             } else if (this.currentLineBreakSelection) {
               var index = this.currentLineBreakList.findIndex(function (b) {
-                return b.x === _this84.currentLineBreakSelection.x && b.y === _this84.currentLineBreakSelection.y;
+                return b.x === _this85.currentLineBreakSelection.x && b.y === _this85.currentLineBreakSelection.y;
               });
               if (index === -1) return false;
               this.currentLineBreakList.splice(index, 1);
@@ -21678,17 +21752,17 @@
         var _super35 = _createSuper(TextField);
 
         function TextField() {
-          var _this85;
+          var _this86;
 
           _classCallCheck(this, TextField);
 
-          _this85 = _super35.call(this);
+          _this86 = _super35.call(this);
 
-          _this85.destroy = function () {};
+          _this86.destroy = function () {};
 
-          _this85.options = new TextFieldOptions();
-          _this85.options.title = "Text Field";
-          return _this85;
+          _this86.options = new TextFieldOptions();
+          _this86.options.title = "Text Field";
+          return _this86;
         }
 
         _createClass(TextField, [{
@@ -21717,19 +21791,19 @@
         var _super36 = _createSuper(TextFieldOptions);
 
         function TextFieldOptions() {
-          var _this86;
+          var _this87;
 
           _classCallCheck(this, TextFieldOptions);
 
-          _this86 = _super36.apply(this, arguments);
-          _this86.width = 140;
-          _this86.height = 60;
-          _this86.fontSize = 12;
-          _this86.isBold = false;
-          _this86.isItalic = false;
-          _this86.backgroundColor = "rgba(0, 0, 0, 0.5)";
-          _this86.color = "#fff";
-          return _this86;
+          _this87 = _super36.apply(this, arguments);
+          _this87.width = 140;
+          _this87.height = 60;
+          _this87.fontSize = 12;
+          _this87.isBold = false;
+          _this87.isItalic = false;
+          _this87.backgroundColor = "rgba(0, 0, 0, 0.5)";
+          _this87.color = "#fff";
+          return _this87;
         }
 
         return TextFieldOptions;
@@ -21916,13 +21990,13 @@
         var _super37 = _createSuper(CloudStorageComponent);
 
         function CloudStorageComponent() {
-          var _this87;
+          var _this88;
 
           _classCallCheck(this, CloudStorageComponent);
 
-          _this87 = _super37.apply(this, arguments);
-          _this87.LogicCloudStorage = new src_models_CloudStorage__WEBPACK_IMPORTED_MODULE_0__["CloudStorage"]();
-          return _this87;
+          _this88 = _super37.apply(this, arguments);
+          _this88.LogicCloudStorage = new src_models_CloudStorage__WEBPACK_IMPORTED_MODULE_0__["CloudStorage"]();
+          return _this88;
         }
 
         _createClass(CloudStorageComponent, [{
@@ -22208,40 +22282,40 @@
         }, {
           key: "sendData",
           value: function sendData(data, origin) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee55() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee56() {
               var delay, _delay;
 
-              return regeneratorRuntime.wrap(function _callee55$(_context59) {
+              return regeneratorRuntime.wrap(function _callee56$(_context60) {
                 while (1) {
-                  switch (_context59.prev = _context59.next) {
+                  switch (_context60.prev = _context60.next) {
                     case 0:
                       if (!(origin === this.port1)) {
-                        _context59.next = 7;
+                        _context60.next = 7;
                         break;
                       }
 
                       this.fireSendData(origin);
                       delay = this.getSendDataDelay();
-                      _context59.next = 5;
+                      _context60.next = 5;
                       return this.port2.receiveData(data, delay);
 
                     case 5:
-                      _context59.next = 15;
+                      _context60.next = 15;
                       break;
 
                     case 7:
                       if (!(origin === this.port2)) {
-                        _context59.next = 14;
+                        _context60.next = 14;
                         break;
                       }
 
                       this.fireSendData(origin);
                       _delay = this.getSendDataDelay();
-                      _context59.next = 12;
+                      _context60.next = 12;
                       return this.port1.receiveData(data, _delay);
 
                     case 12:
-                      _context59.next = 15;
+                      _context60.next = 15;
                       break;
 
                     case 14:
@@ -22249,10 +22323,10 @@
 
                     case 15:
                     case "end":
-                      return _context59.stop();
+                      return _context60.stop();
                   }
                 }
-              }, _callee55, this);
+              }, _callee56, this);
             }));
           }
         }, {
@@ -22340,72 +22414,72 @@
         var _super38 = _createSuper(CloudStorage);
 
         function CloudStorage() {
-          var _this88;
+          var _this89;
 
           _classCallCheck(this, CloudStorage);
 
-          _this88 = _super38.call(this);
-          _this88.connectionTable = {};
-          _this88.fillColor = false;
-          _this88.color = "#dd1818";
-          _this88.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this88), false, true);
-          _this88.options = new CloudStorageOptions();
-          _this88.options.title = "Cloud Storage";
-          _this88.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["Endpoint"]("/cloud", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].DELETE])];
-          return _this88;
+          _this89 = _super38.call(this);
+          _this89.connectionTable = {};
+          _this89.fillColor = false;
+          _this89.color = "#dd1818";
+          _this89.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this89), false, true);
+          _this89.options = new CloudStorageOptions();
+          _this89.options.title = "Cloud Storage";
+          _this89.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["Endpoint"]("/cloud", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].DELETE])];
+          return _this89;
         }
 
         _createClass(CloudStorage, [{
           key: "receiveData",
           value: function receiveData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee56() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee57() {
               var targetEndpoint;
-              return regeneratorRuntime.wrap(function _callee56$(_context60) {
+              return regeneratorRuntime.wrap(function _callee57$(_context61) {
                 while (1) {
-                  switch (_context60.prev = _context60.next) {
+                  switch (_context61.prev = _context61.next) {
                     case 0:
                       targetEndpoint = this.getTargetEndpoint(data);
 
                       if (!(targetEndpoint == null)) {
-                        _context60.next = 3;
+                        _context61.next = 3;
                         break;
                       }
 
-                      return _context60.abrupt("return");
+                      return _context61.abrupt("return");
 
                     case 3:
                       this.fireReceiveData(data);
                       this.connectionTable[data.requestId] = data.origin; // Send response back
 
                       if (!data.sendResponse) {
-                        _context60.next = 8;
+                        _context61.next = 8;
                         break;
                       }
 
-                      _context60.next = 8;
+                      _context61.next = 8;
                       return this.sendData(this.getResponse(data));
 
                     case 8:
                     case "end":
-                      return _context60.stop();
+                      return _context61.stop();
                   }
                 }
-              }, _callee56, this);
+              }, _callee57, this);
             }));
           }
         }, {
           key: "sendData",
           value: function sendData(response) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee57() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee58() {
               var targetConnection;
-              return regeneratorRuntime.wrap(function _callee57$(_context61) {
+              return regeneratorRuntime.wrap(function _callee58$(_context62) {
                 while (1) {
-                  switch (_context61.prev = _context61.next) {
+                  switch (_context62.prev = _context62.next) {
                     case 0:
                       targetConnection = this.connectionTable[response.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context61.next = 3;
+                        _context62.next = 3;
                         break;
                       }
 
@@ -22414,15 +22488,15 @@
                     case 3:
                       this.connectionTable[response.responseId] = null; // reset request id
 
-                      _context61.next = 6;
+                      _context62.next = 6;
                       return this.inputPort.sendData(response, targetConnection);
 
                     case 6:
                     case "end":
-                      return _context61.stop();
+                      return _context62.stop();
                   }
                 }
-              }, _callee57, this);
+              }, _callee58, this);
             }));
           }
         }]);
@@ -22596,71 +22670,71 @@
         var _super40 = _createSuper(CDN);
 
         function CDN() {
-          var _this89;
+          var _this90;
 
           _classCallCheck(this, CDN);
 
-          _this89 = _super40.call(this);
-          _this89.connectionTable = {};
-          _this89.color = "#EB5757";
-          _this89.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this89), false, true);
-          _this89.options = new CDNOptions();
-          _this89.options.title = "CDN";
-          _this89.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["Endpoint"]("/cdn", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].DELETE, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PATCH])];
-          return _this89;
+          _this90 = _super40.call(this);
+          _this90.connectionTable = {};
+          _this90.color = "#EB5757";
+          _this90.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this90), false, true);
+          _this90.options = new CDNOptions();
+          _this90.options.title = "CDN";
+          _this90.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["Endpoint"]("/cdn", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].DELETE, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PATCH])];
+          return _this90;
         }
 
         _createClass(CDN, [{
           key: "receiveData",
           value: function receiveData(data) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee58() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee59() {
               var targetEndpoint;
-              return regeneratorRuntime.wrap(function _callee58$(_context62) {
+              return regeneratorRuntime.wrap(function _callee59$(_context63) {
                 while (1) {
-                  switch (_context62.prev = _context62.next) {
+                  switch (_context63.prev = _context63.next) {
                     case 0:
                       targetEndpoint = this.getTargetEndpoint(data);
 
                       if (!(targetEndpoint == null)) {
-                        _context62.next = 3;
+                        _context63.next = 3;
                         break;
                       }
 
-                      return _context62.abrupt("return");
+                      return _context63.abrupt("return");
 
                     case 3:
                       this.fireReceiveData(data);
                       this.connectionTable[data.requestId] = data.origin; // Send response back
 
                       if (!data.sendResponse) {
-                        _context62.next = 8;
+                        _context63.next = 8;
                         break;
                       }
 
-                      _context62.next = 8;
+                      _context63.next = 8;
                       return this.sendData(this.getResponse(data));
 
                     case 8:
                     case "end":
-                      return _context62.stop();
+                      return _context63.stop();
                   }
                 }
-              }, _callee58, this);
+              }, _callee59, this);
             }));
           }
         }, {
           key: "sendData",
           value: function sendData(response) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee59() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee60() {
               var targetConnection;
-              return regeneratorRuntime.wrap(function _callee59$(_context63) {
+              return regeneratorRuntime.wrap(function _callee60$(_context64) {
                 while (1) {
-                  switch (_context63.prev = _context63.next) {
+                  switch (_context64.prev = _context64.next) {
                     case 0:
                       targetConnection = this.connectionTable[response.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context63.next = 3;
+                        _context64.next = 3;
                         break;
                       }
 
@@ -22669,15 +22743,15 @@
                     case 3:
                       this.connectionTable[response.responseId] = null; // reset request id
 
-                      _context63.next = 6;
+                      _context64.next = 6;
                       return this.inputPort.sendData(response, targetConnection);
 
                     case 6:
                     case "end":
-                      return _context63.stop();
+                      return _context64.stop();
                   }
                 }
-              }, _callee59, this);
+              }, _callee60, this);
             }));
           }
         }]);
@@ -22827,13 +22901,13 @@
         var _super42 = _createSuper(MessagequeueComponent);
 
         function MessagequeueComponent() {
-          var _this90;
+          var _this91;
 
           _classCallCheck(this, MessagequeueComponent);
 
-          _this90 = _super42.apply(this, arguments);
-          _this90.LogicMessageQueue = new src_models_MessageQueue__WEBPACK_IMPORTED_MODULE_0__["MessageQueue"]();
-          return _this90;
+          _this91 = _super42.apply(this, arguments);
+          _this91.LogicMessageQueue = new src_models_MessageQueue__WEBPACK_IMPORTED_MODULE_0__["MessageQueue"]();
+          return _this91;
         }
 
         _createClass(MessagequeueComponent, [{
@@ -22844,17 +22918,17 @@
         }, {
           key: "ngAfterViewInit",
           value: function ngAfterViewInit() {
-            var _this91 = this;
+            var _this92 = this;
 
             _get(_getPrototypeOf(MessagequeueComponent.prototype), "Init", this).call(this);
 
             this.LogicMessageQueue.onReceiveData(function (data) {
-              _this91.setReceiveDataAnimation();
+              _this92.setReceiveDataAnimation();
 
-              _this91.cdRef.detectChanges();
+              _this92.cdRef.detectChanges();
             });
             this.LogicMessageQueue.onSendData(function (data) {
-              _this91.cdRef.detectChanges();
+              _this92.cdRef.detectChanges();
             });
           }
         }, {
@@ -23067,54 +23141,54 @@
         var _super43 = _createSuper(WebServer);
 
         function WebServer() {
-          var _this92;
+          var _this93;
 
           _classCallCheck(this, WebServer);
 
-          _this92 = _super43.call(this);
-          _this92.connectionTable = {};
-          _this92.fillColor = false;
-          _this92.color = "#009FFF";
-          _this92.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this92), false, true);
-          _this92.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this92), true, true);
-          _this92.options = new WebServerOptions();
-          _this92.options.title = "Web Server";
-          _this92.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["Endpoint"]("/", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].DELETE])];
-          return _this92;
+          _this93 = _super43.call(this);
+          _this93.connectionTable = {};
+          _this93.fillColor = false;
+          _this93.color = "#009FFF";
+          _this93.inputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this93), false, true);
+          _this93.outputPort = new _Port__WEBPACK_IMPORTED_MODULE_4__["Port"](_assertThisInitialized(_this93), true, true);
+          _this93.options = new WebServerOptions();
+          _this93.options.title = "Web Server";
+          _this93.options.endpoints = [new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["Endpoint"]("/", [_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].GET, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].POST, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].PUT, _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"].DELETE])];
+          return _this93;
         }
 
         _createClass(WebServer, [{
           key: "receiveData",
           value: function receiveData(data, fromOutput) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee60() {
-              var _this93 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee61() {
+              var _this94 = this;
 
               var targetConnection, hasAction, _result2, result, res, targetEndpoint, sendResponse, isFirstStreamRequest, isLastStreamRequest, dontSendRequestResponse, _iterator73, _step73, _loop19, _ret5;
 
-              return regeneratorRuntime.wrap(function _callee60$(_context65) {
+              return regeneratorRuntime.wrap(function _callee61$(_context66) {
                 while (1) {
-                  switch (_context65.prev = _context65.next) {
+                  switch (_context66.prev = _context66.next) {
                     case 0:
                       if (!fromOutput) {
-                        _context65.next = 26;
+                        _context66.next = 26;
                         break;
                       }
 
                       targetConnection = this.connectionTable[data.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context65.next = 4;
+                        _context66.next = 4;
                         break;
                       }
 
-                      return _context65.abrupt("return");
+                      return _context66.abrupt("return");
 
                     case 4:
                       // Checking if endpoint wasn't removed before stream end
                       this.fireReceiveData(data);
 
                       if (!data.header.stream) {
-                        _context65.next = 21;
+                        _context66.next = 21;
                         break;
                       }
 
@@ -23128,7 +23202,7 @@
                       });
 
                       if (hasAction) {
-                        _context65.next = 15;
+                        _context66.next = 15;
                         break;
                       }
 
@@ -23138,14 +23212,14 @@
                       data.responseId = null;
                       _result2 = this.outputPort.sendData(data, data.origin);
                       if (_result2) this.connectionTable[data.responseId] = null;
-                      return _context65.abrupt("return");
+                      return _context66.abrupt("return");
 
                     case 15:
-                      _context65.next = 17;
+                      _context66.next = 17;
                       return this.inputPort.sendData(data, this.connectionTable[data.responseId]);
 
                     case 17:
-                      result = _context65.sent;
+                      result = _context66.sent;
 
                       if (!result && data.header.stream) {
                         // send end stream to out if the client doesn't exist 
@@ -23156,25 +23230,25 @@
                         if (res) this.connectionTable[data.responseId] = null;
                       }
 
-                      _context65.next = 24;
+                      _context66.next = 24;
                       break;
 
                     case 21:
                       if (!(data.header.endpoint.endpoint.protocol == _enums_Protocol__WEBPACK_IMPORTED_MODULE_8__["Protocol"].WebSockets || data.header.endpoint.endpoint.grpcMode == _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Bidirectional Streaming"] || data.header.endpoint.endpoint.grpcMode == _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Server Streaming"])) {
-                        _context65.next = 24;
+                        _context66.next = 24;
                         break;
                       }
 
-                      _context65.next = 24;
+                      _context66.next = 24;
                       return this.inputPort.sendData(data, this.connectionTable[data.responseId]);
 
                     case 24:
-                      _context65.next = 63;
+                      _context66.next = 63;
                       break;
 
                     case 26:
                       if (!(data.requestId == "" || data.requestId == null)) {
-                        _context65.next = 28;
+                        _context66.next = 28;
                         break;
                       }
 
@@ -23182,7 +23256,7 @@
 
                     case 28:
                       if (!(data.header.endpoint == null)) {
-                        _context65.next = 30;
+                        _context66.next = 30;
                         break;
                       }
 
@@ -23192,11 +23266,11 @@
                       targetEndpoint = this.getTargetEndpoint(data);
 
                       if (!(targetEndpoint == null)) {
-                        _context65.next = 33;
+                        _context66.next = 33;
                         break;
                       }
 
-                      return _context65.abrupt("return");
+                      return _context66.abrupt("return");
 
                     case 33:
                       this.fireReceiveData(data);
@@ -23207,87 +23281,87 @@
                       this.connectionTable[data.requestId] = data.origin; // Send data to every action 
 
                       _iterator73 = _createForOfIteratorHelper(targetEndpoint.actions);
-                      _context65.prev = 40;
+                      _context66.prev = 40;
                       _loop19 = /*#__PURE__*/regeneratorRuntime.mark(function _loop19() {
                         var action, targetConnection, _iterator74, _step74, connection, endpoints, isStream, requestId, request, epRef;
 
-                        return regeneratorRuntime.wrap(function _loop19$(_context64) {
+                        return regeneratorRuntime.wrap(function _loop19$(_context65) {
                           while (1) {
-                            switch (_context64.prev = _context64.next) {
+                            switch (_context65.prev = _context65.next) {
                               case 0:
                                 action = _step73.value;
 
                                 if (!(action.endpoint == null || action.endpoint.url == null)) {
-                                  _context64.next = 3;
+                                  _context65.next = 3;
                                   break;
                                 }
 
-                                return _context64.abrupt("return", "continue");
+                                return _context65.abrupt("return", "continue");
 
                               case 3:
                                 targetConnection = void 0;
-                                _iterator74 = _createForOfIteratorHelper(_this93.outputPort.connections);
-                                _context64.prev = 5;
+                                _iterator74 = _createForOfIteratorHelper(_this94.outputPort.connections);
+                                _context65.prev = 5;
 
                                 _iterator74.s();
 
                               case 7:
                                 if ((_step74 = _iterator74.n()).done) {
-                                  _context64.next = 15;
+                                  _context65.next = 15;
                                   break;
                                 }
 
                                 connection = _step74.value;
-                                endpoints = connection.getOtherPort(_this93.outputPort).parent.getAvailableEndpoints();
+                                endpoints = connection.getOtherPort(_this94.outputPort).parent.getAvailableEndpoints();
 
                                 if (!(endpoints.find(function (endpoint) {
                                   return endpoint.url == action.endpoint.url && Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["arrayEquals"])(endpoint.supportedMethods, action.endpoint.supportedMethods);
                                 }) != null)) {
-                                  _context64.next = 13;
+                                  _context65.next = 13;
                                   break;
                                 }
 
                                 targetConnection = connection;
-                                return _context64.abrupt("break", 15);
+                                return _context65.abrupt("break", 15);
 
                               case 13:
-                                _context64.next = 7;
+                                _context65.next = 7;
                                 break;
 
                               case 15:
-                                _context64.next = 20;
+                                _context65.next = 20;
                                 break;
 
                               case 17:
-                                _context64.prev = 17;
-                                _context64.t0 = _context64["catch"](5);
+                                _context65.prev = 17;
+                                _context65.t0 = _context65["catch"](5);
 
-                                _iterator74.e(_context64.t0);
+                                _iterator74.e(_context65.t0);
 
                               case 20:
-                                _context64.prev = 20;
+                                _context65.prev = 20;
 
                                 _iterator74.f();
 
-                                return _context64.finish(20);
+                                return _context65.finish(20);
 
                               case 23:
                                 if (!(targetConnection == null)) {
-                                  _context64.next = 25;
+                                  _context65.next = 25;
                                   break;
                                 }
 
-                                return _context64.abrupt("return", "continue");
+                                return _context65.abrupt("return", "continue");
 
                               case 25:
                                 isStream = action.endpoint.protocol == _enums_Protocol__WEBPACK_IMPORTED_MODULE_8__["Protocol"].WebSockets || action.endpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"].Unary;
 
                                 if (!(data.header.stream && isStream && action.endpoint.grpcMode == _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Server Streaming"] && !dontSendRequestResponse || dontSendRequestResponse && !isStream)) {
-                                  _context64.next = 28;
+                                  _context65.next = 28;
                                   break;
                                 }
 
-                                return _context64.abrupt("return", "continue");
+                                return _context65.abrupt("return", "continue");
 
                               case 28:
                                 requestId = isStream && !data.header.stream && !isLastStreamRequest ? Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["UUID"])() : data.requestId;
@@ -23297,42 +23371,42 @@
                                 epRef.method = _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["EndpointActionHTTPMethod"][action.method] == "Inherit" ? data.header.endpoint.method : _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"][_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["EndpointActionHTTPMethod"][action.method]];
                                 request.header = new _RequestData__WEBPACK_IMPORTED_MODULE_5__["RequestDataHeader"](epRef, action.endpoint.protocol, data.header.stream);
                                 request.origin = targetConnection;
-                                request.originID = _this93.originID;
+                                request.originID = _this94.originID;
                                 request.requestId = requestId;
 
                                 if (!isStream) {
-                                  _context64.next = 41;
+                                  _context65.next = 41;
                                   break;
                                 }
 
-                                _this93.outputPort.sendData(request, targetConnection);
+                                _this94.outputPort.sendData(request, targetConnection);
 
-                                _context64.next = 49;
+                                _context65.next = 49;
                                 break;
 
                               case 41:
                                 if (!data.header.stream) sendResponse = true;
 
                                 if (!action.asynchronous) {
-                                  _context64.next = 46;
+                                  _context65.next = 46;
                                   break;
                                 }
 
-                                _this93.outputPort.sendData(request, targetConnection);
+                                _this94.outputPort.sendData(request, targetConnection);
 
-                                _context64.next = 49;
+                                _context65.next = 49;
                                 break;
 
                               case 46:
-                                _context64.next = 48;
-                                return _this93.outputPort.sendData(request, targetConnection);
+                                _context65.next = 48;
+                                return _this94.outputPort.sendData(request, targetConnection);
 
                               case 48:
-                                if (data.sendResponse) _this93.connectionTable[requestId] = data.origin;
+                                if (data.sendResponse) _this94.connectionTable[requestId] = data.origin;
 
                               case 49:
                               case "end":
-                                return _context64.stop();
+                                return _context65.stop();
                             }
                           }
                         }, _loop19, null, [[5, 17, 20, 23]]);
@@ -23342,42 +23416,42 @@
 
                     case 43:
                       if ((_step73 = _iterator73.n()).done) {
-                        _context65.next = 50;
+                        _context66.next = 50;
                         break;
                       }
 
-                      return _context65.delegateYield(_loop19(), "t0", 45);
+                      return _context66.delegateYield(_loop19(), "t0", 45);
 
                     case 45:
-                      _ret5 = _context65.t0;
+                      _ret5 = _context66.t0;
 
                       if (!(_ret5 === "continue")) {
-                        _context65.next = 48;
+                        _context66.next = 48;
                         break;
                       }
 
-                      return _context65.abrupt("continue", 48);
+                      return _context66.abrupt("continue", 48);
 
                     case 48:
-                      _context65.next = 43;
+                      _context66.next = 43;
                       break;
 
                     case 50:
-                      _context65.next = 55;
+                      _context66.next = 55;
                       break;
 
                     case 52:
-                      _context65.prev = 52;
-                      _context65.t1 = _context65["catch"](40);
+                      _context66.prev = 52;
+                      _context66.t1 = _context66["catch"](40);
 
-                      _iterator73.e(_context65.t1);
+                      _iterator73.e(_context66.t1);
 
                     case 55:
-                      _context65.prev = 55;
+                      _context66.prev = 55;
 
                       _iterator73.f();
 
-                      return _context65.finish(55);
+                      return _context66.finish(55);
 
                     case 58:
                       // if(isFirstStreamRequest)
@@ -23392,48 +23466,48 @@
                       }
 
                       if (!((sendResponse || targetEndpoint.actions.length == 0 && !data.header.stream) && data.sendResponse)) {
-                        _context65.next = 63;
+                        _context66.next = 63;
                         break;
                       }
 
                       //Send response back
                       //this.connectionTable[data.requestId] = data.origin;
                       console.log("send response");
-                      _context65.next = 63;
+                      _context66.next = 63;
                       return this.sendData(this.getResponse(data));
 
                     case 63:
                     case "end":
-                      return _context65.stop();
+                      return _context66.stop();
                   }
                 }
-              }, _callee60, this, [[40, 52, 55, 58]]);
+              }, _callee61, this, [[40, 52, 55, 58]]);
             }));
           }
         }, {
           key: "sendData",
           value: function sendData(response) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee61() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee62() {
               var targetConnection, result, res;
-              return regeneratorRuntime.wrap(function _callee61$(_context66) {
+              return regeneratorRuntime.wrap(function _callee62$(_context67) {
                 while (1) {
-                  switch (_context66.prev = _context66.next) {
+                  switch (_context67.prev = _context67.next) {
                     case 0:
                       targetConnection = this.connectionTable[response.responseId];
 
                       if (!(targetConnection == null)) {
-                        _context66.next = 3;
+                        _context67.next = 3;
                         break;
                       }
 
-                      return _context66.abrupt("return");
+                      return _context67.abrupt("return");
 
                     case 3:
-                      _context66.next = 5;
+                      _context67.next = 5;
                       return this.inputPort.sendData(response, targetConnection);
 
                     case 5:
-                      result = _context66.sent;
+                      result = _context67.sent;
 
                       if (!result && response.header.stream) {
                         response.header.stream = false;
@@ -23450,41 +23524,6 @@
 
                     case 7:
                     case "end":
-                      return _context66.stop();
-                  }
-                }
-              }, _callee61, this);
-            }));
-          }
-        }, {
-          key: "stream",
-          value: function stream(data, streamingEndpoint) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee62() {
-              return regeneratorRuntime.wrap(function _callee62$(_context67) {
-                while (1) {
-                  switch (_context67.prev = _context67.next) {
-                    case 0:
-                      _context67.next = 2;
-                      return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["sleep"])(700);
-
-                    case 2:
-                      if (!(this.connectionTable[data.responseId] == null || streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Server Streaming"] && streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Bidirectional Streaming"] && streamingEndpoint.protocol != _enums_Protocol__WEBPACK_IMPORTED_MODULE_8__["Protocol"].WebSockets || this.options.endpoints.indexOf(streamingEndpoint) == -1)) {
-                        _context67.next = 4;
-                        break;
-                      }
-
-                      return _context67.abrupt("return");
-
-                    case 4:
-                      _context67.next = 6;
-                      return this.sendData(data);
-
-                    case 6:
-                      _context67.next = 8;
-                      return this.stream(data, streamingEndpoint);
-
-                    case 8:
-                    case "end":
                       return _context67.stop();
                   }
                 }
@@ -23492,121 +23531,156 @@
             }));
           }
         }, {
+          key: "stream",
+          value: function stream(data, streamingEndpoint) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee63() {
+              return regeneratorRuntime.wrap(function _callee63$(_context68) {
+                while (1) {
+                  switch (_context68.prev = _context68.next) {
+                    case 0:
+                      _context68.next = 2;
+                      return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["sleep"])(700);
+
+                    case 2:
+                      if (!(this.connectionTable[data.responseId] == null || streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Server Streaming"] && streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Bidirectional Streaming"] && streamingEndpoint.protocol != _enums_Protocol__WEBPACK_IMPORTED_MODULE_8__["Protocol"].WebSockets || this.options.endpoints.indexOf(streamingEndpoint) == -1)) {
+                        _context68.next = 4;
+                        break;
+                      }
+
+                      return _context68.abrupt("return");
+
+                    case 4:
+                      _context68.next = 6;
+                      return this.sendData(data);
+
+                    case 6:
+                      _context68.next = 8;
+                      return this.stream(data, streamingEndpoint);
+
+                    case 8:
+                    case "end":
+                      return _context68.stop();
+                  }
+                }
+              }, _callee63, this);
+            }));
+          }
+        }, {
           key: "serverStream",
           value: function serverStream(data, streamingEndpoint) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee63() {
-              var _this94 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee64() {
+              var _this95 = this;
 
               var _iterator75, _step75, _loop20, _ret6;
 
-              return regeneratorRuntime.wrap(function _callee63$(_context69) {
+              return regeneratorRuntime.wrap(function _callee64$(_context70) {
                 while (1) {
-                  switch (_context69.prev = _context69.next) {
+                  switch (_context70.prev = _context70.next) {
                     case 0:
-                      _context69.next = 2;
+                      _context70.next = 2;
                       return Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["sleep"])(700);
 
                     case 2:
                       if (!(streamingEndpoint.actions.filter(function (action) {
                         return action.endpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Server Streaming"];
                       }).length == 0 || this.connectionTable[data.responseId] == null || streamingEndpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"]["Server Streaming"] || this.getEndpoints().indexOf(streamingEndpoint) == -1)) {
-                        _context69.next = 4;
+                        _context70.next = 4;
                         break;
                       }
 
-                      return _context69.abrupt("return");
+                      return _context70.abrupt("return");
 
                     case 4:
                       _iterator75 = _createForOfIteratorHelper(streamingEndpoint.actions);
-                      _context69.prev = 5;
+                      _context70.prev = 5;
                       _loop20 = /*#__PURE__*/regeneratorRuntime.mark(function _loop20() {
                         var action, targetConnection, _iterator76, _step76, connection, endpoints, newReqId, request, epRef;
 
-                        return regeneratorRuntime.wrap(function _loop20$(_context68) {
+                        return regeneratorRuntime.wrap(function _loop20$(_context69) {
                           while (1) {
-                            switch (_context68.prev = _context68.next) {
+                            switch (_context69.prev = _context69.next) {
                               case 0:
                                 action = _step75.value;
 
                                 if (!(action.endpoint == null || action.endpoint.url == null || action.endpoint.grpcMode != _enums_gRPCMode__WEBPACK_IMPORTED_MODULE_7__["gRPCMode"].Unary || action.endpoint.protocol == _enums_Protocol__WEBPACK_IMPORTED_MODULE_8__["Protocol"].WebSockets)) {
-                                  _context68.next = 3;
+                                  _context69.next = 3;
                                   break;
                                 }
 
-                                return _context68.abrupt("return", "continue");
+                                return _context69.abrupt("return", "continue");
 
                               case 3:
                                 targetConnection = void 0;
-                                _iterator76 = _createForOfIteratorHelper(_this94.outputPort.connections);
-                                _context68.prev = 5;
+                                _iterator76 = _createForOfIteratorHelper(_this95.outputPort.connections);
+                                _context69.prev = 5;
 
                                 _iterator76.s();
 
                               case 7:
                                 if ((_step76 = _iterator76.n()).done) {
-                                  _context68.next = 15;
+                                  _context69.next = 15;
                                   break;
                                 }
 
                                 connection = _step76.value;
-                                endpoints = connection.getOtherPort(_this94.outputPort).parent.getAvailableEndpoints();
+                                endpoints = connection.getOtherPort(_this95.outputPort).parent.getAvailableEndpoints();
 
                                 if (!(endpoints.find(function (endpoint) {
                                   return endpoint.url == action.endpoint.url && Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["arrayEquals"])(endpoint.supportedMethods, action.endpoint.supportedMethods);
                                 }) != null)) {
-                                  _context68.next = 13;
+                                  _context69.next = 13;
                                   break;
                                 }
 
                                 targetConnection = connection;
-                                return _context68.abrupt("break", 15);
+                                return _context69.abrupt("break", 15);
 
                               case 13:
-                                _context68.next = 7;
+                                _context69.next = 7;
                                 break;
 
                               case 15:
-                                _context68.next = 20;
+                                _context69.next = 20;
                                 break;
 
                               case 17:
-                                _context68.prev = 17;
-                                _context68.t0 = _context68["catch"](5);
+                                _context69.prev = 17;
+                                _context69.t0 = _context69["catch"](5);
 
-                                _iterator76.e(_context68.t0);
+                                _iterator76.e(_context69.t0);
 
                               case 20:
-                                _context68.prev = 20;
+                                _context69.prev = 20;
 
                                 _iterator76.f();
 
-                                return _context68.finish(20);
+                                return _context69.finish(20);
 
                               case 23:
                                 if (!(targetConnection == null)) {
-                                  _context68.next = 25;
+                                  _context69.next = 25;
                                   break;
                                 }
 
-                                return _context68.abrupt("return", "continue");
+                                return _context69.abrupt("return", "continue");
 
                               case 25:
                                 newReqId = Object(src_shared_ExtensionMethods__WEBPACK_IMPORTED_MODULE_6__["UUID"])();
-                                _this94.connectionTable[newReqId] = data.origin;
+                                _this95.connectionTable[newReqId] = data.origin;
                                 request = new _RequestData__WEBPACK_IMPORTED_MODULE_5__["RequestData"]();
                                 epRef = new _Endpoint__WEBPACK_IMPORTED_MODULE_2__["EndpointRef"]();
                                 epRef.endpoint = action.endpoint;
                                 epRef.method = _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["EndpointActionHTTPMethod"][action.method] == "Inherit" ? data.header.endpoint.method : _enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["HTTPMethod"][_enums_HTTPMethod__WEBPACK_IMPORTED_MODULE_3__["EndpointActionHTTPMethod"][action.method]];
                                 request.header = new _RequestData__WEBPACK_IMPORTED_MODULE_5__["RequestDataHeader"](epRef, action.endpoint.protocol);
                                 request.origin = targetConnection;
-                                request.originID = _this94.originID;
+                                request.originID = _this95.originID;
                                 request.requestId = newReqId;
-                                _context68.next = 37;
-                                return _this94.outputPort.sendData(request, targetConnection);
+                                _context69.next = 37;
+                                return _this95.outputPort.sendData(request, targetConnection);
 
                               case 37:
                               case "end":
-                                return _context68.stop();
+                                return _context69.stop();
                             }
                           }
                         }, _loop20, null, [[5, 17, 20, 23]]);
@@ -23616,57 +23690,57 @@
 
                     case 8:
                       if ((_step75 = _iterator75.n()).done) {
-                        _context69.next = 15;
+                        _context70.next = 15;
                         break;
                       }
 
-                      return _context69.delegateYield(_loop20(), "t0", 10);
+                      return _context70.delegateYield(_loop20(), "t0", 10);
 
                     case 10:
-                      _ret6 = _context69.t0;
+                      _ret6 = _context70.t0;
 
                       if (!(_ret6 === "continue")) {
-                        _context69.next = 13;
+                        _context70.next = 13;
                         break;
                       }
 
-                      return _context69.abrupt("continue", 13);
+                      return _context70.abrupt("continue", 13);
 
                     case 13:
-                      _context69.next = 8;
+                      _context70.next = 8;
                       break;
 
                     case 15:
-                      _context69.next = 20;
+                      _context70.next = 20;
                       break;
 
                     case 17:
-                      _context69.prev = 17;
-                      _context69.t1 = _context69["catch"](5);
+                      _context70.prev = 17;
+                      _context70.t1 = _context70["catch"](5);
 
-                      _iterator75.e(_context69.t1);
+                      _iterator75.e(_context70.t1);
 
                     case 20:
-                      _context69.prev = 20;
+                      _context70.prev = 20;
 
                       _iterator75.f();
 
-                      return _context69.finish(20);
+                      return _context70.finish(20);
 
                     case 23:
-                      _context69.next = 25;
+                      _context70.next = 25;
                       return this.sendData(data);
 
                     case 25:
-                      _context69.next = 27;
+                      _context70.next = 27;
                       return this.serverStream(data, streamingEndpoint);
 
                     case 27:
                     case "end":
-                      return _context69.stop();
+                      return _context70.stop();
                   }
                 }
-              }, _callee63, this, [[5, 17, 20, 23]]);
+              }, _callee64, this, [[5, 17, 20, 23]]);
             }));
           }
         }]);
@@ -23680,13 +23754,13 @@
         var _super44 = _createSuper(WebServerOptions);
 
         function WebServerOptions() {
-          var _this95;
+          var _this96;
 
           _classCallCheck(this, WebServerOptions);
 
-          _this95 = _super44.apply(this, arguments);
-          _this95.type = _enums_APIType__WEBPACK_IMPORTED_MODULE_9__["APIType"].REST;
-          return _this95;
+          _this96 = _super44.apply(this, arguments);
+          _this96.type = _enums_APIType__WEBPACK_IMPORTED_MODULE_9__["APIType"].REST;
+          return _this96;
         }
 
         return WebServerOptions;
@@ -24230,7 +24304,7 @@
 
       var ComponentmenuComponent = /*#__PURE__*/function () {
         function ComponentmenuComponent(placingService, viewingService) {
-          var _this96 = this;
+          var _this97 = this;
 
           _classCallCheck(this, ComponentmenuComponent);
 
@@ -24242,29 +24316,29 @@
           this.isInfoOpen = false;
 
           this.mouseUp = function () {
-            _this96.placingItem = null;
-            window.removeEventListener("mouseup", _this96.mouseUp);
-            window.removeEventListener("mousemove", _this96.mouseMove);
-            window.removeEventListener("touchend", _this96.mouseUp);
-            window.removeEventListener("touchmove", _this96.mouseMove);
-            _this96.placingService.creatingItem = null;
+            _this97.placingItem = null;
+            window.removeEventListener("mouseup", _this97.mouseUp);
+            window.removeEventListener("mousemove", _this97.mouseMove);
+            window.removeEventListener("touchend", _this97.mouseUp);
+            window.removeEventListener("touchmove", _this97.mouseMove);
+            _this97.placingService.creatingItem = null;
 
-            _this96.placingService.stopCreating();
+            _this97.placingService.stopCreating();
 
             return true;
           };
 
           this.mouseMove = function (e) {
             if (e instanceof MouseEvent) {
-              _this96.placingItemRef.nativeElement.style.width = "".concat(40 * Math.max(1, _this96.placingService.boardScale), "px");
-              _this96.placingItemRef.nativeElement.style.height = "".concat(40 * Math.max(1, _this96.placingService.boardScale), "px");
-              _this96.placingItemRef.nativeElement.style.left = "".concat(e.clientX - 20 * Math.max(1, _this96.placingService.boardScale), "px");
-              _this96.placingItemRef.nativeElement.style.top = "".concat(e.clientY - 20 * Math.max(1, _this96.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.width = "".concat(40 * Math.max(1, _this97.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.height = "".concat(40 * Math.max(1, _this97.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.left = "".concat(e.clientX - 20 * Math.max(1, _this97.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.top = "".concat(e.clientY - 20 * Math.max(1, _this97.placingService.boardScale), "px");
             } else if (e instanceof TouchEvent) {
-              _this96.placingItemRef.nativeElement.style.width = "".concat(40 * Math.max(1, _this96.placingService.boardScale), "px");
-              _this96.placingItemRef.nativeElement.style.height = "".concat(40 * Math.max(1, _this96.placingService.boardScale), "px");
-              _this96.placingItemRef.nativeElement.style.left = "".concat(e.touches[0].clientX - 20 * Math.max(1, _this96.placingService.boardScale), "px");
-              _this96.placingItemRef.nativeElement.style.top = "".concat(e.touches[0].clientY - 20 * Math.max(1, _this96.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.width = "".concat(40 * Math.max(1, _this97.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.height = "".concat(40 * Math.max(1, _this97.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.left = "".concat(e.touches[0].clientX - 20 * Math.max(1, _this97.placingService.boardScale), "px");
+              _this97.placingItemRef.nativeElement.style.top = "".concat(e.touches[0].clientY - 20 * Math.max(1, _this97.placingService.boardScale), "px");
             }
           }; // Create Categories
 
@@ -24298,7 +24372,7 @@
         }, {
           key: "search",
           value: function search(value) {
-            var _this97 = this;
+            var _this98 = this;
 
             this.categories = [];
 
@@ -24309,7 +24383,7 @@
               for (_iterator77.s(); !(_step77 = _iterator77.n()).done;) {
                 var category = _step77.value;
                 var relevantItems = category.items.filter(function (i) {
-                  return _this97.isSearchRelevant(i, value);
+                  return _this98.isSearchRelevant(i, value);
                 });
                 if (relevantItems.length > 0) this.categories.push(new Category(category.title, relevantItems));
               }
@@ -24570,14 +24644,14 @@
         var _super45 = _createSuper(WebserverComponent);
 
         function WebserverComponent() {
-          var _this98;
+          var _this99;
 
           _classCallCheck(this, WebserverComponent);
 
-          _this98 = _super45.apply(this, arguments);
-          _this98.LogicWebServer = new src_models_WebServer__WEBPACK_IMPORTED_MODULE_5__["WebServer"]();
-          _this98.connectableEndpoints = [];
-          return _this98;
+          _this99 = _super45.apply(this, arguments);
+          _this99.LogicWebServer = new src_models_WebServer__WEBPACK_IMPORTED_MODULE_5__["WebServer"]();
+          _this99.connectableEndpoints = [];
+          return _this99;
         }
 
         _createClass(WebserverComponent, [{

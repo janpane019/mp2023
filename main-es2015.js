@@ -920,6 +920,18 @@ class ExportService {
         this.placingService = placingService;
         this.savingService = savingService;
         this.svgns = "http://www.w3.org/2000/svg";
+        this.getBase64FromUrl = (url) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            const data = yield fetch(url);
+            const blob = yield data.blob();
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                    const base64data = reader.result;
+                    resolve(base64data);
+                };
+            });
+        });
     }
     getComponentSize(component) {
         if (component instanceof src_models_TextField__WEBPACK_IMPORTED_MODULE_4__["TextField"])
@@ -1197,7 +1209,9 @@ class ExportService {
                     let img = document.createElementNS(this.svgns, 'image');
                     img.setAttributeNS(null, 'height', '26');
                     img.setAttributeNS(null, 'width', '26');
-                    img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
+                    //img.setAttributeNS('http://www.w3.org/1999/xlink','href', `http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
+                    const encoded = yield this.getBase64FromUrl(`http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
+                    img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', encoded.toString());
                     img.setAttributeNS(null, 'x', (component.options.X - offsetX + width / 2 - 20 + 7).toString());
                     img.setAttributeNS(null, 'y', (component.options.Y - offsetY + height / 2 - 20 + 7).toString());
                     img.setAttributeNS(null, 'visibility', 'visible');
