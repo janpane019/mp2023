@@ -1210,7 +1210,7 @@ class ExportService {
                     img.setAttributeNS(null, 'height', '26');
                     img.setAttributeNS(null, 'width', '26');
                     //img.setAttributeNS('http://www.w3.org/1999/xlink','href', `http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
-                    const encoded = yield this.getBase64FromUrl(`http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
+                    const encoded = yield this.getBase64FromUrl(`https://janpane019.github.io/mp2023/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
                     img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', encoded.toString());
                     img.setAttributeNS(null, 'x', (component.options.X - offsetX + width / 2 - 20 + 7).toString());
                     img.setAttributeNS(null, 'y', (component.options.Y - offsetY + height / 2 - 20 + 7).toString());

@@ -2724,7 +2724,7 @@
                       img.setAttributeNS(null, 'width', '26'); //img.setAttributeNS('http://www.w3.org/1999/xlink','href', `http://localhost:4200/assets/${this.savingService.getComponentType(component).toLowerCase()}.svg`);
 
                       _context13.next = 44;
-                      return this.getBase64FromUrl("http://localhost:4200/assets/".concat(this.savingService.getComponentType(component).toLowerCase(), ".svg"));
+                      return this.getBase64FromUrl("https://janpane019.github.io/mp2023/assets/".concat(this.savingService.getComponentType(component).toLowerCase(), ".svg"));
 
                     case 44:
                       encoded = _context13.sent;
